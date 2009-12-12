@@ -2,7 +2,7 @@
 # Project created by QtCreator 2009-11-17T13:24:40
 # -------------------------------------------------
 QT += sql
-TARGET = gapTableConceptor
+TARGET = gapQBE
 TEMPLATE = app
 SOURCES += main.cpp \
     dialoglogin.cpp \
@@ -28,4 +28,4 @@ FORMS += dialoglogin.ui \
     dialogrelation.ui \
     dialogtypejointure.ui
 
-RESOURCES += gapTableConceptor.qrc
+RESOURCES += gapQBE.qrc
