@@ -1,0 +1,10 @@
+ <!DOCTYPE RCC><RCC version="1.0">
+    <qresource>
+        <file>cle.xpm</file>
+        <file>arrow-move.png</file>
+        <file>downSort.xpm</file>
+        <file>upSort.xpm</file>
+        <file>mini-eye.xpm</file>
+        <file>tables-relation.png</file>
+    </qresource>
+    </RCC> 
