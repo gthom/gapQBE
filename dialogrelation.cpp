@@ -10,6 +10,7 @@
 #include "dialogtypejointure.h"
 #include "ui_dialogtypejointure.h"
 #include <QTextDocument>
+#include <QSqlResult>
 
 
 dialogRelation::dialogRelation(QWidget *parent,QSqlDatabase& pdb) :
@@ -27,8 +28,8 @@ dialogRelation::dialogRelation(QWidget *parent,QSqlDatabase& pdb) :
     QStringList listeDesTables=db.tables();
     m_ui->listWidgetTables->insertItems(0,listeDesTables);
     m_ui->graphicsView->setScene(&scene);
-    m_ui->tableWidgetSelect->addAction(m_ui->actionSuprime);
-    m_ui->tableWidgetSelect->setContextMenuPolicy(Qt::ActionsContextMenu);
+
+
     connect (m_ui->graphicsView,SIGNAL(jointureRequise(QString,QString)),this,SLOT(jointure(QString,QString)));
     connect(m_ui->toolButtonExecuteRequete,SIGNAL(clicked()),this,SLOT(miseAJourResultat()));
 }
@@ -49,32 +50,6 @@ void dialogRelation::changeEvent(QEvent *e)
     }
 }
 
-void dialogRelation::on_actionSuprime_triggered()
-{
-    //supression d'un ou plusieurs champ(s) de la tablewidget work
-    if(!m_ui->tableWidgetSelect->selectedItems().empty())
-    {
-        //suppression des colonnes sélectionnées
-        int nbChampASupprimer=m_ui->tableWidgetSelect->selectedItems().count();
-        QList <int> colonnesASupprimer;
-
-
-        for(int noSelection=0;noSelection<nbChampASupprimer;noSelection++)
-        {
-            //obtention de la colonne
-            int nColonne=m_ui->tableWidgetSelect->column(m_ui->tableWidgetSelect->selectedItems()[noSelection]);
-            if(!colonnesASupprimer.contains(nColonne))
-            {
-                colonnesASupprimer.push_back(nColonne);
-            }
-        }
-        qSort(colonnesASupprimer);
-        for(int no=colonnesASupprimer.size()-1;no>=0;no--)
-        {  int nColonne=colonnesASupprimer[no];
-            m_ui->tableWidgetSelect->removeColumn(nColonne);
-        }
-    }
-}
 
 
 void dialogRelation::tableSupprimer()
@@ -328,8 +303,62 @@ void dialogRelation::miseAJourResultat()
     //ajouter maintenant au select les agrégats affichés
     //construire le having
     qDebug()<<select<<from<<where<<orderBy;
+    m_ui->lineEditQuery->setText(select+from+orderBy);
     //puis former le where
 
 
 }
 
+void dialogRelation::changeJoinType(lien * leLien)
+{
+    DialogTypeJointure dd;
+    if(dd.exec())
+    {
+        leLien->typeDeJointure=dd.m_ui->comboBoxType->currentText();
+        leLien->updateType();
+    }
+    //et changement de couleur et ajout eventuel de la condition
+
+
+
+}
+
+void dialogRelation::on_lineEditQuery_textChanged(QString leSql )
+{
+    QSqlQuery req;
+
+    if (req.exec(leSql))
+    {
+       m_ui->tableWidgetPreview->setStyleSheet("background-color:green");
+       m_ui->tableWidgetPreview->clear();
+       //si aperçu auto alors affichage du résultat de la requête
+
+       //affichage des titres
+       req.first();
+       QSqlRecord leRecord=req.record();
+       m_ui->tableWidgetPreview->setColumnCount(leRecord.count());
+       QStringList listeDesNomsDeChamp;
+       for(int noCol=0;noCol<leRecord.count();noCol++)
+       {
+           listeDesNomsDeChamp<<leRecord.fieldName(noCol);
+       }
+       m_ui->tableWidgetPreview->setVerticalHeaderLabels(listeDesNomsDeChamp);
+       int noLigne=0;
+
+       do
+       {
+           noLigne++;
+           m_ui->tableWidgetPreview->setRowCount(m_ui->tableWidgetPreview->rowCount()+1);
+           for(int noChamp=0;noChamp<leRecord.count();noChamp++)
+           {
+               m_ui->tableWidgetPreview->setItem(noLigne,noChamp,new QTableWidgetItem(req.value(noChamp).toString()));
+           }
+       }
+       while(req.next());
+
+    }
+    else
+    {
+        m_ui->tableWidgetPreview->setStyleSheet("background-color:red");
+    }
+}

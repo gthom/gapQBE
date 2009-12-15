@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'dialoglogin.ui'
 **
-** Created: Thu Dec 10 08:00:29 2009
+** Created: Tue Dec 15 16:08:49 2009
 **      by: Qt User Interface Compiler version 4.5.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -168,14 +168,9 @@ public:
         label_3->setText(QApplication::translate("DialogLogin", "Database Name:", 0, QApplication::UnicodeUTF8));
         lineEditLoginDatabaseName->setText(QApplication::translate("DialogLogin", "mysql", 0, QApplication::UnicodeUTF8));
         label_4->setText(QApplication::translate("DialogLogin", "Host:", 0, QApplication::UnicodeUTF8));
-        label_5->setText(QApplication::translate("DialogLogin", "Moteur:", 0, QApplication::UnicodeUTF8));
-        comboBox->clear();
-        comboBox->insertItems(0, QStringList()
-         << QApplication::translate("DialogLogin", "QMYSQL", 0, QApplication::UnicodeUTF8)
-         << QApplication::translate("DialogLogin", "QPSQL", 0, QApplication::UnicodeUTF8)
-        );
+        label_5->setText(QApplication::translate("DialogLogin", "Database Engine:", 0, QApplication::UnicodeUTF8));
         pushButtonOk->setText(QApplication::translate("DialogLogin", "&Ok", 0, QApplication::UnicodeUTF8));
-        pushButtonAnnuler->setText(QApplication::translate("DialogLogin", "&Annuler", 0, QApplication::UnicodeUTF8));
+        pushButtonAnnuler->setText(QApplication::translate("DialogLogin", "&Cancel", 0, QApplication::UnicodeUTF8));
         Q_UNUSED(DialogLogin);
     } // retranslateUi
 

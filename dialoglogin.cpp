@@ -9,6 +9,7 @@ DialogLogin::DialogLogin(QWidget *parent, QSqlDatabase& pdb) :
 {
     m_ui->setupUi(this);
     db=&pdb;
+    m_ui->comboBox->insertItems(0,db->drivers());
 }
 
 DialogLogin::~DialogLogin()

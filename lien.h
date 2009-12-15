@@ -24,6 +24,7 @@ public:
     table* t2;
     lien(table* qg1,table* qg2,QGraphicsItem* parent, QGraphicsScene * laScene, QString typ="Natural");
     void updatePosition();//lorsqu'une des tables bouge, le lien doit bouger
+    void updateType();
     QGraphicsTextItem* condition;//condition de jointureex on cde.nocli=client.nocli
     QString texteDeLaCondition;//idem ci-dessus
     QString typeDeJointure;//inner, left outer, right outer, Natural

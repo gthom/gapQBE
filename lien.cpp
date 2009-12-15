@@ -27,6 +27,22 @@ lien::lien(table* pt1,table* pt2,QGraphicsItem * parent,QGraphicsScene* laScene,
         condition=NULL;
     this->typeDeJointure=typ;
     setData(32,"Lien");
+    //aspect différent en fonction du type de jointure:
+    if(typ=="Natural")
+    {
+
+        this->setPen(QPen(QColor("green")));
+
+
+    }
+    else
+    {
+        if(typ=="Inner")
+        {
+            this->setPen(QPen(QColor("blue")));
+        }
+        //etc pour les autre types de jointure
+    }
 }
 void lien::updatePosition()
 {
@@ -52,7 +68,50 @@ void lien::contextMenuEvent(QGraphicsSceneMouseEvent *event)
      QAction *changeJoinType = menu.addAction(QObject::tr("&Change join type"));
      //exécution du menu
      QAction * actionChoisie=menu.exec(event->screenPos());
-     //if(actionChoisie==changeJoinType) maman->changeJoinType(this);
+     if(actionChoisie==changeJoinType) t1->maman->changeJoinType(this);
+     else
+      {
+         //autre choix du menu
+      }
+}
+void lien::updateType()
+{
+    if(typeDeJointure!="Natural")
+    {
+        if(condition==NULL)
+        {
+        condition=new QGraphicsTextItem(this);
+        condition->setData(32,"Lien");
+        QObject::connect(condition->document(),SIGNAL(contentsChanged()),t1->maman, SLOT(miseAJourResultat()));
+        condition->setHtml(t1->nomTable+".xxx="+t2->nomTable+".yyy");
+        QPoint position=boundingRect().center().toPoint();
+        position.setX(position.x()-QFontMetrics(condition->font()).width(condition->toPlainText())/2);
+        condition->setPos(position);
+        condition->setDefaultTextColor(Qt::red);
+        condition->setTextInteractionFlags(Qt::TextEditable);
+        }
+    }
+    else
+    {
+        if(condition!=NULL) delete condition;
+        condition=NULL;
+    }
+    //aspect différent en fonction du type de jointure:
+    if(typeDeJointure=="Natural")
+    {
+
+        this->setPen(QPen(QColor("green")));
+
+
+    }
+    else
+    {
+        if(typeDeJointure=="Inner")
+        {
+            this->setPen(QPen(QColor("blue")));
+        }
+        //etc pour les autre types de jointure
+    }
 }
 
 

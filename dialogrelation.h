@@ -32,15 +32,17 @@ private:
     QCustomGraphicsScene scene;
 private slots:
 
+    void on_lineEditQuery_textChanged(QString );
     void on_toolButtonJoin_clicked();//sélection de l'outil relier
     void on_toolButtonMove_clicked();//sélection de l'outil déplacer
     void on_pushButtonAdd_clicked();//ajout des tables sélectionnées à la requête
 public slots:
-    void on_actionSuprime_triggered();//suppression dans la QTableWidget work
+
     void tableSupprimer();//suppression d'une table dans la scene
     void tableAjouterChamp(table*);//ajout d'un champ libre dans une table de la scene
     void jointure(QString,QString);//jointure demandée entre deux tables de la scene
     void miseAJourResultat();//ce slot actualise la requête et le résultat de la requête
+    void changeJoinType(lien *);
 };
 
 #endif // DIALOGRELATION_H

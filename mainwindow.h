@@ -4,8 +4,8 @@
 #include <QtGui/QMainWindow>
 
 #include <QListWidgetItem>
-#include "champ.h"
-class champ;
+// #include "champ.h"
+//class champ;
 namespace Ui
 {
     class MainWindowClass;
@@ -22,7 +22,7 @@ public:
 
     Ui::MainWindowClass *ui;
    private:
-    champ* selectionne;
+    //champ* selectionne;
 
 private slots:
     void on_pushButtonCreerTable_clicked();

@@ -90,23 +90,12 @@
      <item>
       <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>Moteur:</string>
+        <string>Database Engine:</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBox">
-       <item>
-        <property name="text">
-         <string>QMYSQL</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>QPSQL</string>
-        </property>
-       </item>
-      </widget>
+      <widget class="QComboBox" name="comboBox"/>
      </item>
     </layout>
    </item>
@@ -135,7 +124,7 @@
      <item>
       <widget class="QPushButton" name="pushButtonAnnuler">
        <property name="text">
-        <string>&amp;Annuler</string>
+        <string>&amp;Cancel</string>
        </property>
       </widget>
      </item>
