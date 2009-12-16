@@ -47,7 +47,7 @@ table::table(dialogRelation* mum,QString nom,qreal x,qreal y, QGraphicsItem* par
     //création des champs dans la table
     for(int noChamp=0;noChamp<listeDesChamps.count();noChamp++)
     {
-        vecteurChamps.push_back(new field(false,laScene,listeDesChamps[noChamp],this));
+        vecteurChamps.push_back(new field(maman,false,laScene,listeDesChamps[noChamp],this));
         vecteurChamps[noChamp]->setPos(10,ordonne);
           vecteurChamps[noChamp]->setTextInteractionFlags(Qt::TextEditable);
         vecteurChamps[noChamp]->setData(32,"Field");

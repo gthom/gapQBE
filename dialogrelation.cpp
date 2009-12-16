@@ -171,7 +171,7 @@ void dialogRelation::tableAjouterChamp(table * laTable)
     //table* laTable=(table*)sender();
     qDebug()<<"void dialogRelation::tableAjouterChamp()";
     QString nomDuChamp="'Some Text'";
-    field* nouveauChamp=new field(false,&scene,nomDuChamp,laTable);
+    field* nouveauChamp=new field(this,false,&scene,nomDuChamp,laTable);
     //augmenter la hauteur de la table
     int hauteurChamp=QFontMetrics(nouveauChamp->font()).height();
     QRect ancien=laTable->boundingRect().toRect();
@@ -280,7 +280,7 @@ void dialogRelation::miseAJourResultat()
 
     qDebug()<<from;
     //recherche des champs à afficher et formation simultannée du where ainsi que du order by:
-    QString select="select";
+    QString select="select ";
     QString where=" where ";
     QString orderBy=" order by ";
 
@@ -302,9 +302,27 @@ void dialogRelation::miseAJourResultat()
 
     //ajouter maintenant au select les agrégats affichés
     //construire le having
-    qDebug()<<select<<from<<where<<orderBy;
-    m_ui->lineEditQuery->setText(select+from+orderBy);
-    //puis former le where
+    QString requete="";
+    if(!listeDesChosesAAfficher.empty())
+{
+        requete=select;
+        if(!(from==" FROM"))
+        {
+            requete+=from;
+        }
+        if(!listeDuWhere.empty())
+        {
+            requete+=where;
+        }
+        if(!listeDesChampsParticipantsAuTri.empty())
+        {
+            requete+=orderBy;
+        }
+    }
+    //ajouter ici group by et having
+
+    m_ui->lineEditQuery->setText(requete);
+
 
 
 }
@@ -342,17 +360,19 @@ void dialogRelation::on_lineEditQuery_textChanged(QString leSql )
        {
            listeDesNomsDeChamp<<leRecord.fieldName(noCol);
        }
-       m_ui->tableWidgetPreview->setVerticalHeaderLabels(listeDesNomsDeChamp);
+       m_ui->tableWidgetPreview->setHorizontalHeaderLabels(listeDesNomsDeChamp);
        int noLigne=0;
+       m_ui->tableWidgetPreview->setRowCount(0);
 
        do
        {
-           noLigne++;
+
            m_ui->tableWidgetPreview->setRowCount(m_ui->tableWidgetPreview->rowCount()+1);
            for(int noChamp=0;noChamp<leRecord.count();noChamp++)
            {
                m_ui->tableWidgetPreview->setItem(noLigne,noChamp,new QTableWidgetItem(req.value(noChamp).toString()));
            }
+           noLigne++;
        }
        while(req.next());
 

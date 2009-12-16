@@ -4,9 +4,13 @@
 #include <QGraphicsTextItem>
 #include <QGraphicsPixmapItem>
 #include "types.h"
-
-class field : public QGraphicsTextItem
+#include "dialogrelation.h"
+class dialogRelation;
+class field :   public QGraphicsTextItem
 {
+    Q_OBJECT
+private:
+    dialogRelation * maman;
 
 public:
     enum { Type = FIELD};
@@ -15,7 +19,7 @@ public:
         // Enable the use of qgraphicsitem_cast with this item.
         return Type;
     }
-    field(bool,QGraphicsScene* pScene,QString pName="'something'",QGraphicsItem* pParent=0);
+    field(dialogRelation* mum ,bool,QGraphicsScene* pScene,QString pName="'something'",QGraphicsItem* pParent=0);
     bool affiche;
     QGraphicsPixmapItem * oeil;
     QGraphicsPixmapItem * iconSort;
@@ -25,6 +29,8 @@ public:
     bool freeField;
     enum typeDeTri{noSort,ascSort,descSort} tri;
     QString getTri();
+  signals:
+          void jAiChange();
 };
 
 #endif // FIELD_H

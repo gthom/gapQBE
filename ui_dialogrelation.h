@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'dialogrelation.ui'
 **
-** Created: Tue Dec 15 16:32:44 2009
+** Created: Wed Dec 16 11:13:33 2009
 **      by: Qt User Interface Compiler version 4.5.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -39,14 +39,14 @@ public:
     QAction *actionActionSuprTable;
     QVBoxLayout *verticalLayout_4;
     QSplitter *splitter;
-    QWidget *layoutWidget;
+    QWidget *widget;
+    QHBoxLayout *horizontalLayout_5;
     QVBoxLayout *verticalLayout;
     QListWidget *listWidgetTables;
     QHBoxLayout *horizontalLayout_3;
     QSpacerItem *horizontalSpacer_2;
     QPushButton *pushButtonAdd;
     QSpacerItem *verticalSpacer;
-    QWidget *layoutWidget1;
     QHBoxLayout *horizontalLayout_4;
     QVBoxLayout *verticalLayout_2;
     QToolButton *toolButtonJoin;
@@ -54,6 +54,7 @@ public:
     QToolButton *toolButtonExecuteRequete;
     QSpacerItem *verticalSpacer_2;
     customGraphicsView *graphicsView;
+    QWidget *widget1;
     QVBoxLayout *verticalLayout_3;
     QHBoxLayout *horizontalLayout;
     QLabel *label;
@@ -76,13 +77,16 @@ public:
         verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
         splitter = new QSplitter(dialogRelation);
         splitter->setObjectName(QString::fromUtf8("splitter"));
-        splitter->setOrientation(Qt::Horizontal);
-        layoutWidget = new QWidget(splitter);
-        layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
-        verticalLayout = new QVBoxLayout(layoutWidget);
+        splitter->setOrientation(Qt::Vertical);
+        widget = new QWidget(splitter);
+        widget->setObjectName(QString::fromUtf8("widget"));
+        horizontalLayout_5 = new QHBoxLayout(widget);
+        horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
+        horizontalLayout_5->setContentsMargins(0, 0, 0, 0);
+        verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-        verticalLayout->setContentsMargins(0, 0, 0, 0);
-        listWidgetTables = new QListWidget(layoutWidget);
+        verticalLayout->setSizeConstraint(QLayout::SetFixedSize);
+        listWidgetTables = new QListWidget(widget);
         listWidgetTables->setObjectName(QString::fromUtf8("listWidgetTables"));
         QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
         sizePolicy.setHorizontalStretch(0);
@@ -100,7 +104,7 @@ public:
 
         horizontalLayout_3->addItem(horizontalSpacer_2);
 
-        pushButtonAdd = new QPushButton(layoutWidget);
+        pushButtonAdd = new QPushButton(widget);
         pushButtonAdd->setObjectName(QString::fromUtf8("pushButtonAdd"));
         QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Preferred);
         sizePolicy1.setHorizontalStretch(0);
@@ -117,15 +121,14 @@ public:
 
         verticalLayout->addItem(verticalSpacer);
 
-        splitter->addWidget(layoutWidget);
-        layoutWidget1 = new QWidget(splitter);
-        layoutWidget1->setObjectName(QString::fromUtf8("layoutWidget1"));
-        horizontalLayout_4 = new QHBoxLayout(layoutWidget1);
+
+        horizontalLayout_5->addLayout(verticalLayout);
+
+        horizontalLayout_4 = new QHBoxLayout();
         horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
-        horizontalLayout_4->setContentsMargins(0, 0, 0, 0);
         verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
-        toolButtonJoin = new QToolButton(layoutWidget1);
+        toolButtonJoin = new QToolButton(widget);
         toolButtonJoin->setObjectName(QString::fromUtf8("toolButtonJoin"));
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/tables-relation.png"), QSize(), QIcon::Normal, QIcon::Off);
@@ -133,7 +136,7 @@ public:
 
         verticalLayout_2->addWidget(toolButtonJoin);
 
-        toolButtonMove = new QToolButton(layoutWidget1);
+        toolButtonMove = new QToolButton(widget);
         toolButtonMove->setObjectName(QString::fromUtf8("toolButtonMove"));
         QIcon icon1;
         icon1.addFile(QString::fromUtf8(":/arrow-move.png"), QSize(), QIcon::Normal, QIcon::Off);
@@ -141,7 +144,7 @@ public:
 
         verticalLayout_2->addWidget(toolButtonMove);
 
-        toolButtonExecuteRequete = new QToolButton(layoutWidget1);
+        toolButtonExecuteRequete = new QToolButton(widget);
         toolButtonExecuteRequete->setObjectName(QString::fromUtf8("toolButtonExecuteRequete"));
 
         verticalLayout_2->addWidget(toolButtonExecuteRequete);
@@ -153,7 +156,7 @@ public:
 
         horizontalLayout_4->addLayout(verticalLayout_2);
 
-        graphicsView = new customGraphicsView(layoutWidget1);
+        graphicsView = new customGraphicsView(widget);
         graphicsView->setObjectName(QString::fromUtf8("graphicsView"));
         graphicsView->setContextMenuPolicy(Qt::ActionsContextMenu);
         graphicsView->setAcceptDrops(true);
@@ -161,20 +164,23 @@ public:
 
         horizontalLayout_4->addWidget(graphicsView);
 
-        splitter->addWidget(layoutWidget1);
 
-        verticalLayout_4->addWidget(splitter);
+        horizontalLayout_5->addLayout(horizontalLayout_4);
 
-        verticalLayout_3 = new QVBoxLayout();
+        splitter->addWidget(widget);
+        widget1 = new QWidget(splitter);
+        widget1->setObjectName(QString::fromUtf8("widget1"));
+        verticalLayout_3 = new QVBoxLayout(widget1);
         verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
+        verticalLayout_3->setContentsMargins(0, 0, 0, 0);
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-        label = new QLabel(dialogRelation);
+        label = new QLabel(widget1);
         label->setObjectName(QString::fromUtf8("label"));
 
         horizontalLayout->addWidget(label);
 
-        lineEditQuery = new QLineEdit(dialogRelation);
+        lineEditQuery = new QLineEdit(widget1);
         lineEditQuery->setObjectName(QString::fromUtf8("lineEditQuery"));
 
         horizontalLayout->addWidget(lineEditQuery);
@@ -182,13 +188,14 @@ public:
 
         verticalLayout_3->addLayout(horizontalLayout);
 
-        tableWidgetPreview = new QTableWidget(dialogRelation);
+        tableWidgetPreview = new QTableWidget(widget1);
         tableWidgetPreview->setObjectName(QString::fromUtf8("tableWidgetPreview"));
 
         verticalLayout_3->addWidget(tableWidgetPreview);
 
+        splitter->addWidget(widget1);
 
-        verticalLayout_4->addLayout(verticalLayout_3);
+        verticalLayout_4->addWidget(splitter);
 
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));

@@ -11,6 +11,7 @@
 
 
 class lien;
+class field;
 class dialogRelation;
 class table : public QGraphicsRectItem
 {
