@@ -15,11 +15,6 @@ class field;
 class dialogRelation;
 class table : public QGraphicsRectItem
 {
-
-
-
-
-
 public:
 
     enum { Type = TABLE};
@@ -31,14 +26,15 @@ public:
     }
 
     table(dialogRelation* mum,QString nom,qreal x,qreal y, QGraphicsItem* parent, QGraphicsScene * laScene, QStringList listeDesChamps);
-    QGraphicsTextItem* title;
-    QGraphicsLineItem* laLigne;
-    QString nomTable;
-    QVector<lien*> vectLiens;
-    QVector<field *> vecteurChamps;
-    void contextMenuEvent(QGraphicsSceneMouseEvent *event);
-    QVariant itemChange(GraphicsItemChange change,const QVariant &value);
-    dialogRelation* maman;
+    QGraphicsTextItem* title;//le titre
+    QGraphicsLineItem* laLigne;//la ligne sous le titre ui
+    QString nomTable;//nom de la table
+    QString alias;  //nom d'alias
+    QVector<lien*> vectLiens;//les liens qui la touchent.
+    QVector<field *> vecteurChamps;//ses champs
+    void contextMenuEvent(QGraphicsSceneMouseEvent *event);//demande de menu contextuel
+    QVariant itemChange(GraphicsItemChange change,const QVariant &value);//qd la table change
+    dialogRelation* maman;// lien vers la maman
 
 };
 

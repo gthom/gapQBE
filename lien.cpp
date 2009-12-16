@@ -72,6 +72,7 @@ void lien::contextMenuEvent(QGraphicsSceneMouseEvent *event)
      else
       {
          //autre choix du menu
+         if(actionChoisie==removeAction) t1->maman->supprimerLien(this);
       }
 }
 void lien::updateType()

@@ -43,6 +43,7 @@ public slots:
     void jointure(QString,QString);//jointure demandée entre deux tables de la scene
     void miseAJourResultat();//ce slot actualise la requête et le résultat de la requête
     void changeJoinType(lien *);
+    void supprimerLien(lien * leLien);
 };
 
 #endif // DIALOGRELATION_H

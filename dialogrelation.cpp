@@ -335,9 +335,16 @@ void dialogRelation::changeJoinType(lien * leLien)
         leLien->typeDeJointure=dd.m_ui->comboBoxType->currentText();
         leLien->updateType();
     }
-    //et changement de couleur et ajout eventuel de la condition
-
-
+}
+void dialogRelation::supprimerLien(lien * leLien)
+{
+    qDebug()<<"void dialogRelation::supprimerLien(lien * leLien)";
+    //effacement du lien du vecteur de la table 1
+    leLien->t1->vectLiens.remove(leLien->t1->vectLiens.indexOf(leLien),1);
+    //effacement du lien du vecteur de la table 2
+    leLien->t2->vectLiens.remove(leLien->t2->vectLiens.indexOf(leLien),1);
+    //effacement du lien dans le vecteur central:
+    vectLiens.remove(vectLiens.indexOf(leLien),1);
 
 }
 
