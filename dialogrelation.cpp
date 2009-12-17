@@ -54,35 +54,34 @@ void dialogRelation::changeEvent(QEvent *e)
 
 void dialogRelation::tableSupprimer()
 {
-    //supprime une table dans la graphics view
-    table*t=(table*)(scene.selectedItems().first());
+    //supprime une table ou plusieurs tables dans la graphics view
+
     foreach (QGraphicsItem *item, scene.selectedItems())
     {
-         if (item->data(32) == "Table") {
-             //on enlève les liens de la scene
-             foreach (lien * theLien,((table*)item)->vectLiens)
-             {
-                 //on enleve le lien de la scene
-                 scene.removeItem(theLien);
-             }
-         //on enleve la table de la scene
-         scene.removeItem(item);
-         }
-
-     }
-
-    //suppression des liens concernant la table
-    for(int noLien=vectLiens.size()-1;noLien>=0;noLien--)
-    {
-        if(vectLiens[noLien]->t1==t ||vectLiens[noLien]->t2==t)
+        if (item->data(32) == "Table")
         {
-            vectLiens.remove(noLien,1);
+            table*t=(table*)item;
+            //suppression des liens concernant la table
+            for(int noLien=vectLiens.size()-1;noLien>=0;noLien--)
+            {
+                if(vectLiens[noLien]->t1==t ||vectLiens[noLien]->t2==t)
+                {
+                    delete vectLiens[noLien];
+                    vectLiens.remove(noLien,1);
 
+                }
+            }
+            //puis
+            //supprime une des tables ajoutée
+            int noDeLaTableASupprimer=vectTables.indexOf(t);
+            delete vectTables[noDeLaTableASupprimer];
+            vectTables.remove(noDeLaTableASupprimer,1);
         }
-    }
-    //puis
-    //supprime une des tables ajoutée
-    vectTables.remove(vectTables.indexOf(t));
+
+    }//fin du foreach
+    //mise à jour de la requête
+    miseAJourResultat();
+
 }
 
 void dialogRelation::jointure(QString t1,QString t2)
@@ -168,10 +167,12 @@ void dialogRelation::tableAjouterChamp(table * laTable)
     //but:Ajouter un champ libre à la table
      //   exemple select 'bonjour' from client
     //attention aux titres qui se font passer pour des tables
-    //table* laTable=(table*)sender();
+
     qDebug()<<"void dialogRelation::tableAjouterChamp()";
-    QString nomDuChamp="'Some Text'";
-    field* nouveauChamp=new field(this,false,&scene,nomDuChamp,laTable);
+    QString nomDuChamp="\"Some Text\"";
+    field* nouveauChamp=new field(this,true,&scene,nomDuChamp,laTable);
+    //ajout du nouveau champ au vecteur des champs
+    laTable->vecteurChamps.append(nouveauChamp);
     //augmenter la hauteur de la table
     int hauteurChamp=QFontMetrics(nouveauChamp->font()).height();
     QRect ancien=laTable->boundingRect().toRect();
@@ -182,9 +183,12 @@ void dialogRelation::tableAjouterChamp(table * laTable)
     nouveauChamp->setData(33,laTable->nomTable+"."+nomDuChamp);
     //il est éditable
     nouveauChamp->setTextInteractionFlags(Qt::TextEditable);
+    //lorsque le texte du champ libre est modifié, mettre à jour la requête
+    connect(nouveauChamp->document(),SIGNAL(contentsChanged()),this, SLOT(miseAJourResultat()));
     //redim de la hauteur de la table
     ancien.setHeight(ancien.height()+hauteurChamp);
     laTable->setRect(ancien);
+
     //THE end
 }
 void dialogRelation::miseAJourResultat()
@@ -291,9 +295,26 @@ void dialogRelation::miseAJourResultat()
     {
         foreach (field * unChamp, uneTable->vecteurChamps)
         {
-            if(unChamp->affiche) listeDesChosesAAfficher.append(uneTable->nomTable+"."+unChamp->document()->toPlainText());
-            if(unChamp->getTri()!="") listeDesChampsParticipantsAuTri.append(uneTable->nomTable+"."+unChamp->document()->toPlainText()+" "+unChamp->getTri());
-            if(unChamp->cond!=NULL) listeDuWhere.append(unChamp->document()->toPlainText()+unChamp->cond->document()->toPlainText());
+            //trabajo
+            QString nomCompletDuChamp;
+            //dans le cas ou des modifs ont été tapées dans le champ il faut mettre le préfixe à l(intérieur ou pas du tout si c'est un champ libre
+            if(unChamp->freeField)
+            {
+                nomCompletDuChamp=unChamp->document()->toPlainText();
+            }
+            else //champ natif de la table
+            {
+                //s'il n'a pas été trafiqué
+                if(unChamp->nomInitial==unChamp->document()->toPlainText())
+                {
+                    //on le prefixe par le nom de la table ou son alias
+                    nomCompletDuChamp=uneTable->nomTable+"."+unChamp->nomInitial;
+                }
+                else nomCompletDuChamp=unChamp->document()->toPlainText();
+            }
+            if(unChamp->affiche) listeDesChosesAAfficher.append(nomCompletDuChamp);
+            if(unChamp->getTri()!="") listeDesChampsParticipantsAuTri.append(nomCompletDuChamp+" "+unChamp->getTri());
+            if(unChamp->cond!=NULL) listeDuWhere.append(nomCompletDuChamp+" "+unChamp->cond->document()->toPlainText());
         }
     }
     select +=listeDesChosesAAfficher.join(",");
@@ -328,12 +349,16 @@ void dialogRelation::miseAJourResultat()
 }
 
 void dialogRelation::changeJoinType(lien * leLien)
-{
+{   //appelé par le menu contextuel changer le type du lien
     DialogTypeJointure dd;
     if(dd.exec())
     {
-        leLien->typeDeJointure=dd.m_ui->comboBoxType->currentText();
-        leLien->updateType();
+        if(leLien->typeDeJointure!=dd.m_ui->comboBoxType->currentText())//si le nouveau type est différent de l'ancien
+        {
+            leLien->typeDeJointure=dd.m_ui->comboBoxType->currentText();
+            leLien->updateType();
+            miseAJourResultat();
+        }
     }
 }
 void dialogRelation::supprimerLien(lien * leLien)
@@ -345,7 +370,9 @@ void dialogRelation::supprimerLien(lien * leLien)
     leLien->t2->vectLiens.remove(leLien->t2->vectLiens.indexOf(leLien),1);
     //effacement du lien dans le vecteur central:
     vectLiens.remove(vectLiens.indexOf(leLien),1);
-
+    delete leLien;
+    //rafraichissement de la requête
+    miseAJourResultat();
 }
 
 void dialogRelation::on_lineEditQuery_textChanged(QString leSql )
@@ -359,7 +386,7 @@ void dialogRelation::on_lineEditQuery_textChanged(QString leSql )
        //si aperçu auto alors affichage du résultat de la requête
 
        //affichage des titres
-       req.first();
+       //req.first();
        QSqlRecord leRecord=req.record();
        m_ui->tableWidgetPreview->setColumnCount(leRecord.count());
        QStringList listeDesNomsDeChamp;
@@ -371,7 +398,7 @@ void dialogRelation::on_lineEditQuery_textChanged(QString leSql )
        int noLigne=0;
        m_ui->tableWidgetPreview->setRowCount(0);
 
-       do
+       while(req.next())
        {
 
            m_ui->tableWidgetPreview->setRowCount(m_ui->tableWidgetPreview->rowCount()+1);
@@ -381,11 +408,13 @@ void dialogRelation::on_lineEditQuery_textChanged(QString leSql )
            }
            noLigne++;
        }
-       while(req.next());
+
 
     }
     else
     {
         m_ui->tableWidgetPreview->setStyleSheet("background-color:red");
+        m_ui->tableWidgetPreview->clear();
+        //todo: affichage du message d'erreur quelque part
     }
 }

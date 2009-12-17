@@ -7,6 +7,7 @@
 #include <QMenu>
 #include <QDebug>
 #include "field.h"
+#include <QInputDialog>
 
 
 table::table(dialogRelation* mum,QString nom,qreal x,qreal y, QGraphicsItem* parent, QGraphicsScene * laScene,QStringList listeDesChamps)
@@ -70,9 +71,42 @@ table::table(dialogRelation* mum,QString nom,qreal x,qreal y, QGraphicsItem* par
      QAction *removeAction = menu.addAction(QObject::tr("&Remove"));
      QObject::connect(removeAction, SIGNAL(triggered()),maman, SLOT(tableSupprimer()));
      QAction *addFreeFieldAction = menu.addAction(QObject::tr("&Add free Field"));
+     QAction *removeOrAddAliasAction;
+     if(this->alias!="")
+     removeOrAddAliasAction=menu.addAction(QObject::tr("&Remove alias"));
+     else
+     removeOrAddAliasAction=menu.addAction(QObject::tr("&Add alias"));
      //exécution du menu
      QAction * actionChoisie=menu.exec(event->screenPos());
-     if(actionChoisie==addFreeFieldAction) maman->tableAjouterChamp(this);
+     if(actionChoisie==addFreeFieldAction)
+     {
+         maman->tableAjouterChamp(this);
+     }
+     else
+     {
+         if(actionChoisie==removeOrAddAliasAction)
+         {
+             if(alias!="")
+             {
+                 alias="";
+                 this->title->setHtml(nomTable);
+                 maman->miseAJourResultat();
+             }
+             else
+             {
+                 bool ok;
+                 QString candidat=QInputDialog::getText(maman, QObject::tr("Give alias name"),
+                                          QObject::tr("Alias:"), QLineEdit::Normal,
+                                          this->nomTable+"1", &ok);
+                 if(ok)
+                 {
+                     alias=candidat;
+                     this->title->setHtml(nomTable+" as "+alias);
+                     maman->miseAJourResultat();
+                 }
+             }
+         }
+     }
 
  }
 

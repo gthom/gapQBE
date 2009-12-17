@@ -4,11 +4,13 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsLineItem>
 #include <QDebug>
+#include <QTextDocument>
 
 field::field(dialogRelation* mum ,bool isFree,QGraphicsScene* pScene,QString pName,QGraphicsItem* pParent)
     :QGraphicsTextItem(pName,pParent,pScene)
 {
     maman=mum;
+    nomInitial=pName;
     //affichage de l'oeil fermé: le champ n'est pas affiché
     affiche=false;
     oeil=new QGraphicsPixmapItem(QPixmap(":/mini-eye.xpm"),this,pScene);
@@ -16,10 +18,12 @@ field::field(dialogRelation* mum ,bool isFree,QGraphicsScene* pScene,QString pNa
     oeil->setVisible(affiche);//false puisque non affiché
     freeField=isFree;
     //affichage du tri
+    tri=noSort;//pas de tri sur le champ
     iconSort=new QGraphicsPixmapItem(QPixmap(),this,pScene);
     iconSort->setPos(-8,5);
     //pas de condition sur le champ pour l'instant genre ='Dupond' ou <123
     cond=NULL;
+    connect(document(),SIGNAL(contentsChanged()),this,SIGNAL(jAiChange()));
     connect(this, SIGNAL(jAiChange()),maman , SLOT(miseAJourResultat()));
 
 }
@@ -103,7 +107,8 @@ void field::contextMenuEvent(QGraphicsSceneMouseEvent *event)
                     //et le trait et l'opérateur
                     //is null is not null
                     //= < > <>
-                    cond=new QGraphicsTextItem(tr("='something'"),this,scene());
+                    cond=new QGraphicsTextItem(tr("=\"something\""),this,scene());
+                    QObject::connect(cond->document(),SIGNAL(contentsChanged()),maman, SLOT(miseAJourResultat()));
                     cond->setPos(100+this->boundingRect().width(),0);//QFontMetrics(cond->font()).height()/2);
                     cond->setTextInteractionFlags(Qt::TextEditable);
                     //et le trait

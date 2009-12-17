@@ -23,8 +23,9 @@ public:
     bool affiche;
     QGraphicsPixmapItem * oeil;
     QGraphicsPixmapItem * iconSort;
-    QGraphicsTextItem * cond;
-    QGraphicsLineItem * trait;
+    QGraphicsTextItem * cond;//condition: exemple ='Dupond'
+    QGraphicsLineItem * trait;//trait entre le champ et la condition
+    QString nomInitial;
     void contextMenuEvent(QGraphicsSceneMouseEvent *event);
     bool freeField;
     enum typeDeTri{noSort,ascSort,descSort} tri;

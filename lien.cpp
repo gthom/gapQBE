@@ -4,6 +4,12 @@
 #include <QMenu>
 #include <QTextDocument>
 
+lien::~lien()
+{
+    qDebug()<<"ddestructeur du lien";
+    if(condition!=NULL)
+        delete condition;
+}
 
 lien::lien(table* pt1,table* pt2,QGraphicsItem * parent,QGraphicsScene* laScene,QString typ):QGraphicsLineItem(pt1->pos().x()+pt1->boundingRect().width()/2,pt1->pos().y(),pt2->pos().x()+pt2->boundingRect().width()/2,pt2->pos().y(),parent,laScene)
 {
@@ -64,19 +70,19 @@ void lien::contextMenuEvent(QGraphicsSceneMouseEvent *event)
      this->setSelected(true);
      //création des actions du menu
      QAction *removeAction = menu.addAction(QObject::tr("&Remove"));
-     //QObject::connect(removeAction, SIGNAL(triggered()),maman, SLOT(lienSupprimer()));
      QAction *changeJoinType = menu.addAction(QObject::tr("&Change join type"));
-     //exécution du menu
+     //exécution du menu et récupération de l'action choisie
      QAction * actionChoisie=menu.exec(event->screenPos());
+
      if(actionChoisie==changeJoinType) t1->maman->changeJoinType(this);
      else
       {
          //autre choix du menu
          if(actionChoisie==removeAction) t1->maman->supprimerLien(this);
-      }
+      }  
 }
 void lien::updateType()
-{
+{//mise à jour du type de jointure
     if(typeDeJointure!="Natural")
     {
         if(condition==NULL)
