@@ -226,30 +226,43 @@ void dialogRelation::miseAJourResultat()
     //et entre chaque groupe le séparateur est la virgule
     QString from=" FROM ";
     //formation de la liste des tables ajoutées
-    QStringList listeDesNomdesTablesRestantAMettreDansLeFrom;
+
+    QList <table*> listeDesTablesRestantAMettreDansLeFrom;
+    //au départ on y met ttes les tables
     foreach(table* laTable, vectTables)
     {
-        listeDesNomdesTablesRestantAMettreDansLeFrom.append(laTable->nomTable);
+        listeDesTablesRestantAMettreDansLeFrom.append(laTable);
     }
+    bool desGroupesOnEteTrouves=false;
     foreach(QList<lien*> *groupeDeLiens,listeDesGroupesDeLiens)//pour chaque groupe de lien
     {
         QString chaineDuGroupe;
+        QList<table*>tablesDuGroupe;
         foreach(lien* leLien,*groupeDeLiens)
         {
             QString typeDeJointure=leLien->typeDeJointure;
             QString condition;
             if(leLien->condition!=NULL) //si la jointure est autre que naturelle
             condition=leLien->condition->document()->toPlainText();
-
+            //recup des deux tables du lien
             table * t1=leLien->t1;
             table * t2=leLien->t2;
-            listeDesNomdesTablesRestantAMettreDansLeFrom.removeAt(listeDesNomdesTablesRestantAMettreDansLeFrom.indexOf(t1->nomTable));
-            listeDesNomdesTablesRestantAMettreDansLeFrom.removeAt(listeDesNomdesTablesRestantAMettreDansLeFrom.indexOf(t2->nomTable));
-            if(!chaineDuGroupe.contains(t1->nomTable))//pas une bonne idée à recoder
+            //on les enlève de la liste des Tables Restant A Mettre Dans Le From
+            listeDesTablesRestantAMettreDansLeFrom.removeAt(listeDesTablesRestantAMettreDansLeFrom.indexOf(t1));
+            listeDesTablesRestantAMettreDansLeFrom.removeAt(listeDesTablesRestantAMettreDansLeFrom.indexOf(t2));
+            QString nomTableT1AvecAlias=t1->nomTable;
+            if(t1->alias!="")nomTableT1AvecAlias+=" "+t1->alias;
+            QString nomTableT2AvecAlias=t2->nomTable;
+            if(t2->alias!="")nomTableT2AvecAlias+=" "+t2->alias;
+            if(tablesDuGroupe.indexOf(t1)==-1)//si t1 n'a pas encore été ajoutée
             {
-                if(!chaineDuGroupe.contains(t2->nomTable)) //ne contient ni t1 ni t2
+                if(tablesDuGroupe.indexOf(t2)==-1) //ne contient ni t1 ni t2
                 {
-                    chaineDuGroupe+=t1->nomTable+" "+typeDeJointure+" JOIN "+t2->nomTable;
+                    //ajout de t1 et t2 aux tables concernées par le groupe
+                    tablesDuGroupe.append(t1);
+                    tablesDuGroupe.append(t2);
+
+                    chaineDuGroupe+=nomTableT1AvecAlias+" "+typeDeJointure+" JOIN "+nomTableT2AvecAlias;
                     if(typeDeJointure!="Natural")
                     {
                         chaineDuGroupe+=" on "+condition;
@@ -257,28 +270,42 @@ void dialogRelation::miseAJourResultat()
                 }
                 else //ne contient pas t1 mais contient t2
                 {
-                    chaineDuGroupe+=" "+typeDeJointure+" JOIN "+t1->nomTable;
+                    chaineDuGroupe+=" "+typeDeJointure+" JOIN "+nomTableT1AvecAlias;
                     if(typeDeJointure!="Natural")
                     {
                         chaineDuGroupe+=" on "+condition;
                     }
+                    tablesDuGroupe.append(t1);
                 }
             }
             else //contient t1
             {
-                chaineDuGroupe+=" "+typeDeJointure+" JOIN "+t2->nomTable;
+                chaineDuGroupe+=" "+typeDeJointure+" JOIN "+nomTableT2AvecAlias;
                     if(typeDeJointure!="Natural")
                     {
                         chaineDuGroupe+=" on "+condition;
                     }
+                    tablesDuGroupe.append(t2);
             }
         }//fin du pour chaque groupe de lien
-        from+=chaineDuGroupe; //ajout de la chaineDuGroupe au from
+        if(!chaineDuGroupe.isEmpty())
+        {
+            from+=chaineDuGroupe; //ajout de la chaineDuGroupe au from
+            desGroupesOnEteTrouves=true;
+        }
     }
-    if(!listeDesNomdesTablesRestantAMettreDansLeFrom.empty())
+    if(!listeDesTablesRestantAMettreDansLeFrom.empty())
     {
-        if(from != " FROM ") //pas tiptop à reprendre
+        QStringList listeDesNomdesTablesRestantAMettreDansLeFrom;
+        if(desGroupesOnEteTrouves) //il faut rajouter une , au from
             from+= ",";
+        //formation de la liste des noms de table à rajouter au from
+        foreach (table* t, listeDesTablesRestantAMettreDansLeFrom)
+        {
+            QString nomComplet=t->nomTable;
+            if(t->alias!="") nomComplet+=" "+t->alias;
+            listeDesNomdesTablesRestantAMettreDansLeFrom.append(nomComplet);
+        }
         from+= listeDesNomdesTablesRestantAMettreDansLeFrom.join(",");
 }
 
@@ -295,7 +322,7 @@ void dialogRelation::miseAJourResultat()
     {
         foreach (field * unChamp, uneTable->vecteurChamps)
         {
-            //trabajo
+
             QString nomCompletDuChamp;
             //dans le cas ou des modifs ont été tapées dans le champ il faut mettre le préfixe à l(intérieur ou pas du tout si c'est un champ libre
             if(unChamp->freeField)
@@ -308,7 +335,9 @@ void dialogRelation::miseAJourResultat()
                 if(unChamp->nomInitial==unChamp->document()->toPlainText())
                 {
                     //on le prefixe par le nom de la table ou son alias
-                    nomCompletDuChamp=uneTable->nomTable+"."+unChamp->nomInitial;
+                    QString alias=uneTable->alias;
+                    if(alias.isEmpty()) alias=uneTable->nomTable;
+                    nomCompletDuChamp=alias+"."+unChamp->nomInitial;
                 }
                 else nomCompletDuChamp=unChamp->document()->toPlainText();
             }

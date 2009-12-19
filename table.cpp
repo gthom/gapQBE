@@ -16,6 +16,7 @@ table::table(dialogRelation* mum,QString nom,qreal x,qreal y, QGraphicsItem* par
 {
 
     nomTable=nom;
+    alias="";
     //le titre
     title=new QGraphicsTextItem(this);
     //déterminons la largeur de la table:
