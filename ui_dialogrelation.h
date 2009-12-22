@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'dialogrelation.ui'
 **
-** Created: Mon Dec 21 15:22:41 2009
+** Created: Tue Dec 22 17:18:04 2009
 **      by: Qt User Interface Compiler version 4.5.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -15,12 +15,12 @@
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
 #include <QtGui/QDialog>
-#include <QtGui/QDialogButtonBox>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QListWidget>
+#include <QtGui/QPushButton>
 #include <QtGui/QSpacerItem>
 #include <QtGui/QSplitter>
 #include <QtGui/QTableWidget>
@@ -51,6 +51,7 @@ public:
     QToolButton *toolButtonApercuAuto;
     QToolButton *toolButtonExecuteRequete;
     QToolButton *toolButtonAddTables;
+    QToolButton *toolButtonFitInView;
     QSpacerItem *verticalSpacer_2;
     customGraphicsView *graphicsView;
     QWidget *layoutWidget1;
@@ -61,7 +62,7 @@ public:
     QTableWidget *tableWidgetPreview;
     QHBoxLayout *horizontalLayout_2;
     QSpacerItem *horizontalSpacer;
-    QDialogButtonBox *buttonBox;
+    QPushButton *pushButtonQuitter;
 
     void setupUi(QDialog *dialogRelation)
     {
@@ -92,6 +93,7 @@ public:
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(listWidgetTables->sizePolicy().hasHeightForWidth());
         listWidgetTables->setSizePolicy(sizePolicy);
+        listWidgetTables->setDragEnabled(true);
         listWidgetTables->setAlternatingRowColors(true);
         listWidgetTables->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
@@ -153,6 +155,11 @@ public:
 
         verticalLayout_2->addWidget(toolButtonAddTables);
 
+        toolButtonFitInView = new QToolButton(layoutWidget);
+        toolButtonFitInView->setObjectName(QString::fromUtf8("toolButtonFitInView"));
+
+        verticalLayout_2->addWidget(toolButtonFitInView);
+
         verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout_2->addItem(verticalSpacer_2);
@@ -207,20 +214,16 @@ public:
 
         horizontalLayout_2->addItem(horizontalSpacer);
 
-        buttonBox = new QDialogButtonBox(dialogRelation);
-        buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
-        buttonBox->setOrientation(Qt::Horizontal);
-        buttonBox->setStandardButtons(QDialogButtonBox::Help|QDialogButtonBox::Ok|QDialogButtonBox::Reset);
+        pushButtonQuitter = new QPushButton(dialogRelation);
+        pushButtonQuitter->setObjectName(QString::fromUtf8("pushButtonQuitter"));
 
-        horizontalLayout_2->addWidget(buttonBox);
+        horizontalLayout_2->addWidget(pushButtonQuitter);
 
 
         verticalLayout_4->addLayout(horizontalLayout_2);
 
 
         retranslateUi(dialogRelation);
-        QObject::connect(buttonBox, SIGNAL(accepted()), dialogRelation, SLOT(accept()));
-        QObject::connect(buttonBox, SIGNAL(rejected()), dialogRelation, SLOT(reject()));
 
         QMetaObject::connectSlotsByName(dialogRelation);
     } // setupUi
@@ -263,6 +266,7 @@ public:
         toolButtonAddTables->setToolTip(QApplication::translate("dialogRelation", "add tables to query", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         toolButtonAddTables->setText(QString());
+        toolButtonFitInView->setText(QApplication::translate("dialogRelation", "...", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("dialogRelation", "Result:", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         lineEditQuery->setToolTip(QApplication::translate("dialogRelation", "the sql query", 0, QApplication::UnicodeUTF8));
@@ -270,6 +274,7 @@ public:
 #ifndef QT_NO_TOOLTIP
         tableWidgetPreview->setToolTip(QApplication::translate("dialogRelation", "The query's rows ", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
+        pushButtonQuitter->setText(QApplication::translate("dialogRelation", "&Quit", 0, QApplication::UnicodeUTF8));
         Q_UNUSED(dialogRelation);
     } // retranslateUi
 

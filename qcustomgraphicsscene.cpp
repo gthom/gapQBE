@@ -48,8 +48,8 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
                     //appel du menu contextuel de la zone de travail
 
                     QMenu menuContextuelDeRien;
-                    QAction* ajouteUnChampARien=menuContextuelDeRien.addAction(tr("Ajoute un &champ libre"));
-                    QAction* ajouteUnAgregat=menuContextuelDeRien.addAction(tr("Ajoute un a&grégat"));
+                    QAction* ajouteUnChampARien=menuContextuelDeRien.addAction(tr("Add a &free field"));
+                    QAction* ajouteUnAgregat=menuContextuelDeRien.addAction(tr("Add an aggregate"));
                     menuContextuelDeRien.exec(mouseEvent->screenPos());
 
                 }

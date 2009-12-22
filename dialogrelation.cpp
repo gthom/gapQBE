@@ -31,6 +31,7 @@ dialogRelation::dialogRelation(QWidget *parent,QSqlDatabase& pdb) :
 
 
     connect (m_ui->graphicsView,SIGNAL(jointureRequise(QString,QString)),this,SLOT(jointure(QString,QString)));
+    connect (m_ui->graphicsView,SIGNAL(ilYADesTablesAAjouter()),this,SLOT(on_toolButtonAddTables_clicked()));
     connect(m_ui->toolButtonExecuteRequete,SIGNAL(clicked()),this,SLOT(miseAJourResultat()));
 }
 
@@ -119,11 +120,7 @@ void dialogRelation::jointure(QString t1,QString t2)
     }
 }
 
-void dialogRelation::on_pushButtonAdd_clicked()
-{
 
-
-}
 void dialogRelation::on_toolButtonMove_clicked()
 {
     //Choix de l'outil move
@@ -513,4 +510,21 @@ void dialogRelation::on_toolButtonAddTables_clicked()
 void dialogRelation::on_listWidgetTables_itemSelectionChanged()
 {
     m_ui->toolButtonAddTables->setEnabled(!m_ui->listWidgetTables->selectedItems().empty());
+}
+
+void dialogRelation::on_pushButtonQuitter_clicked()
+{
+    close();
+}
+void dialogRelation::closeEvent(QCloseEvent * event)
+{
+    if(QMessageBox::warning(this,this->windowTitle(),tr("Do you really want to Quit"),QMessageBox::Yes|QMessageBox::No,QMessageBox::No)==QMessageBox::Yes)
+    {
+        event->accept();
+    }
+    else event->ignore();
+}
+void dialogRelation::on_toolButtonFitInView_clicked()
+{
+    m_ui->graphicsView->fitInView(m_ui->graphicsView->sceneRect());
 }

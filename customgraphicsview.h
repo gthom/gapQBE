@@ -19,6 +19,7 @@ public:
     void dropEvent(QDropEvent *event);
 signals:
     void jointureRequise(QString nomTable1,QString nomTable2);
+    void ilYADesTablesAAjouter();
     void supprimerTable(QString nomTable);
 };
 

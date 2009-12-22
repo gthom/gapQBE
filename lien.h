@@ -29,6 +29,11 @@ public:
     QString typeDeJointure;//inner, left outer, right outer, Natural
     void contextMenuEvent(QGraphicsSceneMouseEvent *event);//menu contextuel du lien
     bool estRelieA(lien* autreLien){return ((autreLien->t1==t1) or (autreLien->t1==t2) or (autreLien->t2==t1) or (autreLien->t2==t2));};//utilitaire
+     void paint(QPainter *painter, const QStyleOptionGraphicsItem *,
+           QWidget *);
+     QPolygonF arrowHead;
+     QRectF boundingRect() const;
+      QPainterPath shape() const;
 };
 
 #endif // LIEN_H

@@ -19,6 +19,7 @@ table::table(dialogRelation* mum,QString nom,qreal x,qreal y, QGraphicsItem* par
     alias="";
     //le titre
     title=new QGraphicsTextItem(this);
+    title->setFont(QFont("Verdana",10,QFont::Bold,false));
     //déterminons la largeur de la table:
     long largeurMaxi=QFontMetrics(title->font()).width(nomTable);
     for(int noChamp=0;noChamp<listeDesChamps.count();noChamp++)
@@ -29,12 +30,11 @@ table::table(dialogRelation* mum,QString nom,qreal x,qreal y, QGraphicsItem* par
     //construction du QGraphicsRectItem
     setRect(x,y,largeurMaxi+10,200);
     //création du titre
-    setBrush(Qt::red);
+    setBrush(QColor("#FFFF00"));//jaune
     title->setPos(0,0);//par rapport à son parent
     title->setTextWidth(boundingRect().width());
     title->setHtml("<center>"+nomTable+"</center>");
-    //le titre est éditable pour mettre un alias
-    title->setTextInteractionFlags( Qt::TextEditable);
+
     //stockage de quelques infos
     //c'est une table
     title->setData(32,"Table");
@@ -51,7 +51,8 @@ table::table(dialogRelation* mum,QString nom,qreal x,qreal y, QGraphicsItem* par
     {
         vecteurChamps.push_back(new field(maman,false,laScene,listeDesChamps[noChamp],this));
         vecteurChamps[noChamp]->setPos(10,ordonne);
-          vecteurChamps[noChamp]->setTextInteractionFlags(Qt::TextEditable);
+        //les champs d'origine ne peuvent être modifiés
+          //vecteurChamps[noChamp]->setTextInteractionFlags(Qt::TextEditable);
         vecteurChamps[noChamp]->setData(32,"Field");
         vecteurChamps[noChamp]->setData(33,nom+"."+listeDesChamps[noChamp]);
         ordonne+=vecteurChamps[noChamp]->boundingRect().height();
@@ -122,6 +123,8 @@ QVariant table::itemChange(GraphicsItemChange change,const QVariant &value)
 
      return value;
 }
+
+
 
 
 

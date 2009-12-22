@@ -21,7 +21,7 @@ public:
     virtual ~dialogRelation();
     QSqlDatabase  db;//la database de travail
     long prochainX;//abscisse de la prochaine table insérée
-
+    Ui::dialogRelation * m_uip(){return m_ui;};
 protected:
     virtual void changeEvent(QEvent *e);
 
@@ -32,13 +32,14 @@ private:
     QCustomGraphicsScene scene;
 private slots:
 
+    void on_pushButtonQuitter_clicked();
     void on_listWidgetTables_itemSelectionChanged();
     void on_toolButtonAddTables_clicked();
     void on_toolButtonApercuAuto_clicked();
     void on_lineEditQuery_textChanged(QString );
     void on_toolButtonJoin_clicked();//sélection de l'outil relier
     void on_toolButtonMove_clicked();//sélection de l'outil déplacer
-    void on_pushButtonAdd_clicked();//ajout des tables sélectionnées à la requête
+
 public slots:
 
     void tableSupprimer();//suppression d'une table dans la scene
@@ -47,6 +48,8 @@ public slots:
     void miseAJourResultat();//ce slot actualise la requête et le résultat de la requête
     void changeJoinType(lien *);
     void supprimerLien(lien * leLien);
+    void closeEvent(QCloseEvent * event);
+    void on_toolButtonFitInView_clicked();//fi in view
 };
 
 #endif // DIALOGRELATION_H
