@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'dialoglogin.ui'
 **
-** Created: Thu Dec 17 09:22:41 2009
+** Created: Mon Dec 21 15:14:34 2009
 **      by: Qt User Interface Compiler version 4.5.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!

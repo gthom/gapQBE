@@ -19,7 +19,7 @@
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QHBoxLayout" name="horizontalLayout_5">
        <item>
         <layout class="QVBoxLayout" name="verticalLayout">
@@ -33,6 +33,9 @@
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>Table's list</string>
            </property>
            <property name="statusTip">
             <string>choose tables you need</string>
@@ -49,37 +52,7 @@
           </widget>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_3">
-           <item>
-            <spacer name="horizontalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Fixed</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButtonAdd">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>&amp;I need it</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
+          <layout class="QHBoxLayout" name="horizontalLayout_3"/>
          </item>
          <item>
           <spacer name="verticalSpacer">
@@ -103,7 +76,7 @@
            <item>
             <widget class="QToolButton" name="toolButtonJoin">
              <property name="toolTip">
-              <string>tool to join tables</string>
+              <string>oin tables</string>
              </property>
              <property name="text">
               <string>...</string>
@@ -117,7 +90,7 @@
            <item>
             <widget class="QToolButton" name="toolButtonMove">
              <property name="toolTip">
-              <string>tool to move tables</string>
+              <string>move tables</string>
              </property>
              <property name="text">
               <string>...</string>
@@ -129,12 +102,49 @@
             </widget>
            </item>
            <item>
-            <widget class="QToolButton" name="toolButtonExecuteRequete">
+            <widget class="QToolButton" name="toolButtonApercuAuto">
              <property name="toolTip">
-              <string>tool to execute the query</string>
+              <string>automatic update of result</string>
              </property>
              <property name="text">
-              <string>...</string>
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="gapQBE.qrc">
+               <normaloff>:/previewOn</normaloff>:/previewOn</iconset>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="toolButtonExecuteRequete">
+             <property name="toolTip">
+              <string>execute the query</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="gapQBE.qrc">
+               <normaloff>:/make</normaloff>:/make</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="toolButtonAddTables">
+             <property name="toolTip">
+              <string>add tables to query</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="arrowType">
+              <enum>Qt::RightArrow</enum>
              </property>
             </widget>
            </item>
@@ -170,7 +180,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout">
@@ -182,12 +192,20 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEditQuery"/>
+          <widget class="QLineEdit" name="lineEditQuery">
+           <property name="toolTip">
+            <string>the sql query</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
        <item>
-        <widget class="QTableWidget" name="tableWidgetPreview"/>
+        <widget class="QTableWidget" name="tableWidgetPreview">
+         <property name="toolTip">
+          <string>The query's rows </string>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>

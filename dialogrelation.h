@@ -32,6 +32,9 @@ private:
     QCustomGraphicsScene scene;
 private slots:
 
+    void on_listWidgetTables_itemSelectionChanged();
+    void on_toolButtonAddTables_clicked();
+    void on_toolButtonApercuAuto_clicked();
     void on_lineEditQuery_textChanged(QString );
     void on_toolButtonJoin_clicked();//sélection de l'outil relier
     void on_toolButtonMove_clicked();//sélection de l'outil déplacer

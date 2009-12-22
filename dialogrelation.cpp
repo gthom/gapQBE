@@ -11,12 +11,12 @@
 #include "ui_dialogtypejointure.h"
 #include <QTextDocument>
 #include <QSqlResult>
-
+#include    <QMessageBox>
 
 dialogRelation::dialogRelation(QWidget *parent,QSqlDatabase& pdb) :
-    scene(this),
-    QDialog(parent),
-    m_ui(new Ui::dialogRelation)
+        scene(this),
+        QDialog(parent),
+        m_ui(new Ui::dialogRelation)
 {
     m_ui->setupUi(this);
     //abscisse de la prochaine table
@@ -121,51 +121,25 @@ void dialogRelation::jointure(QString t1,QString t2)
 
 void dialogRelation::on_pushButtonAdd_clicked()
 {
-     //ajout de la table sélectionnée à la customGraphicsView
-    if(!m_ui->listWidgetTables->selectedItems().empty())
-    {
 
-        foreach(QListWidgetItem * qlwi,m_ui->listWidgetTables->selectedItems())
-        {
-            QString nomTable=qlwi->text();
-            QSqlQuery req("select * from "+nomTable,db);
-            QSqlRecord enr=req.record();
-            QStringList listeDesChamps;
-
-            for(int noChamp=0;noChamp<enr.count();noChamp++)
-            {
-                listeDesChamps<<enr.fieldName(noChamp);
-            }
-            table* tableAjoutee=new table(this,nomTable,0,0,0,&scene,listeDesChamps);
-            tableAjoutee->setPos(prochainX,30);
-
-            vectTables.push_back(tableAjoutee);
-            prochainX+=tableAjoutee->boundingRect().width()+10;
-            tableAjoutee->setFlag(QGraphicsItem::ItemIsSelectable);
-            tableAjoutee->setFlag(QGraphicsItem::ItemIsMovable);
-        }
-        m_ui->listWidgetTables->clearSelection();
-
-
-    }
 
 }
 void dialogRelation::on_toolButtonMove_clicked()
 {
-        //Choix de l'outil move
-        scene.outil="move";
-        m_ui->graphicsView->setCursor(QCursor(Qt::ArrowCursor));
+    //Choix de l'outil move
+    scene.outil="move";
+    m_ui->graphicsView->setCursor(QCursor(Qt::ArrowCursor));
 }
 void dialogRelation::on_toolButtonJoin_clicked()
 {
     //choix de l'outil drag
-      scene.outil="drag";
-      m_ui->graphicsView->setCursor(QCursor(Qt::PointingHandCursor));
+    scene.outil="drag";
+    m_ui->graphicsView->setCursor(QCursor(Qt::PointingHandCursor));
 }
 void dialogRelation::tableAjouterChamp(table * laTable)
 {
     //but:Ajouter un champ libre à la table
-     //   exemple select 'bonjour' from client
+    //   exemple select 'bonjour' from client
     //attention aux titres qui se font passer pour des tables
 
     qDebug()<<"void dialogRelation::tableAjouterChamp()";
@@ -243,7 +217,7 @@ void dialogRelation::miseAJourResultat()
             QString typeDeJointure=leLien->typeDeJointure;
             QString condition;
             if(leLien->condition!=NULL) //si la jointure est autre que naturelle
-            condition=leLien->condition->document()->toPlainText();
+                condition=leLien->condition->document()->toPlainText();
             //recup des deux tables du lien
             table * t1=leLien->t1;
             table * t2=leLien->t2;
@@ -281,11 +255,11 @@ void dialogRelation::miseAJourResultat()
             else //contient t1
             {
                 chaineDuGroupe+=" "+typeDeJointure+" JOIN "+nomTableT2AvecAlias;
-                    if(typeDeJointure!="Natural")
-                    {
-                        chaineDuGroupe+=" on "+condition;
-                    }
-                    tablesDuGroupe.append(t2);
+                if(typeDeJointure!="Natural")
+                {
+                    chaineDuGroupe+=" on "+condition;
+                }
+                tablesDuGroupe.append(t2);
             }
         }//fin du pour chaque groupe de lien
         if(!chaineDuGroupe.isEmpty())
@@ -307,7 +281,7 @@ void dialogRelation::miseAJourResultat()
             listeDesNomdesTablesRestantAMettreDansLeFrom.append(nomComplet);
         }
         from+= listeDesNomdesTablesRestantAMettreDansLeFrom.join(",");
-}
+    }
 
     qDebug()<<from;
     //recherche des champs à afficher et formation simultannée du where ainsi que du order by:
@@ -354,7 +328,7 @@ void dialogRelation::miseAJourResultat()
     //construire le having
     QString requete="";
     if(!listeDesChosesAAfficher.empty())
-{
+    {
         requete=select;
         if(!(from==" FROM"))
         {
@@ -406,44 +380,137 @@ void dialogRelation::supprimerLien(lien * leLien)
 
 void dialogRelation::on_lineEditQuery_textChanged(QString leSql )
 {
-    QSqlQuery req;
-
-    if (req.exec(leSql))
+    qDebug()<<"void dialogRelation::on_lineEditQuery_textChanged(QString leSql )";
+    if(m_ui->toolButtonApercuAuto->isChecked())
     {
-       m_ui->tableWidgetPreview->setStyleSheet("background-color:green");
-       m_ui->tableWidgetPreview->clear();
-       //si aperçu auto alors affichage du résultat de la requête
+        QSqlQuery req;
+        //attention aux big queries
+        //essais d'obtention du nombre de lignes concernées:
+        QStringList qsl=leSql.split("FROM");
+        bool affichageDemande=true;
+        if(qsl.count()==2)
+        {
+            qlonglong nbLignes;
 
-       //affichage des titres
-       //req.first();
-       QSqlRecord leRecord=req.record();
-       m_ui->tableWidgetPreview->setColumnCount(leRecord.count());
-       QStringList listeDesNomsDeChamp;
-       for(int noCol=0;noCol<leRecord.count();noCol++)
-       {
-           listeDesNomsDeChamp<<leRecord.fieldName(noCol);
-       }
-       m_ui->tableWidgetPreview->setHorizontalHeaderLabels(listeDesNomsDeChamp);
-       int noLigne=0;
-       m_ui->tableWidgetPreview->setRowCount(0);
+            QString qStringNombreDeLigne="select count(*) from "+qsl.at(1);
+            qDebug()<<qStringNombreDeLigne;
+            if(req.exec(qStringNombreDeLigne))
+            {
+                req.first();
+                nbLignes=req.value(0).toLongLong();
+                qDebug()<<"Nombre de ligne:"<<nbLignes;
+                if(nbLignes>100)
+                {
+                    if(QMessageBox::warning(this,this->windowTitle(),"The row count is "+QString::number(nbLignes)+"\r\n are you really sure you want to display them?",QMessageBox::Yes|QMessageBox::No,QMessageBox::No)==QMessageBox::No)
+                    {
+                        affichageDemande=false;
+                    }
+                }
+            }
+            else
+            {
+                affichageDemande=false;
+                qDebug()<<"la requête permettant d'obtenir le nb de ligne a échoué";
+            }
+        }
 
-       while(req.next())
-       {
+        if(affichageDemande)
+        {
+            if (req.exec(leSql))
+            {
 
-           m_ui->tableWidgetPreview->setRowCount(m_ui->tableWidgetPreview->rowCount()+1);
-           for(int noChamp=0;noChamp<leRecord.count();noChamp++)
-           {
-               m_ui->tableWidgetPreview->setItem(noLigne,noChamp,new QTableWidgetItem(req.value(noChamp).toString()));
-           }
-           noLigne++;
-       }
+                m_ui->tableWidgetPreview->setStyleSheet("background-color:green");
+                m_ui->tableWidgetPreview->clear();
+                //si aperçu auto alors affichage du résultat de la requête
 
+                //affichage des titres
+                //req.first();
+                QSqlRecord leRecord=req.record();
+                m_ui->tableWidgetPreview->setColumnCount(leRecord.count());
+                QStringList listeDesNomsDeChamp;
+                for(int noCol=0;noCol<leRecord.count();noCol++)
+                {
+                    listeDesNomsDeChamp<<leRecord.fieldName(noCol);
+                }
+                m_ui->tableWidgetPreview->setHorizontalHeaderLabels(listeDesNomsDeChamp);
+                int noLigne=0;
+                m_ui->tableWidgetPreview->setRowCount(0);
 
+                while(!(!req.next()||noLigne==500))
+                {
+
+                    m_ui->tableWidgetPreview->setRowCount(m_ui->tableWidgetPreview->rowCount()+1);
+                    for(int noChamp=0;noChamp<leRecord.count();noChamp++)
+                    {
+                        m_ui->tableWidgetPreview->setItem(noLigne,noChamp,new QTableWidgetItem(req.value(noChamp).toString()));
+                    }
+                    noLigne++;
+                }
+                if(noLigne==500)
+                {
+                    QMessageBox::critical(this,this->windowTitle(),"The result is to big to be displayed there",QMessageBox::Ok);
+                }
+            }
+        }
+        else
+        {
+            m_ui->tableWidgetPreview->setStyleSheet("background-color:red");
+            m_ui->tableWidgetPreview->clear();
+            //todo: affichage du message d'erreur quelque part
+        }
+
+    }
+
+}
+
+void dialogRelation::on_toolButtonApercuAuto_clicked()
+{
+    qDebug()<<"void dialogRelation::on_toolButtonApercuAuto_clicked()";
+    //m_ui->toolButtonApercuAuto->setChecked(!m_ui->toolButtonApercuAuto->isChecked());
+    if(m_ui->toolButtonApercuAuto->isChecked())
+    {
+        //icon
+        m_ui->toolButtonApercuAuto->setIcon(QIcon(":/previewOn"));
+        emit on_lineEditQuery_textChanged(m_ui->lineEditQuery->text());
     }
     else
     {
-        m_ui->tableWidgetPreview->setStyleSheet("background-color:red");
-        m_ui->tableWidgetPreview->clear();
-        //todo: affichage du message d'erreur quelque part
+        m_ui->toolButtonApercuAuto->setIcon(QIcon(":/previewOff"));
     }
+}
+
+void dialogRelation::on_toolButtonAddTables_clicked()
+{
+    //ajout de la table sélectionnée à la customGraphicsView
+    if(!m_ui->listWidgetTables->selectedItems().empty())
+    {
+
+        foreach(QListWidgetItem * qlwi,m_ui->listWidgetTables->selectedItems())
+        {
+            QString nomTable=qlwi->text();
+            QSqlQuery req("select * from "+nomTable,db);
+            QSqlRecord enr=req.record();
+            QStringList listeDesChamps;
+
+            for(int noChamp=0;noChamp<enr.count();noChamp++)
+            {
+                listeDesChamps<<enr.fieldName(noChamp);
+            }
+            table* tableAjoutee=new table(this,nomTable,0,0,0,&scene,listeDesChamps);
+            tableAjoutee->setPos(prochainX,30);
+
+            vectTables.push_back(tableAjoutee);
+            prochainX+=tableAjoutee->boundingRect().width()+10;
+            tableAjoutee->setFlag(QGraphicsItem::ItemIsSelectable);
+            tableAjoutee->setFlag(QGraphicsItem::ItemIsMovable);
+        }
+        m_ui->listWidgetTables->clearSelection();
+
+
+    }
+}
+
+void dialogRelation::on_listWidgetTables_itemSelectionChanged()
+{
+    m_ui->toolButtonAddTables->setEnabled(!m_ui->listWidgetTables->selectedItems().empty());
 }

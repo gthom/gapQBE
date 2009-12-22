@@ -1,10 +1,13 @@
- <!DOCTYPE RCC><RCC version="1.0">
-    <qresource>
+<RCC>
+    <qresource prefix="/" >
         <file>cle.xpm</file>
         <file>arrow-move.png</file>
         <file>downSort.xpm</file>
         <file>upSort.xpm</file>
         <file>mini-eye.xpm</file>
         <file>tables-relation.png</file>
+        <file alias="previewOff" >previewOff.png</file>
+        <file alias="previewOn" >previewOn.png</file>
+        <file alias="make" >make.png</file>
     </qresource>
-    </RCC> 
+</RCC>
