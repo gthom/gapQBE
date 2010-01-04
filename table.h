@@ -40,6 +40,9 @@ public:
 
 private slots:
 
+
+private slots:
+    void on_checkBoxGroupBy_clicked();
 };
 
 #endif // TABLE_H

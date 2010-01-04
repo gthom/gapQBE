@@ -9,5 +9,6 @@
         <file alias="previewOff" >previewOff.png</file>
         <file alias="previewOn" >previewOn.png</file>
         <file alias="make" >make.png</file>
+        <file>zoom-fit-best.png</file>
     </qresource>
 </RCC>

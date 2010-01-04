@@ -38,10 +38,12 @@ table::table(dialogRelation* mum,QString nom,qreal x,qreal y, QGraphicsItem* par
     //stockage de quelques infos
     //c'est une table
     title->setData(32,"Table");
+    title->setData(34,qVariantFromValue((qlonglong)this));
     //on stocke son nom
     title->setData(33,nomTable);
     setData(32,"Table");
     setData(33,nomTable);
+    setData(34,qVariantFromValue((qlonglong)this));
     long ordonne=title->boundingRect().height();
     //ajout d'une ligne sous le titre
     laLigne=new QGraphicsLineItem(0,ordonne,boundingRect().width(),ordonne,this,laScene);
@@ -103,7 +105,19 @@ table::table(dialogRelation* mum,QString nom,qreal x,qreal y, QGraphicsItem* par
                  if(ok)
                  {
                      alias=candidat;
-                     this->title->setHtml(nomTable+" as "+alias);
+                     QString nomAvecAlias=nomTable+" as "+alias;
+                     //this->title->setHtml(nomAvecAlias);
+                     //obtention de la largeur
+                     long largeurNouveauTitre=QFontMetrics(title->font()).width(nomAvecAlias);
+                     //s'il ne tient pas on élargit la table
+                     if(boundingRect().width()-20<largeurNouveauTitre)
+                     {
+                         this->setRect(0,0,largeurNouveauTitre+50,boundingRect().height());
+                         this->title->setTextWidth(largeurNouveauTitre+50);
+                         //redimensionnement de la ligne
+                         this->laLigne->setLine(this->laLigne->x(),this->laLigne->y(),this->laLigne->x()+largeurNouveauTitre+50,this->laLigne->y());
+                     }
+                    this->title->setHtml("<center>"+nomAvecAlias+"</center>");
                      maman->miseAJourResultat();
                  }
              }
@@ -123,6 +137,8 @@ QVariant table::itemChange(GraphicsItemChange change,const QVariant &value)
 
      return value;
 }
+
+
 
 
 

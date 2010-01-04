@@ -30,9 +30,11 @@ dialogRelation::dialogRelation(QWidget *parent,QSqlDatabase& pdb) :
     m_ui->graphicsView->setScene(&scene);
 
 
-    connect (m_ui->graphicsView,SIGNAL(jointureRequise(QString,QString)),this,SLOT(jointure(QString,QString)));
+    connect (m_ui->graphicsView,SIGNAL(jointureRequise(table *,table *)),this,SLOT(jointure(table*,table*)));
     connect (m_ui->graphicsView,SIGNAL(ilYADesTablesAAjouter()),this,SLOT(on_toolButtonAddTables_clicked()));
     connect(m_ui->toolButtonExecuteRequete,SIGNAL(clicked()),this,SLOT(miseAJourResultat()));
+    connect (m_ui->checkBoxGroupBy,SIGNAL(clicked()),this,SLOT(on_checkBoxGroupBy_clicked()));
+    connect(m_ui->pushButtonAddAgregate,SIGNAL(clicked()),this,SLOT(on_pushButtonAddAggregate_clicked()));
 }
 
 dialogRelation::~dialogRelation()
@@ -85,11 +87,12 @@ void dialogRelation::tableSupprimer()
 
 }
 
-void dialogRelation::jointure(QString t1,QString t2)
+void dialogRelation::jointure(table* t1,table* t2)
 {
+    qDebug()<<"void dialogRelation::jointure(table* t1,table* t2)";
     //j'affiche une boite de dialogue pour saisir le type de jointure
     DialogTypeJointure dtj;
-    //puis je trouve les deux tables dans le vecteur et ajoute le lien dans la tables des liens
+    //puis je trouve les deux tables dans le vecteur et ajoute le lien dans la table des liens
     if(dtj.exec())
     {
         QString typ=dtj.m_ui->comboBoxType->currentText();
@@ -101,11 +104,11 @@ void dialogRelation::jointure(QString t1,QString t2)
             long indice=0;
             while(!(table2!=NULL && table1!=NULL))
             {
-                if(vectTables[indice]->nomTable==t1)
+                if(vectTables[indice]==t1)
                 {
                     table1=vectTables[indice];
                 }
-                if(vectTables[indice]->nomTable==t2)
+                if(vectTables[indice]==t2)
                 {table2=vectTables[indice];
                 }
                 indice++;
@@ -195,7 +198,7 @@ void dialogRelation::miseAJourResultat()
     //
     //Dans chaque groupe les tables st reliées par les conditions
     //et entre chaque groupe le séparateur est la virgule
-    QString from=" FROM ";
+    QString from="";
     //formation de la liste des tables ajoutées
 
     QList <table*> listeDesTablesRestantAMettreDansLeFrom;
@@ -317,30 +320,60 @@ void dialogRelation::miseAJourResultat()
             if(unChamp->cond!=NULL) listeDuWhere.append(nomCompletDuChamp+" "+unChamp->cond->document()->toPlainText());
         }
     }
+    //ajout des champs libres:
+    foreach (field* leChamp,vectChampsLibres)
+    {
+        listeDesChosesAAfficher.append(leChamp->document()->toPlainText());
+    }
     select +=listeDesChosesAAfficher.join(",");
+    //ajouter ici les champs calculés
+    QStringList listeDesChampCalcules;
+    for(int noChamp=0;noChamp<m_ui->listWidgetAggregates->count();noChamp++)
+    {
+        listeDesChampCalcules<<m_ui->listWidgetAggregates->item(noChamp)->text();
+    }
+    if(!listeDesChampCalcules.empty())
+    {
+        if(!listeDesChosesAAfficher.empty())
+        {
+            select+=',';
+        }
+        select+=listeDesChampCalcules.join(",");
+    }
+    //order by
     orderBy+=listeDesChampsParticipantsAuTri.join(",");
     where+=listeDuWhere.join(" and ");
 
     //ajouter maintenant au select les agrégats affichés
     //construire le having
     QString requete="";
-    if(!listeDesChosesAAfficher.empty())
+    if(!listeDesChosesAAfficher.empty()||!listeDesChampCalcules.empty())
     {
         requete=select;
-        if(!(from==" FROM"))
+        if(!(from.isEmpty()))
         {
-            requete+=from;
+            requete+=" FROM "+from;
         }
         if(!listeDuWhere.empty())
         {
             requete+=where;
+        }
+         //ajouter ici group by et having
+        if(m_ui->checkBoxGroupBy->isChecked())
+        {
+            if(!listeDesChosesAAfficher.empty())
+                requete+= " GROUP BY "+listeDesChosesAAfficher.join(",");
+        }
+        if(!m_ui->lineEditHaving->text().isEmpty())
+        {
+            requete+= " HAVING "+m_ui->lineEditHaving->text();
         }
         if(!listeDesChampsParticipantsAuTri.empty())
         {
             requete+=orderBy;
         }
     }
-    //ajouter ici group by et having
+
 
     m_ui->lineEditQuery->setText(requete);
 
@@ -376,7 +409,7 @@ void dialogRelation::supprimerLien(lien * leLien)
 }
 
 void dialogRelation::on_lineEditQuery_textChanged(QString leSql )
-{
+{   qlonglong nbLignes;
     qDebug()<<"void dialogRelation::on_lineEditQuery_textChanged(QString leSql )";
     if(m_ui->toolButtonApercuAuto->isChecked())
     {
@@ -387,7 +420,7 @@ void dialogRelation::on_lineEditQuery_textChanged(QString leSql )
         bool affichageDemande=true;
         if(qsl.count()==2)
         {
-            qlonglong nbLignes;
+
 
             QString qStringNombreDeLigne="select count(*) from "+qsl.at(1);
             qDebug()<<qStringNombreDeLigne;
@@ -403,6 +436,8 @@ void dialogRelation::on_lineEditQuery_textChanged(QString leSql )
                         affichageDemande=false;
                     }
                 }
+                //affichage de l'importance du résultat
+
             }
             else
             {
@@ -442,10 +477,11 @@ void dialogRelation::on_lineEditQuery_textChanged(QString leSql )
                         m_ui->tableWidgetPreview->setItem(noLigne,noChamp,new QTableWidgetItem(req.value(noChamp).toString()));
                     }
                     noLigne++;
+                    m_ui->progressBarResultat->setValue(((double)noLigne/(double)nbLignes)*100);
                 }
                 if(noLigne==500)
                 {
-                    QMessageBox::critical(this,this->windowTitle(),"The result is to big to be displayed there",QMessageBox::Ok);
+                    QMessageBox::critical(this,this->windowTitle(),"The result is to big to be displayed entirely",QMessageBox::Ok);
                 }
             }
         }
@@ -502,8 +538,6 @@ void dialogRelation::on_toolButtonAddTables_clicked()
             tableAjoutee->setFlag(QGraphicsItem::ItemIsMovable);
         }
         m_ui->listWidgetTables->clearSelection();
-
-
     }
 }
 
@@ -527,4 +561,25 @@ void dialogRelation::closeEvent(QCloseEvent * event)
 void dialogRelation::on_toolButtonFitInView_clicked()
 {
     m_ui->graphicsView->fitInView(m_ui->graphicsView->sceneRect());
+}
+void dialogRelation::on_checkBoxGroupBy_clicked()
+{
+
+    this->miseAJourResultat();
+}
+void dialogRelation::on_pushButtonAddAggregate_clicked()
+{
+    m_ui->listWidgetAggregates->addItem(m_ui->lineEditAgregate->text());
+    m_ui->lineEditAgregate->setText("");
+    miseAJourResultat();
+ }
+//menu contextuel de la liste des agrégats
+
+
+void dialogRelation::on_listWidgetAggregates_itemClicked(QListWidgetItem* item)
+{
+    m_ui->lineEditAgregate->setText(item->text());
+    //et effacement de l'elt
+    m_ui->listWidgetAggregates->takeItem(m_ui->listWidgetAggregates->currentRow());
+    miseAJourResultat();
 }

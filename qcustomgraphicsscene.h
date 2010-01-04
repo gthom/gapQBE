@@ -7,6 +7,7 @@
 
 class QCustomGraphicsScene : public QGraphicsScene
 {
+    Q_OBJECT
 public:
     QCustomGraphicsScene(QWidget *);
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);

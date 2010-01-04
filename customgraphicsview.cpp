@@ -3,7 +3,6 @@
 #include <QMimeData>
 #include <QDrag>
 #include <QDebug>
-#include "table.h"
 #include "dialogrelation.h"
 #include "ui_dialogrelation.h"
 
@@ -76,13 +75,19 @@ void customGraphicsView::dropEvent(QDropEvent *event)
         QPoint  lePointMappe=lePointMapp.toPoint();
         if (this->scene()->itemAt(lePointMappe)->data(32).toString()=="Table")
         {
-            QString nomTable1=this->scene()->itemAt(lePointMappe)->data(33).toString();
+            table* table1=(table*)this->scene()->itemAt(lePointMappe)->data(34).toLongLong();
+            qDebug()<<"table1:"<<table1;
 
             QString data=event->mimeData()->text();
-            QStringList typeEtNom=data.split(';');
+            QStringList typeEtNomEtAdresse=data.split(';');
+            table * table2=(table*) typeEtNomEtAdresse[2].toLongLong();//recup de l'adresse de la table2
+            qDebug()<<"table2:"<<table2;
             //création du lien entre les deux tables
             //trouver les deux tables:
-            emit jointureRequise(nomTable1,typeEtNom[1]);
+            if(table1!=table2)
+            emit jointureRequise(table1,table2);
+            else
+                qDebug()<<"humm";
 
         }
         else

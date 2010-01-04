@@ -7,6 +7,7 @@
 #include <QDragMoveEvent>
 #include <QDropEvent>
 #include <QObject>
+#include "table.h"
 
 
 class customGraphicsView : public QGraphicsView
@@ -18,7 +19,7 @@ public:
     void dragMoveEvent(QDragMoveEvent *event);
     void dropEvent(QDropEvent *event);
 signals:
-    void jointureRequise(QString nomTable1,QString nomTable2);
+    void jointureRequise(table*,table*);
     void ilYADesTablesAAjouter();
     void supprimerTable(QString nomTable);
 };

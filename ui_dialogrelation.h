@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'dialogrelation.ui'
 **
-** Created: Mon Dec 28 08:14:10 2009
+** Created: Mon Jan 4 07:55:27 2010
 **      by: Qt User Interface Compiler version 4.5.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -21,6 +21,7 @@
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QListWidget>
+#include <QtGui/QProgressBar>
 #include <QtGui/QPushButton>
 #include <QtGui/QSpacerItem>
 #include <QtGui/QTableWidget>
@@ -41,6 +42,7 @@ public:
     QListWidget *listWidgetTables;
     QHBoxLayout *horizontalLayout_3;
     QSpacerItem *verticalSpacer;
+    QProgressBar *progressBarResultat;
     QHBoxLayout *horizontalLayout_4;
     QVBoxLayout *verticalLayout_2;
     QToolButton *toolButtonJoin;
@@ -108,6 +110,12 @@ public:
 
         verticalLayout->addItem(verticalSpacer);
 
+        progressBarResultat = new QProgressBar(dialogRelation);
+        progressBarResultat->setObjectName(QString::fromUtf8("progressBarResultat"));
+        progressBarResultat->setValue(24);
+
+        verticalLayout->addWidget(progressBarResultat);
+
 
         horizontalLayout_5->addLayout(verticalLayout);
 
@@ -157,6 +165,9 @@ public:
 
         toolButtonFitInView = new QToolButton(dialogRelation);
         toolButtonFitInView->setObjectName(QString::fromUtf8("toolButtonFitInView"));
+        QIcon icon4;
+        icon4.addFile(QString::fromUtf8(":/zoom-fit-best.png"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButtonFitInView->setIcon(icon4);
 
         verticalLayout_2->addWidget(toolButtonFitInView);
 
@@ -237,6 +248,7 @@ public:
 
         listWidgetAggregates = new QListWidget(dialogRelation);
         listWidgetAggregates->setObjectName(QString::fromUtf8("listWidgetAggregates"));
+        listWidgetAggregates->setEditTriggers(QAbstractItemView::AnyKeyPressed|QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed);
 
         verticalLayout_3->addWidget(listWidgetAggregates);
 
@@ -319,8 +331,11 @@ public:
         toolButtonAddTables->setToolTip(QApplication::translate("dialogRelation", "add tables to query", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         toolButtonAddTables->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        toolButtonFitInView->setToolTip(QApplication::translate("dialogRelation", "best fit in view", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
         toolButtonFitInView->setText(QApplication::translate("dialogRelation", "...", 0, QApplication::UnicodeUTF8));
-        label->setText(QApplication::translate("dialogRelation", "Result:", 0, QApplication::UnicodeUTF8));
+        label->setText(QApplication::translate("dialogRelation", "SQL:", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         lineEditQuery->setToolTip(QApplication::translate("dialogRelation", "the sql query", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP

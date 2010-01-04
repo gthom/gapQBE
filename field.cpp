@@ -33,10 +33,11 @@ void field::contextMenuEvent(QGraphicsSceneMouseEvent *event)
     qDebug()<<"void field::contextMenuEvent(QGraphicsSceneMouseEvent *event)";
     QMenu menu;
     //si je n'était pas sélectionnée, je le deviens
-    this->setSelected(true);
+    this->setSelected(!this->isSelected());
     //création des actions du menu
+    QAction *removeAction ;
     if(freeField)
-        QAction *removeAction = menu.addAction(tr("&Remove"));
+        removeAction = menu.addAction(tr("&Remove"));
 
     QAction *afficherAction = menu.addAction(tr("&Display(on/off)"));
     //affichage conditionnel du menu concernant les conditions
@@ -123,6 +124,15 @@ void field::contextMenuEvent(QGraphicsSceneMouseEvent *event)
                         //effacer le trait aussi
                         delete trait;
 
+                    }
+                    else
+                    {
+                        if(actionChoisie==removeAction)
+                        {
+                            maman->vectChampsLibres.remove(maman->vectChampsLibres.indexOf(this),1);
+                            //si c'est un champ d'une table redimensionnement
+                            deleteLater();
+                        }
                     }
                 }
             }

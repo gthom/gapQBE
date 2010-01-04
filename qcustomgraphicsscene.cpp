@@ -28,7 +28,7 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
         {
             QDrag *drag = new QDrag(((QWidget*)this->parent()));
             QMimeData *mimeData = new QMimeData;
-            mimeData->setText(elt->data(32).toString()+';'+elt->data(33).toString());
+            mimeData->setText(elt->data(32).toString()+';'+elt->data(33).toString()+';'+elt->data(34).toString());
             drag->setMimeData(mimeData);
             //drag->setPixmap(iconPixmap);
             Qt::DropAction dropAction = drag->exec();
@@ -37,6 +37,7 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
     }
     else//bouton droit
     {
+        qDebug()<<"bouton droit";
         if (mouseEvent->button() == Qt::RightButton)
         {   QGraphicsItem * elementConcerne=NULL;
             //si personne à la position de la souris
@@ -50,7 +51,23 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
                     QMenu menuContextuelDeRien;
                     QAction* ajouteUnChampARien=menuContextuelDeRien.addAction(tr("Add a &free field"));
                     QAction* ajouteUnAgregat=menuContextuelDeRien.addAction(tr("Add an aggregate"));
-                    menuContextuelDeRien.exec(mouseEvent->screenPos());
+                    QAction * actionChoisie=menuContextuelDeRien.exec(mouseEvent->screenPos());
+                    if(actionChoisie==ajouteUnChampARien)
+                    {
+                        dialogRelation* maman=(dialogRelation*)parent();
+                        field * nouveauChamp=new field(maman,true,this,"\"something\"",0);
+                        nouveauChamp->setPos(mouseEvent->scenePos());
+                        nouveauChamp->setData(32,"Field");
+                        //nouveauChamp->setData(33,nomDuChamp);
+                        //il est éditable
+                        nouveauChamp->setTextInteractionFlags(Qt::TextEditable);
+                        nouveauChamp->setFlag(QGraphicsItem::ItemIsMovable,true);
+                        nouveauChamp->setFlag(QGraphicsItem::ItemIsSelectable,true);
+                        //lorsque le texte du champ libre est modifié, mettre à jour la requête
+                        //connect(nouveauChamp->document(),SIGNAL(contentsChanged()),maman, SLOT(miseAJourResultat()));
+                        maman->vectChampsLibres.append(nouveauChamp);
+
+                    }
 
                 }
                 else//qlq chose ds le rectangle
@@ -94,6 +111,8 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
         }
     }
+    qDebug()<<"fin du mousemachin et début plantage";
     QGraphicsScene::mousePressEvent(mouseEvent);
+    qDebug()<<"fin du mousemachin et fin plantage";
 }
 
