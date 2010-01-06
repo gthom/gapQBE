@@ -15,12 +15,12 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_4">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_5">
-     <item>
+    <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <widget class="QWidget" name="">
       <layout class="QVBoxLayout" name="verticalLayout">
-       <property name="sizeConstraint">
-        <enum>QLayout::SetFixedSize</enum>
-       </property>
        <item>
         <widget class="QListWidget" name="listWidgetTables">
          <property name="sizePolicy">
@@ -50,9 +50,6 @@
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_3"/>
-       </item>
-       <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -68,13 +65,13 @@
        <item>
         <widget class="QProgressBar" name="progressBarResultat">
          <property name="value">
-          <number>24</number>
+          <number>0</number>
          </property>
         </widget>
        </item>
       </layout>
-     </item>
-     <item>
+     </widget>
+     <widget class="QWidget" name="">
       <layout class="QHBoxLayout" name="horizontalLayout_4">
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -87,7 +84,7 @@
             <string>...</string>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="gapQBE.qrc">
              <normaloff>:/tables-relation.png</normaloff>:/tables-relation.png</iconset>
            </property>
           </widget>
@@ -101,7 +98,7 @@
             <string>...</string>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="gapQBE.qrc">
              <normaloff>:/arrow-move.png</normaloff>:/arrow-move.png</iconset>
            </property>
           </widget>
@@ -115,7 +112,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="gapQBE.qrc">
              <normaloff>:/previewOn</normaloff>:/previewOn</iconset>
            </property>
            <property name="checkable">
@@ -135,7 +132,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="gapQBE.qrc">
              <normaloff>:/make</normaloff>:/make</iconset>
            </property>
           </widget>
@@ -162,7 +159,7 @@
             <string>...</string>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="gapQBE.qrc">
              <normaloff>:/zoom-fit-best.png</normaloff>:/zoom-fit-best.png</iconset>
            </property>
           </widget>
@@ -196,8 +193,8 @@
         </widget>
        </item>
       </layout>
-     </item>
-    </layout>
+     </widget>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -307,6 +304,10 @@
        <property name="text">
         <string>&amp;Quit</string>
        </property>
+       <property name="icon">
+        <iconset resource="gapQBE.qrc">
+         <normaloff>:/close.png</normaloff>:/close.png</iconset>
+       </property>
       </widget>
      </item>
     </layout>
@@ -336,6 +337,8 @@
    <header>customgraphicsview.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="gapQBE.qrc"/>
+ </resources>
  <connections/>
 </ui>

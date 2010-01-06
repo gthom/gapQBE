@@ -114,7 +114,7 @@ void dialogRelation::jointure(table* t1,table* t2)
                 indice++;
 
             }
-            lien * nouveauLien=new lien(table1,table2,0,&this->scene,typ);
+            lien * nouveauLien=new lien(table2,table1,0,&this->scene,typ);
             table1->vectLiens.push_back(nouveauLien);
             table2->vectLiens.push_back(nouveauLien);
             vectLiens.push_back(nouveauLien);
