@@ -1,5 +1,6 @@
 #include "dialogrelation.h"
 #include "ui_dialogrelation.h"
+#include "dialogsortorder.h"
 #include <QSqlQuery>
 #include <QSqlRecord>
 #include <QSqlError>
@@ -12,6 +13,8 @@
 #include <QTextDocument>
 #include <QSqlResult>
 #include    <QMessageBox>
+#include "ui_dialogsortorder.h"
+
 
 dialogRelation::dialogRelation(QWidget *parent,QSqlDatabase& pdb) :
         scene(this),
@@ -292,6 +295,7 @@ void dialogRelation::miseAJourResultat()
     QStringList listeDesChosesAAfficher;
     QStringList listeDesChampsParticipantsAuTri;
     QStringList listeDuWhere;
+    QMap<int,QString> maMap;
     foreach (table * uneTable, vectTables)
     {
         foreach (field * unChamp, uneTable->vecteurChamps)
@@ -316,7 +320,7 @@ void dialogRelation::miseAJourResultat()
                 else nomCompletDuChamp=unChamp->document()->toPlainText();
             }
             if(unChamp->affiche) listeDesChosesAAfficher.append(nomCompletDuChamp);
-            if(unChamp->getTri()!="") listeDesChampsParticipantsAuTri.append(nomCompletDuChamp+" "+unChamp->getTri());
+            if(unChamp->getTri()!="") maMap[unChamp->numeroDansLeTri]=nomCompletDuChamp+" "+unChamp->getTri();//listeDesChampsParticipantsAuTri.insert(unChamp->numeroDansLeTri,nomCompletDuChamp+" "+unChamp->getTri());
             if(unChamp->cond!=NULL) listeDuWhere.append(nomCompletDuChamp+" "+unChamp->cond->document()->toPlainText());
         }
     }
@@ -325,6 +329,8 @@ void dialogRelation::miseAJourResultat()
     {
         listeDesChosesAAfficher.append(leChamp->document()->toPlainText());
     }
+    if(!listeDesChosesAAfficher.empty() && m_ui->toolButtonDistinct->isChecked())
+        select+=" distinct ";
     select +=listeDesChosesAAfficher.join(",");
     //ajouter ici les champs calculés
     QStringList listeDesChampCalcules;
@@ -340,7 +346,14 @@ void dialogRelation::miseAJourResultat()
         }
         select+=listeDesChampCalcules.join(",");
     }
+    //trier la liste des champs participants au tri par leur ordre d'apparition
+
     //order by
+    //a partir de la map formation de la liste
+    foreach (QString champ, maMap)
+    {
+        listeDesChampsParticipantsAuTri.append(champ);
+    }
     orderBy+=listeDesChampsParticipantsAuTri.join(",");
     where+=listeDuWhere.join(" and ");
 
@@ -581,5 +594,72 @@ void dialogRelation::on_listWidgetAggregates_itemClicked(QListWidgetItem* item)
     m_ui->lineEditAgregate->setText(item->text());
     //et effacement de l'elt
     m_ui->listWidgetAggregates->takeItem(m_ui->listWidgetAggregates->currentRow());
+    miseAJourResultat();
+}
+
+void dialogRelation::on_toolButton_clicked()
+{
+
+}
+
+void dialogRelation::on_toolButtonSO_clicked()
+{
+    dialogSortOrder * ds;
+    ds=new dialogSortOrder(this);
+    ds->setWindowTitle(this->windowTitle()+tr("Define sort order"));
+    //remplissage de la liste
+    //pour chaque champ participant au tri affichage dans la liste et dans l'ordre s''il vous plait
+    foreach (table * uneTable, vectTables)
+    {
+        foreach (field * unChamp, uneTable->vecteurChamps)
+        {
+
+            QString nomCompletDuChamp;
+            //dans le cas ou des modifs ont été tapées dans le champ il faut mettre le préfixe à l(intérieur ou pas du tout si c'est un champ libre
+            if(unChamp->freeField)
+            {
+                nomCompletDuChamp=unChamp->document()->toPlainText();
+            }
+            else //champ natif de la table
+            {
+                //s'il n'a pas été trafiqué
+                if(unChamp->nomInitial==unChamp->document()->toPlainText())
+                {
+                    //on le prefixe par le nom de la table ou son alias
+                    QString alias=uneTable->alias;
+                    if(alias.isEmpty()) alias=uneTable->nomTable;
+                    nomCompletDuChamp=alias+"."+unChamp->nomInitial;
+                }
+                else nomCompletDuChamp=unChamp->document()->toPlainText();
+            }
+
+            if(unChamp->getTri()!="")//s'il participe au tri
+            {
+                QListWidgetItem * item=new QListWidgetItem(0,1001);
+                item->setText(nomCompletDuChamp);
+                item->setData(32,(qlonglong) unChamp);
+                //qDebug()<<unChamp->nomInitial<<(qlonglong) unChamp<<"numéro"<<unChamp->numeroDansLeTri;
+                ds->m_ui->listWidgetChamps->insertItem(unChamp->numeroDansLeTri,item);
+            }
+        }
+    }
+    if(ds->exec())
+    {
+        for(int noChamp=0;noChamp<ds->m_ui->listWidgetChamps->count();noChamp++)
+        {
+            //qDebug()<<"coucou";
+            QListWidgetItem * item=ds->m_ui->listWidgetChamps->item(noChamp);
+            field* leChamp=(field*)(item->data(32).toLongLong());
+            leChamp->numeroDansLeTri=noChamp;
+            qDebug()<<item->text()<<item->data(32).toLongLong();
+        }
+        //rafraichissement
+       miseAJourResultat();
+
+    }
+}
+
+void dialogRelation::on_toolButtonDistinct_clicked()
+{
     miseAJourResultat();
 }

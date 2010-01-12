@@ -29,6 +29,7 @@ public:
     void contextMenuEvent(QGraphicsSceneMouseEvent *event);
     bool freeField;
     enum typeDeTri{noSort,ascSort,descSort} tri;
+    int  numeroDansLeTri;
     QString getTri();
   signals:
           void jAiChange();

@@ -145,37 +145,10 @@ lien::lien(table* pt1,table* pt2,QGraphicsItem * parent,QGraphicsScene* laScene,
  }
 void lien::updatePosition()
 {
-//    table * tableGauche=t2;
-//    table * tableDroite=t1;
-//    if(t1->pos().x()<t2->pos().x())
-//    {
-//        tableGauche=t1;
-//        tableDroite=t2;
-//    }
-//    qDebug()<<"table gauche:"<<tableGauche->nomTable;
+
 
     this->setLine(t1->pos().x()+t1->boundingRect().width()/2,t1->pos().y(),t2->pos().x()+t2->boundingRect().width()/2,t2->pos().y());
-    //this->setLine(QLineF(mapFromItem(t1,t1->boundingRect().width()/2,10),mapFromItem(t2,t2->boundingRect().width()/2,10)));
 
-    //intersections
-//    QRectF rectInterTG=boundingRect().intersected(tableGauche->boundingRect());
-//    QRectF rectInterTD=boundingRect().intersected(tableDroite->boundingRect());
-//    QPointF pointGauche=this->line().p1();
-//    QPointF pointDroit=this->line().p2();
-//    if(pointDroit.x()<pointGauche.x())
-//    {
-//        pointGauche=this->line().p2();
-//        pointDroit=this->line().p1();
-//    }
-//    qDebug()<<"pointgauche:"<<pointGauche;
-//    qDebug()<<"pointdroit:"<<pointDroit;
-//    pointGauche.setX(pointGauche.x()+rectInterTG.width());
-//
-//    pointDroit.setX(pointDroit.x()-rectInterTD.width());
-//    qDebug()<<"pointgauche:"<<pointGauche;
-//    qDebug()<<"pointdroit:"<<pointDroit;
-//    this->setLine(QLineF(pointGauche,pointDroit));
-    //changer la place de la condition de jointure
     if(this->typeDeJointure!="Natural")
     {
         QPoint position=boundingRect().center().toPoint();

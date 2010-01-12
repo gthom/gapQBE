@@ -19,7 +19,7 @@
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QListWidget" name="listWidgetTables">
@@ -71,7 +71,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QHBoxLayout" name="horizontalLayout_4">
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -165,6 +165,13 @@
           </widget>
          </item>
          <item>
+          <widget class="QToolButton" name="toolButtonSO">
+           <property name="text">
+            <string>SO</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <spacer name="verticalSpacer_2">
            <property name="orientation">
             <enum>Qt::Vertical</enum>
@@ -176,6 +183,19 @@
             </size>
            </property>
           </spacer>
+         </item>
+         <item>
+          <widget class="QToolButton" name="toolButtonDistinct">
+           <property name="text">
+            <string>D</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>

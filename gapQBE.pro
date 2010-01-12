@@ -13,7 +13,8 @@ SOURCES += main.cpp \
     qcustomgraphicsscene.cpp \
     lien.cpp \
     field.cpp \
-    dialogtypejointure.cpp
+    dialogtypejointure.cpp \
+    dialogsortorder.cpp
 HEADERS += dialoglogin.h \
     dialogrelation.h \
     table.h \
@@ -23,9 +24,10 @@ HEADERS += dialoglogin.h \
     lien.h \
     field.h \
     types.h \
-    dialogtypejointure.h
+    dialogtypejointure.h \
+    dialogsortorder.h
 FORMS += dialoglogin.ui \
     dialogrelation.ui \
-    dialogtypejointure.ui
-
+    dialogtypejointure.ui \
+    dialogsortorder.ui
 RESOURCES += gapQBE.qrc
