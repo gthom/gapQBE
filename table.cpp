@@ -90,10 +90,40 @@ table::table(dialogRelation* mum,QString nom,qreal x,qreal y, QGraphicsItem* par
      {
          if(actionChoisie==removeOrAddAliasAction)
          {
-             if(alias!="")
+             if(alias!="")//il y a un alias c'est donc qu'on veut l'enlever
              {
-                 alias="";
+
                  this->title->setHtml(nomTable);
+                 foreach (lien *leLien, vectLiens)
+                 {
+                     if(leLien->typeDeJointure!="Natural")
+                     {//à améliorer remplacement de l'alias par le nom de la table dans la condition
+                         //leLien->texteDeLaCondition.replace(alias,nomTable);
+                         //leLien->condition->setPlainText(leLien->texteDeLaCondition);
+                         //qDebug()<<"textedelacondition :"<<leLien->texteDeLaCondition;
+                             //je split sur l'opérateur
+                             QRegExp operateur("(=|<=|<>|>=|<|>)");
+                             int pos=operateur.indexIn(leLien->texteDeLaCondition);
+                             //recup de l'opérateur
+                             QString op=operateur.cap(1);
+                             QStringList qsl=leLien->texteDeLaCondition.split(QRegExp("=|<=|<>|<|>|>="));
+                             //qDebug()<<"partie gauche :"<<qsl[0]<<" partiedroite "<<qsl[1]<<" operateur "<<op;
+                             QStringList partieGauche;
+                             partieGauche=qsl[0].split(".");
+                             QStringList partieDroite=qsl[1].split(".");
+                             if(leLien->t1==this)
+                             {
+                                 if(partieGauche[0]==alias) partieGauche[0]=nomTable;
+                             }
+                             else
+                             {
+                                 if(partieDroite[0]==alias) partieDroite[0]=nomTable;
+                             }
+                             leLien->texteDeLaCondition=partieGauche.join(".")+op+partieDroite.join(".");
+                             leLien->condition->setPlainText(leLien->texteDeLaCondition);
+                     }
+                 }
+                 alias="";
                  maman->miseAJourResultat();
              }
              else
@@ -117,7 +147,34 @@ table::table(dialogRelation* mum,QString nom,qreal x,qreal y, QGraphicsItem* par
                          //redimensionnement de la ligne
                          this->laLigne->setLine(this->laLigne->x(),this->laLigne->y(),this->laLigne->x()+largeurNouveauTitre+50,this->laLigne->y());
                      }
-                    this->title->setHtml("<center>"+nomAvecAlias+"</center>");
+                     this->title->setHtml("<center>"+nomAvecAlias+"</center>");
+                     foreach (lien *leLien, vectLiens)
+                     {
+                         if(leLien->typeDeJointure!="Natural")
+                         {
+                             //qDebug()<<"textedelacondition :"<<leLien->texteDeLaCondition;
+                             //je split sur l'opérateur
+                             QRegExp operateur("(=|<=|<>|>=|<|>)");
+                             int pos=operateur.indexIn(leLien->texteDeLaCondition);
+                             //recup de l'opérateur
+                             QString op=operateur.cap(1);
+                             QStringList qsl=leLien->texteDeLaCondition.split(QRegExp("=|<=|<>|<|>|>="));
+                             //qDebug()<<"partie gauche :"<<qsl[0]<<" partiedroite "<<qsl[1]<<" operateur "<<op;
+                             QStringList partieGauche;
+                             partieGauche=qsl[0].split(".");
+                             QStringList partieDroite=qsl[1].split(".");
+                             if(leLien->t1==this)
+                             {
+                                 if(partieGauche[0]==nomTable) partieGauche[0]=alias;
+                             }
+                             else
+                             {
+                                 if(partieDroite[0]==nomTable) partieDroite[0]=alias;
+                             }
+                             leLien->texteDeLaCondition=partieGauche.join(".")+op+partieDroite.join(".");
+                             leLien->condition->setPlainText(leLien->texteDeLaCondition);
+                         }
+                     }
                      maman->miseAJourResultat();
                  }
              }

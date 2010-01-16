@@ -29,6 +29,7 @@ public:
     QGraphicsTextItem* title;//le titre
     QGraphicsLineItem* laLigne;//la ligne sous le titre ui
     QString nomTable;//nom de la table
+    QString getNomTable(){return (alias.isEmpty())?nomTable:alias;}
     QString alias;  //nom d'alias
     QVector<lien*> vectLiens;//les liens qui la touchent.
     QVector<field *> vecteurChamps;//ses champs

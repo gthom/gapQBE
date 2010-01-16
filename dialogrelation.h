@@ -38,7 +38,6 @@ private slots:
 
     void on_toolButtonDistinct_clicked();
     void on_toolButtonSO_clicked();
-    void on_toolButton_clicked();
     void on_listWidgetAggregates_itemClicked(QListWidgetItem* item);
     void on_pushButtonQuitter_clicked();
     void on_listWidgetTables_itemSelectionChanged();

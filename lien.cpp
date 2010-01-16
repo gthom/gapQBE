@@ -5,12 +5,15 @@
 #include <QTextDocument>
 #include <QPainter>
 #include "math.h"
+#include <QInputDialog>
 
 lien::~lien()
 {
     qDebug()<<"ddestructeur du lien";
     if(condition!=NULL)
         delete condition;
+    delete texte1;
+    delete texte2;
 }
 
 lien::lien(table* pt1,table* pt2,QGraphicsItem * parent,QGraphicsScene* laScene,QString typ):QGraphicsLineItem(pt1->pos().x()+pt1->boundingRect().width()/2,pt1->pos().y(),pt2->pos().x()+pt2->boundingRect().width()/2,pt2->pos().y(),parent,laScene)
@@ -18,6 +21,8 @@ lien::lien(table* pt1,table* pt2,QGraphicsItem * parent,QGraphicsScene* laScene,
     //constructeur du lien
     t1=pt2;
     t2=pt1;
+    texte1=new QGraphicsTextItem(this,this->scene());
+    texte2=new QGraphicsTextItem(this,this->scene());
     //il est sélectionnable
     this->setFlag(QGraphicsItem::ItemIsSelectable,true);
     //ajout de la condition de jointure
@@ -26,7 +31,8 @@ lien::lien(table* pt1,table* pt2,QGraphicsItem * parent,QGraphicsScene* laScene,
         condition=new QGraphicsTextItem(this);
         condition->setData(32,"Lien");
         QObject::connect(condition->document(),SIGNAL(contentsChanged()),t1->maman, SLOT(miseAJourResultat()));
-        condition->setHtml(t1->nomTable+".xxx="+t2->nomTable+".yyy");
+        this->texteDeLaCondition=t1->getNomTable()+".xxx="+t2->getNomTable()+".yyy";
+        condition->setHtml(texteDeLaCondition);
         QPoint position=boundingRect().center().toPoint();
         position.setX(position.x()-QFontMetrics(condition->font()).width(condition->toPlainText())/2);
         condition->setPos(position);
@@ -101,31 +107,88 @@ lien::lien(table* pt1,table* pt2,QGraphicsItem * parent,QGraphicsScene* laScene,
              break;
          p1 = p2;
      }
-    setLine(QLineF(intersectPointT1,intersectPointT2));
-     //setLine(QLineF(intersectPoint, t1->pos()+QPointF(t1->boundingRect().width()/2,10)));
-    qreal Pi=3.14;
-     double angle = ::acos(line().dx() / line().length());
-     if (line().dy() >= 0)
-         angle = (Pi * 2) - angle;
+     setLine(QLineF(intersectPointT1,intersectPointT2));
 
-         QPointF arrowP1 = line().p1() + QPointF(sin(angle + Pi / 3) * arrowSize,
-                                         cos(angle + Pi / 3) * arrowSize);
-         QPointF arrowP2 = line().p1() + QPointF(sin(angle + Pi - Pi / 3) * arrowSize,
-                                         cos(angle + Pi - Pi / 3) * arrowSize);
 
-         arrowHead.clear();
-         arrowHead << line().p1() << arrowP1 << arrowP2;
-         painter->drawLine(line());
-         painter->drawPolygon(arrowHead);
-         if (isSelected())
+     if(typeDeJointure=="Natural")
+     {
+
+         texte1->document()->setPlainText("?");
+
+         texte2->document()->setPlainText("?");
+     }
+     else
+     {
+         if(typeDeJointure=="Inner")
          {
-             painter->setPen(QPen(myColor, 1, Qt::DashLine));
-             QLineF myLine = line();
-             myLine.translate(0, 4.0);
-             painter->drawLine(myLine);
-             myLine.translate(0,-8.0);
-             painter->drawLine(myLine);
+
+             texte1->document()->setPlainText("=");
+
+             texte2->document()->setPlainText("=");
          }
+         else
+         {
+             if(typeDeJointure=="left outer")
+         {
+
+             texte1->document()->setPlainText("+=");
+
+             texte2->document()->setPlainText("");
+         }
+         else
+         {
+             if(typeDeJointure=="right outer")
+         {
+
+             texte1->document()->setPlainText("");
+
+             texte2->document()->setPlainText("+=");
+         }
+
+         }
+
+         }
+     }
+         QPointF posTexte1,posTexte2;
+
+         if(intersectPointT1.x()<intersectPointT2.x())
+         {
+             posTexte1.setX(intersectPointT1.x());
+             posTexte2.setX(intersectPointT2.x()-texte2->document()->size().width());
+
+         }
+         else
+         {
+             posTexte2.setX(intersectPointT2.x());
+             posTexte1.setX(intersectPointT1.x()-texte1->document()->size().width());
+
+         }
+         if(intersectPointT1.y()<intersectPointT2.y())
+         {
+             posTexte1.setY(intersectPointT1.y());
+             posTexte2.setY(intersectPointT2.y()-texte2->document()->size().height());
+         }
+         else
+         {
+             posTexte2.setY(intersectPointT2.y());
+             posTexte1.setY(intersectPointT1.y()-texte1->document()->size().height());
+         }
+         texte1->setPos(posTexte1);
+         texte2->setPos(posTexte2);
+
+
+    painter->drawLine(line());
+
+     //
+     if (isSelected())
+     {
+         painter->setPen(QPen(myColor, 1, Qt::DashLine));
+         QLineF myLine = line();
+         myLine.translate(0, 4.0);
+         painter->drawLine(myLine);
+         myLine.translate(0,-8.0);
+         painter->drawLine(myLine);
+     }
  }
  QRectF lien::boundingRect() const
  {
@@ -166,6 +229,12 @@ void lien::contextMenuEvent(QGraphicsSceneMouseEvent *event)
      //création des actions du menu
      QAction *removeAction = menu.addAction(QObject::tr("&Remove"));
      QAction *changeJoinType = menu.addAction(QObject::tr("&Change join type"));
+     //s'il y a une condition proposer de l'éditer
+     QAction* editJoinCond;
+     if(this->typeDeJointure!="Natural")
+     {
+         editJoinCond=menu.addAction(QObject::tr("&Edit join condition"));
+     }
      //exécution du menu et récupération de l'action choisie
      QAction * actionChoisie=menu.exec(event->screenPos());
 
@@ -173,7 +242,23 @@ void lien::contextMenuEvent(QGraphicsSceneMouseEvent *event)
      else
       {
          //autre choix du menu
-         if(actionChoisie==removeAction) t1->maman->supprimerLien(this);
+         if(actionChoisie==removeAction)
+         {
+             t1->maman->supprimerLien(this);
+         }
+         else
+         {
+             if(actionChoisie==editJoinCond)
+             {
+                 bool ok;
+                 QString text = QInputDialog::getText(0, QObject::tr("Edit Join Condition"),
+                                                      QObject::tr("Join Condition:"), QLineEdit::Normal,
+                                                      this->condition->document()->toPlainText(), &ok);
+                 if (ok && !text.isEmpty())
+
+                     this->condition->document()->setPlainText(text);
+             }
+         }
       }  
 }
 void lien::updateType()
@@ -185,7 +270,7 @@ void lien::updateType()
         condition=new QGraphicsTextItem(this);
         condition->setData(32,"Lien");
         QObject::connect(condition->document(),SIGNAL(contentsChanged()),t1->maman, SLOT(miseAJourResultat()));
-        condition->setHtml(t1->nomTable+".xxx="+t2->nomTable+".yyy");
+        condition->setHtml(t1->getNomTable()+".xxx="+t2->getNomTable()+".yyy");
         QPoint position=boundingRect().center().toPoint();
         position.setX(position.x()-QFontMetrics(condition->font()).width(condition->toPlainText())/2);
         condition->setPos(position);
@@ -198,22 +283,7 @@ void lien::updateType()
         if(condition!=NULL) delete condition;
         condition=NULL;
     }
-    //aspect différent en fonction du type de jointure:
-    if(typeDeJointure=="Natural")
-    {
 
-        this->setPen(QPen(QColor("green")));
-
-
-    }
-    else
-    {
-        if(typeDeJointure=="Inner")
-        {
-            this->setPen(QPen(QColor("blue")));
-        }
-        //etc pour les autre types de jointure
-    }
 }
 
 

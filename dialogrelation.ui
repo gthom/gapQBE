@@ -15,322 +15,327 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_4">
    <item>
-    <widget class="QSplitter" name="splitter">
+    <widget class="QSplitter" name="splitter_2">
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Vertical</enum>
      </property>
-     <widget class="QWidget" name="layoutWidget">
-      <layout class="QVBoxLayout" name="verticalLayout">
+     <widget class="QSplitter" name="splitter">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="QWidget" name="layoutWidget">
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QListWidget" name="listWidgetTables">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Table's list</string>
+          </property>
+          <property name="statusTip">
+           <string>choose tables you need</string>
+          </property>
+          <property name="whatsThis">
+           <string>Tables you need</string>
+          </property>
+          <property name="dragEnabled">
+           <bool>true</bool>
+          </property>
+          <property name="alternatingRowColors">
+           <bool>true</bool>
+          </property>
+          <property name="selectionMode">
+           <enum>QAbstractItemView::ExtendedSelection</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QProgressBar" name="progressBarResultat">
+          <property name="value">
+           <number>0</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QToolButton" name="toolButtonJoin">
+            <property name="toolTip">
+             <string>oin tables</string>
+            </property>
+            <property name="text">
+             <string>...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="gapQBE.qrc">
+              <normaloff>:/tables-relation.png</normaloff>:/tables-relation.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="toolButtonMove">
+            <property name="toolTip">
+             <string>move tables</string>
+            </property>
+            <property name="text">
+             <string>...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="gapQBE.qrc">
+              <normaloff>:/arrow-move.png</normaloff>:/arrow-move.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="toolButtonApercuAuto">
+            <property name="toolTip">
+             <string>automatic update of result</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="gapQBE.qrc">
+              <normaloff>:/previewOn</normaloff>:/previewOn</iconset>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="toolButtonExecuteRequete">
+            <property name="toolTip">
+             <string>execute the query</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="gapQBE.qrc">
+              <normaloff>:/make</normaloff>:/make</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="toolButtonAddTables">
+            <property name="toolTip">
+             <string>add tables to query</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="arrowType">
+             <enum>Qt::RightArrow</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="toolButtonFitInView">
+            <property name="toolTip">
+             <string>best fit in view</string>
+            </property>
+            <property name="text">
+             <string>...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="gapQBE.qrc">
+              <normaloff>:/zoom-fit-best.png</normaloff>:/zoom-fit-best.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="toolButtonSO">
+            <property name="text">
+             <string>SO</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="toolButtonDistinct">
+            <property name="text">
+             <string>D</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="customGraphicsView" name="graphicsView">
+          <property name="contextMenuPolicy">
+           <enum>Qt::ActionsContextMenu</enum>
+          </property>
+          <property name="acceptDrops">
+           <bool>true</bool>
+          </property>
+          <property name="dragMode">
+           <enum>QGraphicsView::NoDrag</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="">
+      <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <widget class="QListWidget" name="listWidgetTables">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="toolTip">
-          <string>Table's list</string>
-         </property>
-         <property name="statusTip">
-          <string>choose tables you need</string>
-         </property>
-         <property name="whatsThis">
-          <string>Tables you need</string>
-         </property>
-         <property name="dragEnabled">
-          <bool>true</bool>
-         </property>
-         <property name="alternatingRowColors">
-          <bool>true</bool>
-         </property>
-         <property name="selectionMode">
-          <enum>QAbstractItemView::ExtendedSelection</enum>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>SQL:</string>
          </property>
         </widget>
        </item>
        <item>
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QProgressBar" name="progressBarResultat">
-         <property name="value">
-          <number>0</number>
+        <widget class="QLineEdit" name="lineEditQuery">
+         <property name="toolTip">
+          <string>the sql query</string>
          </property>
         </widget>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="layoutWidget">
-      <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <widget class="QWidget" name="">
+      <layout class="QHBoxLayout" name="horizontalLayout_8">
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
+        <widget class="QTableWidget" name="tableWidgetPreview">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>2</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="toolTip">
+          <string>The query's rows </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
-          <widget class="QToolButton" name="toolButtonJoin">
-           <property name="toolTip">
-            <string>oin tables</string>
-           </property>
+          <widget class="QCheckBox" name="checkBoxGroupBy">
            <property name="text">
-            <string>...</string>
-           </property>
-           <property name="icon">
-            <iconset resource="gapQBE.qrc">
-             <normaloff>:/tables-relation.png</normaloff>:/tables-relation.png</iconset>
+            <string>Group By</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QToolButton" name="toolButtonMove">
-           <property name="toolTip">
-            <string>move tables</string>
-           </property>
-           <property name="text">
-            <string>...</string>
-           </property>
-           <property name="icon">
-            <iconset resource="gapQBE.qrc">
-             <normaloff>:/arrow-move.png</normaloff>:/arrow-move.png</iconset>
+          <layout class="QHBoxLayout" name="horizontalLayout_6">
+           <item>
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>Aggregate:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEditAgregate"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButtonAddAgregate">
+             <property name="text">
+              <string>&amp;Add</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QListWidget" name="listWidgetAggregates">
+           <property name="editTriggers">
+            <set>QAbstractItemView::AnyKeyPressed|QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QToolButton" name="toolButtonApercuAuto">
-           <property name="toolTip">
-            <string>automatic update of result</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset resource="gapQBE.qrc">
-             <normaloff>:/previewOn</normaloff>:/previewOn</iconset>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QToolButton" name="toolButtonExecuteRequete">
-           <property name="toolTip">
-            <string>execute the query</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset resource="gapQBE.qrc">
-             <normaloff>:/make</normaloff>:/make</iconset>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QToolButton" name="toolButtonAddTables">
-           <property name="toolTip">
-            <string>add tables to query</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="arrowType">
-            <enum>Qt::RightArrow</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QToolButton" name="toolButtonFitInView">
-           <property name="toolTip">
-            <string>best fit in view</string>
-           </property>
-           <property name="text">
-            <string>...</string>
-           </property>
-           <property name="icon">
-            <iconset resource="gapQBE.qrc">
-             <normaloff>:/zoom-fit-best.png</normaloff>:/zoom-fit-best.png</iconset>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QToolButton" name="toolButtonSO">
-           <property name="text">
-            <string>SO</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="verticalSpacer_2">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>40</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QToolButton" name="toolButtonDistinct">
-           <property name="text">
-            <string>D</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout_7">
+           <item>
+            <widget class="QLabel" name="label_2">
+             <property name="text">
+              <string>Postcondition</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEditHaving"/>
+           </item>
+          </layout>
          </item>
         </layout>
        </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="">
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
-        <widget class="customGraphicsView" name="graphicsView">
-         <property name="contextMenuPolicy">
-          <enum>Qt::ActionsContextMenu</enum>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
          </property>
-         <property name="acceptDrops">
-          <bool>true</bool>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
          </property>
-         <property name="dragMode">
-          <enum>QGraphicsView::NoDrag</enum>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButtonQuitter">
+         <property name="text">
+          <string>&amp;Quit</string>
+         </property>
+         <property name="icon">
+          <iconset resource="gapQBE.qrc">
+           <normaloff>:/close.png</normaloff>:/close.png</iconset>
          </property>
         </widget>
        </item>
       </layout>
      </widget>
     </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>SQL:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="lineEditQuery">
-       <property name="toolTip">
-        <string>the sql query</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_8">
-     <item>
-      <widget class="QTableWidget" name="tableWidgetPreview">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>2</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="toolTip">
-        <string>The query's rows </string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <item>
-        <widget class="QCheckBox" name="checkBoxGroupBy">
-         <property name="text">
-          <string>Group By</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_6">
-         <item>
-          <widget class="QLabel" name="label_3">
-           <property name="text">
-            <string>Aggregate:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEditAgregate"/>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButtonAddAgregate">
-           <property name="text">
-            <string>&amp;Add</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="QListWidget" name="listWidgetAggregates">
-         <property name="editTriggers">
-          <set>QAbstractItemView::AnyKeyPressed|QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_7">
-         <item>
-          <widget class="QLabel" name="label_2">
-           <property name="text">
-            <string>Postcondition</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEditHaving"/>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButtonQuitter">
-       <property name="text">
-        <string>&amp;Quit</string>
-       </property>
-       <property name="icon">
-        <iconset resource="gapQBE.qrc">
-         <normaloff>:/close.png</normaloff>:/close.png</iconset>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </item>
   </layout>
   <action name="actionSuprime">

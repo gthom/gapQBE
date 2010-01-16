@@ -26,6 +26,7 @@ dialogRelation::dialogRelation(QWidget *parent,QSqlDatabase& pdb) :
     prochainX=20;
     //recup de la base
     db=db.cloneDatabase(pdb,"ploum");
+    QMessageBox::warning(this,"pb",db.lastError().text());
     db.open();
     //recup des tables de la base
     QStringList listeDesTables=db.tables();
@@ -38,6 +39,7 @@ dialogRelation::dialogRelation(QWidget *parent,QSqlDatabase& pdb) :
     connect(m_ui->toolButtonExecuteRequete,SIGNAL(clicked()),this,SLOT(miseAJourResultat()));
     connect (m_ui->checkBoxGroupBy,SIGNAL(clicked()),this,SLOT(on_checkBoxGroupBy_clicked()));
     connect(m_ui->pushButtonAddAgregate,SIGNAL(clicked()),this,SLOT(on_pushButtonAddAggregate_clicked()));
+    connect(m_ui->lineEditHaving,SIGNAL(textChanged(QString)),this,SLOT(miseAJourResultat()));
 }
 
 dialogRelation::~dialogRelation()
@@ -179,14 +181,27 @@ void dialogRelation::miseAJourResultat()
     {
         //je regarde si un groupe contient une des tables du lien si oui je le rajoute au groupe sinon je crée un groupe et je le mets dedans
         bool leLienEstRange=false;//pour l'instant le lien n'est pas rangé
+        QList<lien*>* premierGroupe=NULL;
         foreach(QList<lien*>* groupeDeLiens,listeDesGroupesDeLiens)//pour chaque groupe de lien
         {
             foreach(lien* unLien,*groupeDeLiens) //pour chaque lien de ce groupe
             {
                 if (unLien->estRelieA(lienARanger)) //ajout du lienARanger au groupe
                 {
-                    *groupeDeLiens<<lienARanger;
-                    leLienEstRange=true;
+
+                    if(premierGroupe!=NULL) //il appartient à deux groupes il faut donc fusionner les deux groupes
+                    {
+                        //fusionner premierGroupe et groupeDeLiens
+                        *premierGroupe<<*groupeDeLiens;
+                        groupeDeLiens->empty();
+                        listeDesGroupesDeLiens.removeOne(groupeDeLiens);
+
+                    }
+                    else
+                    {
+                        *groupeDeLiens<<lienARanger;
+                        leLienEstRange=true;
+                    }
                 }
             }
         }
@@ -582,7 +597,10 @@ void dialogRelation::on_checkBoxGroupBy_clicked()
 }
 void dialogRelation::on_pushButtonAddAggregate_clicked()
 {
-    m_ui->listWidgetAggregates->addItem(m_ui->lineEditAgregate->text());
+    QListWidgetItem * agregat=new QListWidgetItem(0,1002) ;
+    agregat->setFlags (agregat->flags () | Qt::ItemIsEditable);
+    agregat->setText(m_ui->lineEditAgregate->text());
+    m_ui->listWidgetAggregates->addItem(agregat);
     m_ui->lineEditAgregate->setText("");
     miseAJourResultat();
  }
@@ -597,10 +615,7 @@ void dialogRelation::on_listWidgetAggregates_itemClicked(QListWidgetItem* item)
     miseAJourResultat();
 }
 
-void dialogRelation::on_toolButton_clicked()
-{
 
-}
 
 void dialogRelation::on_toolButtonSO_clicked()
 {

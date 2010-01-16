@@ -20,6 +20,8 @@ public:
     }
     table* t1;
     table* t2;
+     QGraphicsTextItem * texte1;
+     QGraphicsTextItem * texte2;
     ~lien();//destructeur
     lien(table* qg1,table* qg2,QGraphicsItem* parent, QGraphicsScene * laScene, QString typ="Natural");//constructeur
     void updatePosition();//lorsqu'une des tables bouge, le lien doit bouger
