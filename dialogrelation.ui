@@ -88,7 +88,7 @@
              <string>...</string>
             </property>
             <property name="icon">
-             <iconset resource="gapQBE.qrc">
+             <iconset>
               <normaloff>:/tables-relation.png</normaloff>:/tables-relation.png</iconset>
             </property>
            </widget>
@@ -102,7 +102,7 @@
              <string>...</string>
             </property>
             <property name="icon">
-             <iconset resource="gapQBE.qrc">
+             <iconset>
               <normaloff>:/arrow-move.png</normaloff>:/arrow-move.png</iconset>
             </property>
            </widget>
@@ -116,7 +116,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="gapQBE.qrc">
+             <iconset>
               <normaloff>:/previewOn</normaloff>:/previewOn</iconset>
             </property>
             <property name="checkable">
@@ -136,7 +136,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="gapQBE.qrc">
+             <iconset>
               <normaloff>:/make</normaloff>:/make</iconset>
             </property>
            </widget>
@@ -163,7 +163,7 @@
              <string>...</string>
             </property>
             <property name="icon">
-             <iconset resource="gapQBE.qrc">
+             <iconset>
               <normaloff>:/zoom-fit-best.png</normaloff>:/zoom-fit-best.png</iconset>
             </property>
            </widget>
@@ -219,7 +219,7 @@
        </layout>
       </widget>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
         <widget class="QLabel" name="label">
@@ -237,7 +237,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QHBoxLayout" name="horizontalLayout_8">
        <item>
         <widget class="QTableWidget" name="tableWidgetPreview">
@@ -307,7 +307,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
         <spacer name="horizontalSpacer">
@@ -328,7 +328,7 @@
           <string>&amp;Quit</string>
          </property>
          <property name="icon">
-          <iconset resource="gapQBE.qrc">
+          <iconset>
            <normaloff>:/close.png</normaloff>:/close.png</iconset>
          </property>
         </widget>
@@ -354,6 +354,31 @@
     <string>actionSuprTable</string>
    </property>
   </action>
+  <action name="actionZoom_in">
+   <property name="text">
+    <string>zoom in</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl++</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
+  </action>
+  <action name="actionZoom_out">
+   <property name="text">
+    <string>zoom out</string>
+   </property>
+   <property name="toolTip">
+    <string>zoom out</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+-</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -362,8 +387,6 @@
    <header>customgraphicsview.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="gapQBE.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

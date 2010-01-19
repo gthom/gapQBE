@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'dialogrelation.ui'
 **
-** Created: Fri Jan 15 11:13:38 2010
+** Created: Mon Jan 18 18:27:37 2010
 **      by: Qt User Interface Compiler version 4.5.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -38,6 +38,8 @@ class Ui_dialogRelation
 public:
     QAction *actionSuprime;
     QAction *actionActionSuprTable;
+    QAction *actionZoom_in;
+    QAction *actionZoom_out;
     QVBoxLayout *verticalLayout_4;
     QSplitter *splitter_2;
     QSplitter *splitter;
@@ -59,11 +61,11 @@ public:
     QToolButton *toolButtonDistinct;
     QSpacerItem *verticalSpacer_2;
     customGraphicsView *graphicsView;
-    QWidget *widget;
+    QWidget *layoutWidget2;
     QHBoxLayout *horizontalLayout;
     QLabel *label;
     QLineEdit *lineEditQuery;
-    QWidget *widget1;
+    QWidget *layoutWidget3;
     QHBoxLayout *horizontalLayout_8;
     QTableWidget *tableWidgetPreview;
     QVBoxLayout *verticalLayout_3;
@@ -76,7 +78,7 @@ public:
     QHBoxLayout *horizontalLayout_7;
     QLabel *label_2;
     QLineEdit *lineEditHaving;
-    QWidget *widget2;
+    QWidget *layoutWidget4;
     QHBoxLayout *horizontalLayout_2;
     QSpacerItem *horizontalSpacer;
     QPushButton *pushButtonQuitter;
@@ -90,6 +92,12 @@ public:
         actionSuprime->setObjectName(QString::fromUtf8("actionSuprime"));
         actionActionSuprTable = new QAction(dialogRelation);
         actionActionSuprTable->setObjectName(QString::fromUtf8("actionActionSuprTable"));
+        actionZoom_in = new QAction(dialogRelation);
+        actionZoom_in->setObjectName(QString::fromUtf8("actionZoom_in"));
+        actionZoom_in->setShortcutContext(Qt::ApplicationShortcut);
+        actionZoom_out = new QAction(dialogRelation);
+        actionZoom_out->setObjectName(QString::fromUtf8("actionZoom_out"));
+        actionZoom_out->setShortcutContext(Qt::ApplicationShortcut);
         verticalLayout_4 = new QVBoxLayout(dialogRelation);
         verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
         splitter_2 = new QSplitter(dialogRelation);
@@ -211,28 +219,28 @@ public:
 
         splitter->addWidget(layoutWidget1);
         splitter_2->addWidget(splitter);
-        widget = new QWidget(splitter_2);
-        widget->setObjectName(QString::fromUtf8("widget"));
-        horizontalLayout = new QHBoxLayout(widget);
+        layoutWidget2 = new QWidget(splitter_2);
+        layoutWidget2->setObjectName(QString::fromUtf8("layoutWidget2"));
+        horizontalLayout = new QHBoxLayout(layoutWidget2);
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         horizontalLayout->setContentsMargins(0, 0, 0, 0);
-        label = new QLabel(widget);
+        label = new QLabel(layoutWidget2);
         label->setObjectName(QString::fromUtf8("label"));
 
         horizontalLayout->addWidget(label);
 
-        lineEditQuery = new QLineEdit(widget);
+        lineEditQuery = new QLineEdit(layoutWidget2);
         lineEditQuery->setObjectName(QString::fromUtf8("lineEditQuery"));
 
         horizontalLayout->addWidget(lineEditQuery);
 
-        splitter_2->addWidget(widget);
-        widget1 = new QWidget(splitter_2);
-        widget1->setObjectName(QString::fromUtf8("widget1"));
-        horizontalLayout_8 = new QHBoxLayout(widget1);
+        splitter_2->addWidget(layoutWidget2);
+        layoutWidget3 = new QWidget(splitter_2);
+        layoutWidget3->setObjectName(QString::fromUtf8("layoutWidget3"));
+        horizontalLayout_8 = new QHBoxLayout(layoutWidget3);
         horizontalLayout_8->setObjectName(QString::fromUtf8("horizontalLayout_8"));
         horizontalLayout_8->setContentsMargins(0, 0, 0, 0);
-        tableWidgetPreview = new QTableWidget(widget1);
+        tableWidgetPreview = new QTableWidget(layoutWidget3);
         tableWidgetPreview->setObjectName(QString::fromUtf8("tableWidgetPreview"));
         QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Expanding);
         sizePolicy1.setHorizontalStretch(2);
@@ -244,24 +252,24 @@ public:
 
         verticalLayout_3 = new QVBoxLayout();
         verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
-        checkBoxGroupBy = new QCheckBox(widget1);
+        checkBoxGroupBy = new QCheckBox(layoutWidget3);
         checkBoxGroupBy->setObjectName(QString::fromUtf8("checkBoxGroupBy"));
 
         verticalLayout_3->addWidget(checkBoxGroupBy);
 
         horizontalLayout_6 = new QHBoxLayout();
         horizontalLayout_6->setObjectName(QString::fromUtf8("horizontalLayout_6"));
-        label_3 = new QLabel(widget1);
+        label_3 = new QLabel(layoutWidget3);
         label_3->setObjectName(QString::fromUtf8("label_3"));
 
         horizontalLayout_6->addWidget(label_3);
 
-        lineEditAgregate = new QLineEdit(widget1);
+        lineEditAgregate = new QLineEdit(layoutWidget3);
         lineEditAgregate->setObjectName(QString::fromUtf8("lineEditAgregate"));
 
         horizontalLayout_6->addWidget(lineEditAgregate);
 
-        pushButtonAddAgregate = new QPushButton(widget1);
+        pushButtonAddAgregate = new QPushButton(layoutWidget3);
         pushButtonAddAgregate->setObjectName(QString::fromUtf8("pushButtonAddAgregate"));
 
         horizontalLayout_6->addWidget(pushButtonAddAgregate);
@@ -269,7 +277,7 @@ public:
 
         verticalLayout_3->addLayout(horizontalLayout_6);
 
-        listWidgetAggregates = new QListWidget(widget1);
+        listWidgetAggregates = new QListWidget(layoutWidget3);
         listWidgetAggregates->setObjectName(QString::fromUtf8("listWidgetAggregates"));
         listWidgetAggregates->setEditTriggers(QAbstractItemView::AnyKeyPressed|QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed);
 
@@ -277,12 +285,12 @@ public:
 
         horizontalLayout_7 = new QHBoxLayout();
         horizontalLayout_7->setObjectName(QString::fromUtf8("horizontalLayout_7"));
-        label_2 = new QLabel(widget1);
+        label_2 = new QLabel(layoutWidget3);
         label_2->setObjectName(QString::fromUtf8("label_2"));
 
         horizontalLayout_7->addWidget(label_2);
 
-        lineEditHaving = new QLineEdit(widget1);
+        lineEditHaving = new QLineEdit(layoutWidget3);
         lineEditHaving->setObjectName(QString::fromUtf8("lineEditHaving"));
 
         horizontalLayout_7->addWidget(lineEditHaving);
@@ -293,17 +301,17 @@ public:
 
         horizontalLayout_8->addLayout(verticalLayout_3);
 
-        splitter_2->addWidget(widget1);
-        widget2 = new QWidget(splitter_2);
-        widget2->setObjectName(QString::fromUtf8("widget2"));
-        horizontalLayout_2 = new QHBoxLayout(widget2);
+        splitter_2->addWidget(layoutWidget3);
+        layoutWidget4 = new QWidget(splitter_2);
+        layoutWidget4->setObjectName(QString::fromUtf8("layoutWidget4"));
+        horizontalLayout_2 = new QHBoxLayout(layoutWidget4);
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
         horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout_2->addItem(horizontalSpacer);
 
-        pushButtonQuitter = new QPushButton(widget2);
+        pushButtonQuitter = new QPushButton(layoutWidget4);
         pushButtonQuitter->setObjectName(QString::fromUtf8("pushButtonQuitter"));
         QIcon icon5;
         icon5.addFile(QString::fromUtf8(":/close.png"), QSize(), QIcon::Normal, QIcon::Off);
@@ -311,7 +319,7 @@ public:
 
         horizontalLayout_2->addWidget(pushButtonQuitter);
 
-        splitter_2->addWidget(widget2);
+        splitter_2->addWidget(layoutWidget4);
 
         verticalLayout_4->addWidget(splitter_2);
 
@@ -330,6 +338,13 @@ public:
 #endif // QT_NO_TOOLTIP
         actionSuprime->setShortcut(QApplication::translate("dialogRelation", "Del", 0, QApplication::UnicodeUTF8));
         actionActionSuprTable->setText(QApplication::translate("dialogRelation", "actionSuprTable", 0, QApplication::UnicodeUTF8));
+        actionZoom_in->setText(QApplication::translate("dialogRelation", "zoom in", 0, QApplication::UnicodeUTF8));
+        actionZoom_in->setShortcut(QApplication::translate("dialogRelation", "Ctrl++", 0, QApplication::UnicodeUTF8));
+        actionZoom_out->setText(QApplication::translate("dialogRelation", "zoom out", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        actionZoom_out->setToolTip(QApplication::translate("dialogRelation", "zoom out", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+        actionZoom_out->setShortcut(QApplication::translate("dialogRelation", "Ctrl+-", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         listWidgetTables->setToolTip(QApplication::translate("dialogRelation", "Table's list", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP

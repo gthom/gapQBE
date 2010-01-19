@@ -22,6 +22,10 @@ signals:
     void jointureRequise(table*,table*);
     void ilYADesTablesAAjouter();
     void supprimerTable(QString nomTable);
+public slots:
+    void zoomIn() { scale(1.2, 1.2); }
+    void zoomOut() { scale(1 / 1.2, 1 / 1.2); }
+
 };
 
 #endif // CUSTOMGRAPHICSVIEW_H

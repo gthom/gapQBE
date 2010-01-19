@@ -36,6 +36,8 @@ private:
     QCustomGraphicsScene scene;
 private slots:
 
+    void on_actionZoom_out_triggered();
+    void on_actionZoom_in_triggered();
     void on_toolButtonDistinct_clicked();
     void on_toolButtonSO_clicked();
     void on_listWidgetAggregates_itemClicked(QListWidgetItem* item);

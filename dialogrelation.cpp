@@ -26,7 +26,7 @@ dialogRelation::dialogRelation(QWidget *parent,QSqlDatabase& pdb) :
     prochainX=20;
     //recup de la base
     db=db.cloneDatabase(pdb,"ploum");
-    QMessageBox::warning(this,"pb",db.lastError().text());
+    //QMessageBox::warning(this,"pb",db.lastError().text());
     db.open();
     //recup des tables de la base
     QStringList listeDesTables=db.tables();
@@ -40,6 +40,10 @@ dialogRelation::dialogRelation(QWidget *parent,QSqlDatabase& pdb) :
     connect (m_ui->checkBoxGroupBy,SIGNAL(clicked()),this,SLOT(on_checkBoxGroupBy_clicked()));
     connect(m_ui->pushButtonAddAgregate,SIGNAL(clicked()),this,SLOT(on_pushButtonAddAggregate_clicked()));
     connect(m_ui->lineEditHaving,SIGNAL(textChanged(QString)),this,SLOT(miseAJourResultat()));
+    //connect(m_ui->actionZoom_in,SIGNAL(triggered()),this,SLOT(on_actionZoom_in_triggered()));
+    m_ui->graphicsView->addAction(m_ui->actionZoom_in);
+    m_ui->graphicsView->addAction(m_ui->actionZoom_out);
+
 }
 
 dialogRelation::~dialogRelation()
@@ -677,4 +681,16 @@ void dialogRelation::on_toolButtonSO_clicked()
 void dialogRelation::on_toolButtonDistinct_clicked()
 {
     miseAJourResultat();
+}
+
+void dialogRelation::on_actionZoom_in_triggered()
+{
+    qDebug()<<"void dialogRelation::on_actionZoom_in_triggered()";
+  m_ui->graphicsView->zoomIn();
+}
+
+void dialogRelation::on_actionZoom_out_triggered()
+{
+  qDebug()<<"void dialogRelation::on_actionZoom_in_triggered()";
+  m_ui->graphicsView->zoomOut();
 }
