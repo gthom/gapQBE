@@ -25,6 +25,9 @@
       </property>
       <widget class="QWidget" name="layoutWidget">
        <layout class="QVBoxLayout" name="verticalLayout">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetMaximumSize</enum>
+        </property>
         <item>
          <widget class="QListWidget" name="listWidgetTables">
           <property name="sizePolicy">
@@ -34,7 +37,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Table's list</string>
+           <string>Table's list from database</string>
           </property>
           <property name="statusTip">
            <string>choose tables you need</string>
@@ -88,7 +91,7 @@
              <string>...</string>
             </property>
             <property name="icon">
-             <iconset>
+             <iconset resource="gapQBE.qrc">
               <normaloff>:/tables-relation.png</normaloff>:/tables-relation.png</iconset>
             </property>
            </widget>
@@ -102,7 +105,7 @@
              <string>...</string>
             </property>
             <property name="icon">
-             <iconset>
+             <iconset resource="gapQBE.qrc">
               <normaloff>:/arrow-move.png</normaloff>:/arrow-move.png</iconset>
             </property>
            </widget>
@@ -116,7 +119,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset>
+             <iconset resource="gapQBE.qrc">
               <normaloff>:/previewOn</normaloff>:/previewOn</iconset>
             </property>
             <property name="checkable">
@@ -130,13 +133,13 @@
           <item>
            <widget class="QToolButton" name="toolButtonExecuteRequete">
             <property name="toolTip">
-             <string>execute the query</string>
+             <string>execute  query</string>
             </property>
             <property name="text">
              <string/>
             </property>
             <property name="icon">
-             <iconset>
+             <iconset resource="gapQBE.qrc">
               <normaloff>:/make</normaloff>:/make</iconset>
             </property>
            </widget>
@@ -144,7 +147,7 @@
           <item>
            <widget class="QToolButton" name="toolButtonAddTables">
             <property name="toolTip">
-             <string>add tables to query</string>
+             <string>addselected  tables to work space</string>
             </property>
             <property name="text">
              <string/>
@@ -163,20 +166,30 @@
              <string>...</string>
             </property>
             <property name="icon">
-             <iconset>
+             <iconset resource="gapQBE.qrc">
               <normaloff>:/zoom-fit-best.png</normaloff>:/zoom-fit-best.png</iconset>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QToolButton" name="toolButtonSO">
+            <property name="toolTip">
+             <string>define result's sort order </string>
+            </property>
             <property name="text">
              <string>SO</string>
+            </property>
+            <property name="icon">
+             <iconset resource="gapQBE.qrc">
+              <normaloff>:/stock_sort-criteria.png</normaloff>:/stock_sort-criteria.png</iconset>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QToolButton" name="toolButtonDistinct">
+            <property name="toolTip">
+             <string>remove result's doubles</string>
+            </property>
             <property name="text">
              <string>D</string>
             </property>
@@ -211,6 +224,9 @@
           <property name="acceptDrops">
            <bool>true</bool>
           </property>
+          <property name="toolTip">
+           <string>Workspace: tables you need</string>
+          </property>
           <property name="dragMode">
            <enum>QGraphicsView::NoDrag</enum>
           </property>
@@ -232,6 +248,13 @@
         <widget class="QLineEdit" name="lineEditQuery">
          <property name="toolTip">
           <string>the sql query</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelQueryState">
+         <property name="text">
+          <string>?</string>
          </property>
         </widget>
        </item>
@@ -328,7 +351,7 @@
           <string>&amp;Quit</string>
          </property>
          <property name="icon">
-          <iconset>
+          <iconset resource="gapQBE.qrc">
            <normaloff>:/close.png</normaloff>:/close.png</iconset>
          </property>
         </widget>
@@ -387,6 +410,8 @@
    <header>customgraphicsview.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="gapQBE.qrc"/>
+ </resources>
  <connections/>
 </ui>

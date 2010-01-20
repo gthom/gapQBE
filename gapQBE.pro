@@ -31,3 +31,6 @@ FORMS += dialoglogin.ui \
     dialogtypejointure.ui \
     dialogsortorder.ui
 RESOURCES += gapQBE.qrc
+TRANSLATIONS = gapQBE_fr.ts
+CODECFORSRC     = UTF-8
+CODECFORTR = UTF-8

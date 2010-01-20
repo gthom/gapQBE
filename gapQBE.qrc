@@ -11,5 +11,6 @@
         <file alias="make" >make.png</file>
         <file>zoom-fit-best.png</file>
         <file>close.png</file>
+        <file>stock_sort-criteria.png</file>
     </qresource>
 </RCC>

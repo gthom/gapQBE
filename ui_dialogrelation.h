@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'dialogrelation.ui'
 **
-** Created: Mon Jan 18 18:27:37 2010
+** Created: Wed Jan 20 17:17:33 2010
 **      by: Qt User Interface Compiler version 4.5.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -65,6 +65,7 @@ public:
     QHBoxLayout *horizontalLayout;
     QLabel *label;
     QLineEdit *lineEditQuery;
+    QLabel *labelQueryState;
     QWidget *layoutWidget3;
     QHBoxLayout *horizontalLayout_8;
     QTableWidget *tableWidgetPreview;
@@ -110,6 +111,7 @@ public:
         layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
         verticalLayout = new QVBoxLayout(layoutWidget);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        verticalLayout->setSizeConstraint(QLayout::SetMaximumSize);
         verticalLayout->setContentsMargins(0, 0, 0, 0);
         listWidgetTables = new QListWidget(layoutWidget);
         listWidgetTables->setObjectName(QString::fromUtf8("listWidgetTables"));
@@ -192,6 +194,9 @@ public:
 
         toolButtonSO = new QToolButton(layoutWidget1);
         toolButtonSO->setObjectName(QString::fromUtf8("toolButtonSO"));
+        QIcon icon5;
+        icon5.addFile(QString::fromUtf8(":/stock_sort-criteria.png"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButtonSO->setIcon(icon5);
 
         verticalLayout_2->addWidget(toolButtonSO);
 
@@ -233,6 +238,11 @@ public:
         lineEditQuery->setObjectName(QString::fromUtf8("lineEditQuery"));
 
         horizontalLayout->addWidget(lineEditQuery);
+
+        labelQueryState = new QLabel(layoutWidget2);
+        labelQueryState->setObjectName(QString::fromUtf8("labelQueryState"));
+
+        horizontalLayout->addWidget(labelQueryState);
 
         splitter_2->addWidget(layoutWidget2);
         layoutWidget3 = new QWidget(splitter_2);
@@ -313,9 +323,9 @@ public:
 
         pushButtonQuitter = new QPushButton(layoutWidget4);
         pushButtonQuitter->setObjectName(QString::fromUtf8("pushButtonQuitter"));
-        QIcon icon5;
-        icon5.addFile(QString::fromUtf8(":/close.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButtonQuitter->setIcon(icon5);
+        QIcon icon6;
+        icon6.addFile(QString::fromUtf8(":/close.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButtonQuitter->setIcon(icon6);
 
         horizontalLayout_2->addWidget(pushButtonQuitter);
 
@@ -346,7 +356,7 @@ public:
 #endif // QT_NO_TOOLTIP
         actionZoom_out->setShortcut(QApplication::translate("dialogRelation", "Ctrl+-", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
-        listWidgetTables->setToolTip(QApplication::translate("dialogRelation", "Table's list", 0, QApplication::UnicodeUTF8));
+        listWidgetTables->setToolTip(QApplication::translate("dialogRelation", "Table's list from database", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
 #ifndef QT_NO_STATUSTIP
         listWidgetTables->setStatusTip(QApplication::translate("dialogRelation", "choose tables you need", 0, QApplication::UnicodeUTF8));
@@ -367,23 +377,33 @@ public:
 #endif // QT_NO_TOOLTIP
         toolButtonApercuAuto->setText(QString());
 #ifndef QT_NO_TOOLTIP
-        toolButtonExecuteRequete->setToolTip(QApplication::translate("dialogRelation", "execute the query", 0, QApplication::UnicodeUTF8));
+        toolButtonExecuteRequete->setToolTip(QApplication::translate("dialogRelation", "execute  query", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         toolButtonExecuteRequete->setText(QString());
 #ifndef QT_NO_TOOLTIP
-        toolButtonAddTables->setToolTip(QApplication::translate("dialogRelation", "add tables to query", 0, QApplication::UnicodeUTF8));
+        toolButtonAddTables->setToolTip(QApplication::translate("dialogRelation", "addselected  tables to work space", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         toolButtonAddTables->setText(QString());
 #ifndef QT_NO_TOOLTIP
         toolButtonFitInView->setToolTip(QApplication::translate("dialogRelation", "best fit in view", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         toolButtonFitInView->setText(QApplication::translate("dialogRelation", "...", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        toolButtonSO->setToolTip(QApplication::translate("dialogRelation", "define result's sort order ", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
         toolButtonSO->setText(QApplication::translate("dialogRelation", "SO", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        toolButtonDistinct->setToolTip(QApplication::translate("dialogRelation", "remove result's doubles", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
         toolButtonDistinct->setText(QApplication::translate("dialogRelation", "D", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        graphicsView->setToolTip(QApplication::translate("dialogRelation", "Workspace: tables you need", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
         label->setText(QApplication::translate("dialogRelation", "SQL:", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         lineEditQuery->setToolTip(QApplication::translate("dialogRelation", "the sql query", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
+        labelQueryState->setText(QApplication::translate("dialogRelation", "?", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         tableWidgetPreview->setToolTip(QApplication::translate("dialogRelation", "The query's rows ", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP

@@ -483,7 +483,8 @@ void dialogRelation::on_lineEditQuery_textChanged(QString leSql )
             if (req.exec(leSql))
             {
 
-                m_ui->tableWidgetPreview->setStyleSheet("background-color:green");
+                //m_ui->tableWidgetPreview->setStyleSheet("background-color:green");
+                m_ui->labelQueryState->setStyleSheet("background-color:green;color:yellow;");
                 m_ui->tableWidgetPreview->clear();
                 //si aperçu auto alors affichage du résultat de la requête
 
@@ -519,7 +520,8 @@ void dialogRelation::on_lineEditQuery_textChanged(QString leSql )
         }
         else
         {
-            m_ui->tableWidgetPreview->setStyleSheet("background-color:red");
+            //m_ui->tableWidgetPreview->setStyleSheet("background-color:red");
+            m_ui->labelQueryState->setStyleSheet("background-color:red;color:white;");
             m_ui->tableWidgetPreview->clear();
             //todo: affichage du message d'erreur quelque part
         }
