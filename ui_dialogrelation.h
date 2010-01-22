@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'dialogrelation.ui'
 **
-** Created: Wed Jan 20 17:17:33 2010
+** Created: Fri Jan 22 10:19:16 2010
 **      by: Qt User Interface Compiler version 4.5.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -257,6 +257,8 @@ public:
         sizePolicy1.setVerticalStretch(0);
         sizePolicy1.setHeightForWidth(tableWidgetPreview->sizePolicy().hasHeightForWidth());
         tableWidgetPreview->setSizePolicy(sizePolicy1);
+        tableWidgetPreview->setDragDropMode(QAbstractItemView::DragOnly);
+        tableWidgetPreview->setAlternatingRowColors(true);
 
         horizontalLayout_8->addWidget(tableWidgetPreview);
 
@@ -281,6 +283,9 @@ public:
 
         pushButtonAddAgregate = new QPushButton(layoutWidget3);
         pushButtonAddAgregate->setObjectName(QString::fromUtf8("pushButtonAddAgregate"));
+        QIcon icon6;
+        icon6.addFile(QString::fromUtf8(":/list-add.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButtonAddAgregate->setIcon(icon6);
 
         horizontalLayout_6->addWidget(pushButtonAddAgregate);
 
@@ -323,9 +328,9 @@ public:
 
         pushButtonQuitter = new QPushButton(layoutWidget4);
         pushButtonQuitter->setObjectName(QString::fromUtf8("pushButtonQuitter"));
-        QIcon icon6;
-        icon6.addFile(QString::fromUtf8(":/close.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButtonQuitter->setIcon(icon6);
+        QIcon icon7;
+        icon7.addFile(QString::fromUtf8(":/close.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButtonQuitter->setIcon(icon7);
 
         horizontalLayout_2->addWidget(pushButtonQuitter);
 

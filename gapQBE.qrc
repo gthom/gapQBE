@@ -12,5 +12,6 @@
         <file>zoom-fit-best.png</file>
         <file>close.png</file>
         <file>stock_sort-criteria.png</file>
+        <file>list-add.png</file>
     </qresource>
 </RCC>

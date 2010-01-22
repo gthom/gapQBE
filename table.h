@@ -38,12 +38,6 @@ public:
     dialogRelation* maman;// lien vers la maman
     QPolygonF polygon(){return QPolygonF(this->boundingRect());};
 
-
-private slots:
-
-
-private slots:
-    void on_checkBoxGroupBy_clicked();
 };
 
 #endif // TABLE_H

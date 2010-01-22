@@ -273,6 +273,12 @@
          <property name="toolTip">
           <string>The query's rows </string>
          </property>
+         <property name="dragDropMode">
+          <enum>QAbstractItemView::DragOnly</enum>
+         </property>
+         <property name="alternatingRowColors">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item>
@@ -300,6 +306,10 @@
             <widget class="QPushButton" name="pushButtonAddAgregate">
              <property name="text">
               <string>&amp;Add</string>
+             </property>
+             <property name="icon">
+              <iconset resource="gapQBE.qrc">
+               <normaloff>:/list-add.png</normaloff>:/list-add.png</iconset>
              </property>
             </widget>
            </item>

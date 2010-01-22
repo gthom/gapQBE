@@ -70,7 +70,6 @@ lien::lien(table* pt1,table* pt2,QGraphicsItem * parent,QGraphicsScene* laScene,
      QColor myColor(Qt::red);
      QPen myPen = pen();
      myPen.setColor(myColor);
-     qreal arrowSize = 20;
      painter->setPen(myPen);
      painter->setBrush(myColor);
      QPointF origine=t1->pos()+QPointF(t1->boundingRect().width()/2,10);

@@ -60,6 +60,7 @@ table::table(dialogRelation* mum,QString nom,qreal x,qreal y, QGraphicsItem* par
         ordonne+=vecteurChamps[noChamp]->boundingRect().height();
         this->setRect(0,0,largeurMaxi+20,ordonne+10);
     }
+    setAcceptDrops(false);
 }
 
 

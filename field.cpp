@@ -23,6 +23,7 @@ field::field(dialogRelation* mum ,bool isFree,QGraphicsScene* pScene,QString pNa
     iconSort->setPos(-8,5);
     //pas de condition sur le champ pour l'instant genre ='Dupond' ou <123
     cond=NULL;
+    setAcceptDrops(true);
     connect(document(),SIGNAL(contentsChanged()),this,SIGNAL(jAiChange()));
     connect(this, SIGNAL(jAiChange()),maman , SLOT(miseAJourResultat()));
 
@@ -108,12 +109,8 @@ void field::contextMenuEvent(QGraphicsSceneMouseEvent *event)
                     //et le trait et l'opérateur
                     //is null is not null
                     //= < > <>
-                    cond=new QGraphicsTextItem(tr("=\"something\""),this,scene());
-                    QObject::connect(cond->document(),SIGNAL(contentsChanged()),maman, SLOT(miseAJourResultat()));
-                    cond->setPos(100+this->boundingRect().width(),0);//QFontMetrics(cond->font()).height()/2);
-                    cond->setTextInteractionFlags(Qt::TextEditable);
-                    //et le trait
-                    trait=new QGraphicsLineItem(this->pos().x()+this->boundingRect().width(),QFontMetrics(cond->font()).height()/2,cond->pos().x(),cond->pos().y()+QFontMetrics(cond->font()).height()/2,this, scene());
+                    ajouteCondition(tr("=\"something\""));
+
                 }
                 else
                 {
@@ -141,6 +138,19 @@ void field::contextMenuEvent(QGraphicsSceneMouseEvent *event)
         emit jAiChange();
     }//fi du si qlq chose a ete fait
 }
+void field::dropEvent( QGraphicsSceneDragDropEvent* event)
+{
+    qDebug()<<"void field::dropEvent(QDropEvent *event)";
+}
+void field::dragEnterEvent( QGraphicsSceneDragDropEvent* event)
+{
+    qDebug()<<"void field::dragEnterEvent(QDragEnterEvent *event)";
+    event->accept();
+}
+void field::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
+{
+    event->accept();
+}
 QString field::getTri()
 {
     QString resultat;
@@ -151,4 +161,19 @@ QString field::getTri()
                 case descSort:resultat="DESC";break;
             }
             return resultat;
+}
+void field::ajouteCondition(QString texteCondition)
+{
+    cond=new QGraphicsTextItem(texteCondition,this,scene());
+    QObject::connect(cond->document(),SIGNAL(contentsChanged()),maman, SLOT(miseAJourResultat()));
+    cond->setPos(100+this->boundingRect().width(),0);
+    cond->setTextInteractionFlags(Qt::TextEditable);
+    //et le trait
+    trait=new QGraphicsLineItem(this->pos().x()+this->boundingRect().width(),QFontMetrics(cond->font()).height()/2,cond->pos().x(),cond->pos().y()+QFontMetrics(cond->font()).height()/2,this, scene());
+    emit jAiChange();
+}
+void field::modifieCondition(QString texteDeLaCondition)
+{
+    cond->document()->setPlainText(texteDeLaCondition);
+    emit jAiChange();
 }

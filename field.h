@@ -31,6 +31,11 @@ public:
     enum typeDeTri{noSort,ascSort,descSort} tri;
     int  numeroDansLeTri;
     QString getTri();
+    void dropEvent( QGraphicsSceneDragDropEvent* event);
+    void dragEnterEvent( QGraphicsSceneDragDropEvent* event);
+    void dragMoveEvent(QGraphicsSceneDragDropEvent *event);
+    void ajouteCondition(QString texteCondition);
+    void modifieCondition(QString);
   signals:
           void jAiChange();
 };

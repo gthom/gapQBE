@@ -28,7 +28,13 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
         {
             QDrag *drag = new QDrag(((QWidget*)this->parent()));
             QMimeData *mimeData = new QMimeData;
-            mimeData->setText(elt->data(32).toString()+';'+elt->data(33).toString()+';'+elt->data(34).toString());
+            QByteArray qba;
+            qba.append(elt->data(32).toString());
+            qba.append(";");
+            qba.append(elt->data(33).toString());
+            qba.append(";");
+            qba.append(elt->data(34).toString());
+            mimeData->setData("text/table",qba);
             drag->setMimeData(mimeData);
             //drag->setPixmap(iconPixmap);
             Qt::DropAction dropAction = drag->exec();
