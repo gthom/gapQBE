@@ -304,6 +304,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="pushButtonAddAgregate">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>&amp;Add</string>
              </property>
@@ -335,6 +338,13 @@
             <widget class="QLineEdit" name="lineEditHaving"/>
            </item>
           </layout>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonExportCsv">
+           <property name="text">
+            <string>&amp;Enregistrer csv</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>

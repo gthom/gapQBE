@@ -14,6 +14,7 @@
 #include <QSqlResult>
 #include    <QMessageBox>
 #include "ui_dialogsortorder.h"
+#include <QFileDialog>
 
 
 dialogRelation::dialogRelation(QWidget *parent,QSqlDatabase& pdb) :
@@ -40,6 +41,7 @@ dialogRelation::dialogRelation(QWidget *parent,QSqlDatabase& pdb) :
     connect (m_ui->checkBoxGroupBy,SIGNAL(clicked()),this,SLOT(on_checkBoxGroupBy_clicked()));
     connect(m_ui->pushButtonAddAgregate,SIGNAL(clicked()),this,SLOT(on_pushButtonAddAggregate_clicked()));
     connect(m_ui->lineEditHaving,SIGNAL(textChanged(QString)),this,SLOT(miseAJourResultat()));
+    //connect(m_ui->pushButtonExportCsv,SIGNAL(clicked()),this,SLOT(on_pushButtonExportCsv_clicked()));
     //connect(m_ui->actionZoom_in,SIGNAL(triggered()),this,SLOT(on_actionZoom_in_triggered()));
     m_ui->graphicsView->addAction(m_ui->actionZoom_in);
     m_ui->graphicsView->addAction(m_ui->actionZoom_out);
@@ -346,7 +348,7 @@ void dialogRelation::miseAJourResultat()
     //ajout des champs libres:
     foreach (field* leChamp,vectChampsLibres)
     {
-        listeDesChosesAAfficher.append(leChamp->document()->toPlainText());
+        if(leChamp->affiche)listeDesChosesAAfficher.append(leChamp->document()->toPlainText());
     }
     if(!listeDesChosesAAfficher.empty() && m_ui->toolButtonDistinct->isChecked())
         select+=" distinct ";
@@ -695,4 +697,64 @@ void dialogRelation::on_actionZoom_out_triggered()
 {
   qDebug()<<"void dialogRelation::on_actionZoom_in_triggered()";
   m_ui->graphicsView->zoomOut();
+}
+int dialogRelation::nombreDeChampsDansLeSelect()
+{
+    QStringList listeDesChosesAAfficher;
+
+    QMap<int,QString> maMap;
+    foreach (table * uneTable, vectTables)
+    {
+        foreach (field * unChamp, uneTable->vecteurChamps)
+        {
+
+
+            if(unChamp->affiche) listeDesChosesAAfficher.append(unChamp->nomInitial);
+
+        }
+    }
+    //ajout des champs libres:
+    foreach (field* leChamp,vectChampsLibres)
+    {
+        if(leChamp->affiche) listeDesChosesAAfficher.append(leChamp->document()->toPlainText());
+    }
+
+    //ajouter ici les champs calculés devant être affichés
+    QStringList listeDesChampCalcules;
+    for(int noChamp=0;noChamp<m_ui->listWidgetAggregates->count();noChamp++)
+    {
+        listeDesChampCalcules<<m_ui->listWidgetAggregates->item(noChamp)->text();
+    }
+    return listeDesChampCalcules.count()+listeDesChosesAAfficher.count();
+}
+
+void dialogRelation::on_pushButtonExportCsv_clicked()
+{
+    QFileDialog dialog(this);
+    dialog.setFileMode(QFileDialog::AnyFile);
+    dialog.setNameFilter(tr("Text files (*.csv *.txt)"));
+    if(dialog.exec())
+    {
+        QFile fichierCsv(dialog.selectedFiles()[0]);
+        if(fichierCsv.open(QIODevice::WriteOnly|QIODevice::Text))
+        {
+            for(int noLigne=0;noLigne<m_ui->tableWidgetPreview->rowCount();noLigne++)
+            {
+                QStringList ligne;
+                for(int noCol=0;noCol<m_ui->tableWidgetPreview->columnCount();noCol++)
+                {
+                    ligne.append(m_ui->tableWidgetPreview->item(noLigne,noCol)->text());
+                }
+                fichierCsv.write(ligne.join(";").toLatin1());
+                fichierCsv.write("\n");
+            }
+        }
+        fichierCsv.close();
+    }
+
+}
+
+void dialogRelation::on_lineEditAgregate_textChanged(QString leContenu)
+{
+    m_ui->pushButtonAddAgregate->setEnabled( !leContenu.isEmpty());
 }

@@ -25,6 +25,7 @@ public:
     long prochainX;//abscisse de la prochaine table insérée
     Ui::dialogRelation * m_uip(){return m_ui;};
     QVector <field*> vectChampsLibres;
+    int nombreDeChampsDansLeSelect();
 protected:
     virtual void changeEvent(QEvent *e);
 
@@ -36,6 +37,8 @@ private:
     QCustomGraphicsScene scene;
 private slots:
 
+    void on_lineEditAgregate_textChanged(QString );
+    void on_pushButtonExportCsv_clicked();
     void on_actionZoom_out_triggered();
     void on_actionZoom_in_triggered();
     void on_toolButtonDistinct_clicked();

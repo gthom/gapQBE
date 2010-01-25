@@ -21,6 +21,7 @@ field::field(dialogRelation* mum ,bool isFree,QGraphicsScene* pScene,QString pNa
     tri=noSort;//pas de tri sur le champ
     iconSort=new QGraphicsPixmapItem(QPixmap(),this,pScene);
     iconSort->setPos(-8,5);
+    numeroOrdreDansLeSelect=-1;
     //pas de condition sur le champ pour l'instant genre ='Dupond' ou <123
     cond=NULL;
     setAcceptDrops(true);
@@ -63,6 +64,14 @@ void field::contextMenuEvent(QGraphicsSceneMouseEvent *event)
         {
             this->affiche=!this->affiche;
             this->oeil->setVisible(this->affiche);
+            if(this->affiche)
+            {
+                this->numeroOrdreDansLeSelect=maman->nombreDeChampsDansLeSelect();
+            }
+            else
+            {
+                this->numeroOrdreDansLeSelect=-1;
+            }
         }
         else
         {
@@ -170,10 +179,12 @@ void field::ajouteCondition(QString texteCondition)
     cond->setTextInteractionFlags(Qt::TextEditable);
     //et le trait
     trait=new QGraphicsLineItem(this->pos().x()+this->boundingRect().width(),QFontMetrics(cond->font()).height()/2,cond->pos().x(),cond->pos().y()+QFontMetrics(cond->font()).height()/2,this, scene());
+    //prise en compte de la modif pour raffraîchir le résultat de la requête
     emit jAiChange();
 }
 void field::modifieCondition(QString texteDeLaCondition)
 {
     cond->document()->setPlainText(texteDeLaCondition);
+    //prise en compte de la modif pour raffraîchir le résultat de la requête
     emit jAiChange();
 }

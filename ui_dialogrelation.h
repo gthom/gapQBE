@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'dialogrelation.ui'
 **
-** Created: Fri Jan 22 10:19:16 2010
+** Created: Mon Jan 25 15:59:32 2010
 **      by: Qt User Interface Compiler version 4.5.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -79,6 +79,7 @@ public:
     QHBoxLayout *horizontalLayout_7;
     QLabel *label_2;
     QLineEdit *lineEditHaving;
+    QPushButton *pushButtonExportCsv;
     QWidget *layoutWidget4;
     QHBoxLayout *horizontalLayout_2;
     QSpacerItem *horizontalSpacer;
@@ -283,6 +284,7 @@ public:
 
         pushButtonAddAgregate = new QPushButton(layoutWidget3);
         pushButtonAddAgregate->setObjectName(QString::fromUtf8("pushButtonAddAgregate"));
+        pushButtonAddAgregate->setEnabled(false);
         QIcon icon6;
         icon6.addFile(QString::fromUtf8(":/list-add.png"), QSize(), QIcon::Normal, QIcon::Off);
         pushButtonAddAgregate->setIcon(icon6);
@@ -312,6 +314,11 @@ public:
 
 
         verticalLayout_3->addLayout(horizontalLayout_7);
+
+        pushButtonExportCsv = new QPushButton(layoutWidget3);
+        pushButtonExportCsv->setObjectName(QString::fromUtf8("pushButtonExportCsv"));
+
+        verticalLayout_3->addWidget(pushButtonExportCsv);
 
 
         horizontalLayout_8->addLayout(verticalLayout_3);
@@ -416,6 +423,7 @@ public:
         label_3->setText(QApplication::translate("dialogRelation", "Aggregate:", 0, QApplication::UnicodeUTF8));
         pushButtonAddAgregate->setText(QApplication::translate("dialogRelation", "&Add", 0, QApplication::UnicodeUTF8));
         label_2->setText(QApplication::translate("dialogRelation", "Postcondition", 0, QApplication::UnicodeUTF8));
+        pushButtonExportCsv->setText(QApplication::translate("dialogRelation", "&Enregistrer csv", 0, QApplication::UnicodeUTF8));
         pushButtonQuitter->setText(QApplication::translate("dialogRelation", "&Quit", 0, QApplication::UnicodeUTF8));
         Q_UNUSED(dialogRelation);
     } // retranslateUi

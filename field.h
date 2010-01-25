@@ -30,6 +30,7 @@ public:
     bool freeField;
     enum typeDeTri{noSort,ascSort,descSort} tri;
     int  numeroDansLeTri;
+    int numeroOrdreDansLeSelect;
     QString getTri();
     void dropEvent( QGraphicsSceneDragDropEvent* event);
     void dragEnterEvent( QGraphicsSceneDragDropEvent* event);
