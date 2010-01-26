@@ -62,6 +62,8 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
                     {
                         dialogRelation* maman=(dialogRelation*)parent();
                         field * nouveauChamp=new field(maman,true,this,"\"something\"",0);
+                        //c'est un champ en dehors de tte table
+                        nouveauChamp->laTable=NULL;
                         nouveauChamp->setPos(mouseEvent->scenePos());
                         nouveauChamp->setData(32,"Field");
                         //nouveauChamp->setData(33,nomDuChamp);

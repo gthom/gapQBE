@@ -69,7 +69,7 @@ void dialogRelation::changeEvent(QEvent *e)
 void dialogRelation::tableSupprimer()
 {
     //supprime une table ou plusieurs tables dans la graphics view
-
+    qDebug()<<"void dialogRelation::tableSupprimer()";
     foreach (QGraphicsItem *item, scene.selectedItems())
     {
         if (item->data(32) == "Table")
@@ -137,12 +137,14 @@ void dialogRelation::jointure(table* t1,table* t2)
 
 void dialogRelation::on_toolButtonMove_clicked()
 {
+    qDebug()<<"void dialogRelation::on_toolButtonMove_clicked()";
     //Choix de l'outil move
     scene.outil="move";
     m_ui->graphicsView->setCursor(QCursor(Qt::ArrowCursor));
 }
 void dialogRelation::on_toolButtonJoin_clicked()
 {
+    qDebug()<<"void dialogRelation::on_toolButtonJoin_clicked()";
     //choix de l'outil drag
     scene.outil="drag";
     m_ui->graphicsView->setCursor(QCursor(Qt::PointingHandCursor));
@@ -156,6 +158,8 @@ void dialogRelation::tableAjouterChamp(table * laTable)
     qDebug()<<"void dialogRelation::tableAjouterChamp()";
     QString nomDuChamp="\"Some Text\"";
     field* nouveauChamp=new field(this,true,&scene,nomDuChamp,laTable);
+    //c'est sa table
+    nouveauChamp->laTable=laTable;
     //ajout du nouveau champ au vecteur des champs
     laTable->vecteurChamps.append(nouveauChamp);
     //augmenter la hauteur de la table
@@ -352,9 +356,13 @@ void dialogRelation::miseAJourResultat()
     }
     if(!listeDesChosesAAfficher.empty() && m_ui->toolButtonDistinct->isChecked())
         select+=" distinct ";
-    select +=listeDesChosesAAfficher.join(",");
+    //ATTENTION TEST
+    //select +=listeDesChosesAAfficher.join(",");
+    //Remplacé par
+    QString what=selectDansLOrdre();
+    select+=what;
     //ajouter ici les champs calculés
-    QStringList listeDesChampCalcules;
+    /*QStringList listeDesChampCalcules;
     for(int noChamp=0;noChamp<m_ui->listWidgetAggregates->count();noChamp++)
     {
         listeDesChampCalcules<<m_ui->listWidgetAggregates->item(noChamp)->text();
@@ -367,6 +375,7 @@ void dialogRelation::miseAJourResultat()
         }
         select+=listeDesChampCalcules.join(",");
     }
+    */
     //trier la liste des champs participants au tri par leur ordre d'apparition
 
     //order by
@@ -381,7 +390,7 @@ void dialogRelation::miseAJourResultat()
     //ajouter maintenant au select les agrégats affichés
     //construire le having
     QString requete="";
-    if(!listeDesChosesAAfficher.empty()||!listeDesChampCalcules.empty())
+    if(!what.isEmpty())
     {
         requete=select;
         if(!(from.isEmpty()))
@@ -417,6 +426,7 @@ void dialogRelation::miseAJourResultat()
 
 void dialogRelation::changeJoinType(lien * leLien)
 {   //appelé par le menu contextuel changer le type du lien
+    qDebug()<<"void dialogRelation::changeJoinType(lien * leLien)";
     DialogTypeJointure dd;
     if(dd.exec())
     {
@@ -443,8 +453,9 @@ void dialogRelation::supprimerLien(lien * leLien)
 }
 
 void dialogRelation::on_lineEditQuery_textChanged(QString leSql )
-{   qlonglong nbLignes;
+{
     qDebug()<<"void dialogRelation::on_lineEditQuery_textChanged(QString leSql )";
+    qlonglong nbLignes;
     if(m_ui->toolButtonApercuAuto->isChecked())
     {
         QSqlQuery req;
@@ -550,6 +561,7 @@ void dialogRelation::on_toolButtonApercuAuto_clicked()
 
 void dialogRelation::on_toolButtonAddTables_clicked()
 {
+    qDebug()<<"void dialogRelation::on_toolButtonAddTables_clicked()";
     //ajout de la table sélectionnée à la customGraphicsView
     if(!m_ui->listWidgetTables->selectedItems().empty())
     {
@@ -579,6 +591,7 @@ void dialogRelation::on_toolButtonAddTables_clicked()
 
 void dialogRelation::on_listWidgetTables_itemSelectionChanged()
 {
+    qDebug()<<"void dialogRelation::on_listWidgetTables_itemSelectionChanged()";
     m_ui->toolButtonAddTables->setEnabled(!m_ui->listWidgetTables->selectedItems().empty());
 }
 
@@ -588,6 +601,7 @@ void dialogRelation::on_pushButtonQuitter_clicked()
 }
 void dialogRelation::closeEvent(QCloseEvent * event)
 {
+    qDebug()<<"void dialogRelation::closeEvent(QCloseEvent * event)";
     if(QMessageBox::warning(this,this->windowTitle(),tr("Do you really want to Quit"),QMessageBox::Yes|QMessageBox::No,QMessageBox::No)==QMessageBox::Yes)
     {
         event->accept();
@@ -596,15 +610,17 @@ void dialogRelation::closeEvent(QCloseEvent * event)
 }
 void dialogRelation::on_toolButtonFitInView_clicked()
 {
+    qDebug()<<"void dialogRelation::on_toolButtonFitInView_clicked()";
     m_ui->graphicsView->fitInView(m_ui->graphicsView->sceneRect());
 }
 void dialogRelation::on_checkBoxGroupBy_clicked()
 {
-
+    qDebug()<<"void dialogRelation::on_checkBoxGroupBy_clicked()";
     this->miseAJourResultat();
 }
 void dialogRelation::on_pushButtonAddAggregate_clicked()
 {
+    qDebug()<<"void dialogRelation::on_pushButtonAddAggregate_clicked()";
     QListWidgetItem * agregat=new QListWidgetItem(0,1002) ;
     agregat->setFlags (agregat->flags () | Qt::ItemIsEditable);
     agregat->setText(m_ui->lineEditAgregate->text());
@@ -617,6 +633,7 @@ void dialogRelation::on_pushButtonAddAggregate_clicked()
 
 void dialogRelation::on_listWidgetAggregates_itemClicked(QListWidgetItem* item)
 {
+    qDebug()<<"void dialogRelation::on_listWidgetAggregates_itemClicked(QListWidgetItem* item)";
     m_ui->lineEditAgregate->setText(item->text());
     //et effacement de l'elt
     m_ui->listWidgetAggregates->takeItem(m_ui->listWidgetAggregates->currentRow());
@@ -627,6 +644,7 @@ void dialogRelation::on_listWidgetAggregates_itemClicked(QListWidgetItem* item)
 
 void dialogRelation::on_toolButtonSO_clicked()
 {
+    qDebug()<<"void dialogRelation::on_toolButtonSO_clicked()";
     dialogSortOrder * ds;
     ds=new dialogSortOrder(this);
     ds->setWindowTitle(this->windowTitle()+tr("Define sort order"));
@@ -684,6 +702,7 @@ void dialogRelation::on_toolButtonSO_clicked()
 
 void dialogRelation::on_toolButtonDistinct_clicked()
 {
+    qDebug()<<"void dialogRelation::on_toolButtonDistinct_clicked()";
     miseAJourResultat();
 }
 
@@ -698,38 +717,63 @@ void dialogRelation::on_actionZoom_out_triggered()
   qDebug()<<"void dialogRelation::on_actionZoom_in_triggered()";
   m_ui->graphicsView->zoomOut();
 }
-int dialogRelation::nombreDeChampsDansLeSelect()
+QMap <int,QString> dialogRelation::mapSelect()
 {
-    QStringList listeDesChosesAAfficher;
-
     QMap<int,QString> maMap;
+    //on commence par ajouter les champs des tables
     foreach (table * uneTable, vectTables)
     {
         foreach (field * unChamp, uneTable->vecteurChamps)
         {
-
-
-            if(unChamp->affiche) listeDesChosesAAfficher.append(unChamp->nomInitial);
+            if(unChamp->affiche) maMap[unChamp->numeroOrdreDansLeSelect]=unChamp->getNomComplet();
 
         }
     }
-    //ajout des champs libres:
+    //puis on passe aux champs en dehors des tables(les champs libres
+    //ajout des champs libres devant être affichés:
     foreach (field* leChamp,vectChampsLibres)
     {
-        if(leChamp->affiche) listeDesChosesAAfficher.append(leChamp->document()->toPlainText());
+        if(leChamp->affiche) maMap[leChamp->numeroOrdreDansLeSelect]=leChamp->document()->toPlainText();
     }
-
-    //ajouter ici les champs calculés devant être affichés
-    QStringList listeDesChampCalcules;
+    //et enfin les champs calculés
     for(int noChamp=0;noChamp<m_ui->listWidgetAggregates->count();noChamp++)
     {
-        listeDesChampCalcules<<m_ui->listWidgetAggregates->item(noChamp)->text();
+        maMap[m_ui->listWidgetAggregates->item(noChamp)->data(32).toInt()]=m_ui->listWidgetAggregates->item(noChamp)->text();
     }
-    return listeDesChampCalcules.count()+listeDesChosesAAfficher.count();
+    return maMap;
+}
+QString dialogRelation::selectDansLOrdre()
+{
+    qDebug()<<"QString dialogRelation::selectDansLOrdre()";
+    //renvoie la chaine avant le from
+    QStringList sl;
+    foreach (QString valeur,mapSelect())
+    {
+        sl<<valeur;
+    }
+    return sl.join(",");
+}
+int dialogRelation::maxCleDeLaMap()
+{   qDebug()<<"int dialogRelation::maxCleDeLaMap()";
+    //renvoie le + gros numéro d'affichage donc le numéro d'ordre du champ juste avent le from
+    int max=0;
+
+    foreach (int valeur,mapSelect().keys())
+    {
+        if(max<valeur) max=valeur;
+    }
+    return max;
+}
+int dialogRelation::nombreDeChampsDansLeSelect()
+{
+    qDebug()<<"int dialogRelation::nombreDeChampsDansLeSelect()";
+    return mapSelect().count();
 }
 
 void dialogRelation::on_pushButtonExportCsv_clicked()
 {
+    qDebug()<<"void dialogRelation::on_pushButtonExportCsv_clicked()";
+    //export du résultat au format csv
     QFileDialog dialog(this);
     dialog.setFileMode(QFileDialog::AnyFile);
     dialog.setNameFilter(tr("Text files (*.csv *.txt)"));
@@ -756,5 +800,6 @@ void dialogRelation::on_pushButtonExportCsv_clicked()
 
 void dialogRelation::on_lineEditAgregate_textChanged(QString leContenu)
 {
+    qDebug()<<"void dialogRelation::on_lineEditAgregate_textChanged(QString leContenu)";
     m_ui->pushButtonAddAgregate->setEnabled( !leContenu.isEmpty());
 }

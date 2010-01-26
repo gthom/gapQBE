@@ -26,6 +26,7 @@ public:
     }
 
     table(dialogRelation* mum,QString nom,qreal x,qreal y, QGraphicsItem* parent, QGraphicsScene * laScene, QStringList listeDesChamps);
+    ~table();
     QGraphicsTextItem* title;//le titre
     QGraphicsLineItem* laLigne;//la ligne sous le titre ui
     QString nomTable;//nom de la table

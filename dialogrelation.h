@@ -25,7 +25,12 @@ public:
     long prochainX;//abscisse de la prochaine table insérée
     Ui::dialogRelation * m_uip(){return m_ui;};
     QVector <field*> vectChampsLibres;
-    int nombreDeChampsDansLeSelect();
+    //qlulques méthodes
+    int nombreDeChampsDansLeSelect();//nb de champs affichés
+    int maxCleDeLaMap();//numéro du dernier Champ affiché
+    QString selectDansLOrdre();//chaîne avant le from sans select;
+    QMap <int,QString> mapSelect();//renvoie la map numero d'ordre,chaine du champ
+
 protected:
     virtual void changeEvent(QEvent *e);
 
@@ -63,7 +68,8 @@ public slots:
     void closeEvent(QCloseEvent * event);
     void on_toolButtonFitInView_clicked();//fi in view
     void on_checkBoxGroupBy_clicked();//group by clické
-    void on_pushButtonAddAggregate_clicked();
+    void on_pushButtonAddAggregate_clicked();//ajout d'un agrégat
+
 
 };
 

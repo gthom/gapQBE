@@ -9,12 +9,22 @@
 #include "field.h"
 #include <QInputDialog>
 
-
+table::~table()
+{
+    qDebug()<<"table::~table()";
+    delete this->laLigne;
+    delete this->title;
+    //effacement des champs
+    foreach(field* leChamp,vecteurChamps)
+    {
+        delete leChamp;
+    }
+}
 table::table(dialogRelation* mum,QString nom,qreal x,qreal y, QGraphicsItem* parent, QGraphicsScene * laScene,QStringList listeDesChamps)
         :maman(mum),QGraphicsRectItem(x,y,200,200,parent,laScene)
 
 {
-
+qDebug()<<"constructeur de table";
     nomTable=nom;
     alias="";
     //le titre
@@ -53,6 +63,8 @@ table::table(dialogRelation* mum,QString nom,qreal x,qreal y, QGraphicsItem* par
     {
         vecteurChamps.push_back(new field(maman,false,laScene,listeDesChamps[noChamp],this));
         vecteurChamps[noChamp]->setPos(10,ordonne);
+        //sa table c'est moi
+        vecteurChamps[noChamp]->laTable=this;
         //les champs d'origine ne peuvent être modifiés
           //vecteurChamps[noChamp]->setTextInteractionFlags(Qt::TextEditable);
         vecteurChamps[noChamp]->setData(32,"Field");
@@ -187,6 +199,7 @@ table::table(dialogRelation* mum,QString nom,qreal x,qreal y, QGraphicsItem* par
 QVariant table::itemChange(GraphicsItemChange change,const QVariant &value)
 
 {
+    qDebug()<<"QVariant table::itemChange(GraphicsItemChange change,const QVariant &value)";
     if (change == QGraphicsItem::ItemPositionChange) {
          foreach (lien *leLien, vectLiens) {
              leLien->updatePosition();

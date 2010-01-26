@@ -9,6 +9,7 @@
 field::field(dialogRelation* mum ,bool isFree,QGraphicsScene* pScene,QString pName,QGraphicsItem* pParent)
     :QGraphicsTextItem(pName,pParent,pScene)
 {
+    qDebug()<<"constructeur de field";
     maman=mum;
     nomInitial=pName;
     //affichage de l'oeil fermé: le champ n'est pas affiché
@@ -28,6 +29,26 @@ field::field(dialogRelation* mum ,bool isFree,QGraphicsScene* pScene,QString pNa
     connect(document(),SIGNAL(contentsChanged()),this,SIGNAL(jAiChange()));
     connect(this, SIGNAL(jAiChange()),maman , SLOT(miseAJourResultat()));
 
+}
+field::~field()
+{
+    qDebug()<<"field::~field()";
+    if(cond!=NULL)
+    {
+        delete cond;
+        delete trait;
+    }
+    if(oeil!=NULL) delete oeil;
+    if(iconSort !=NULL) delete iconSort;
+    //le champ s'enlève du vecteur ou il est stocké
+    if(laTable!=NULL)
+    {
+        laTable->vecteurChamps.remove(laTable->vecteurChamps.indexOf(this),1);
+    }
+    else
+    {//champ en dehors d'une table
+        maman->vectChampsLibres.remove(maman->vectChampsLibres.indexOf(this),1);
+    }
 }
 void field::contextMenuEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -66,7 +87,7 @@ void field::contextMenuEvent(QGraphicsSceneMouseEvent *event)
             this->oeil->setVisible(this->affiche);
             if(this->affiche)
             {
-                this->numeroOrdreDansLeSelect=maman->nombreDeChampsDansLeSelect();
+                this->numeroOrdreDansLeSelect=maman->maxCleDeLaMap()+1;
             }
             else
             {
@@ -135,7 +156,7 @@ void field::contextMenuEvent(QGraphicsSceneMouseEvent *event)
                     {
                         if(actionChoisie==removeAction)
                         {
-                            maman->vectChampsLibres.remove(maman->vectChampsLibres.indexOf(this),1);
+
                             //si c'est un champ d'une table redimensionnement
                             deleteLater();
                         }
@@ -158,10 +179,12 @@ void field::dragEnterEvent( QGraphicsSceneDragDropEvent* event)
 }
 void field::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 {
+    qDebug()<<"void field::dragMoveEvent(QGraphicsSceneDragDropEvent *event)";
     event->accept();
 }
 QString field::getTri()
 {
+    qDebug()<<"QString field::getTri()";
     QString resultat;
             switch(tri)
             {
@@ -173,6 +196,7 @@ QString field::getTri()
 }
 void field::ajouteCondition(QString texteCondition)
 {
+    qDebug()<<"void field::ajouteCondition(QString texteCondition)";
     cond=new QGraphicsTextItem(texteCondition,this,scene());
     QObject::connect(cond->document(),SIGNAL(contentsChanged()),maman, SLOT(miseAJourResultat()));
     cond->setPos(100+this->boundingRect().width(),0);
@@ -184,7 +208,17 @@ void field::ajouteCondition(QString texteCondition)
 }
 void field::modifieCondition(QString texteDeLaCondition)
 {
+    qDebug()<<"void field::modifieCondition(QString texteDeLaCondition)";
     cond->document()->setPlainText(texteDeLaCondition);
     //prise en compte de la modif pour raffraîchir le résultat de la requête
     emit jAiChange();
 }
+QString field::getNomComplet()
+{
+    qDebug()<<"QString field::getNomComplet()";
+        if(laTable==NULL || freeField) return(document()->toPlainText());
+        else
+        {
+            return(laTable->getNomTable()+"."+document()->toPlainText());
+        }
+};//renvoie le nom sans ambigüité
