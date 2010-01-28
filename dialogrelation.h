@@ -30,6 +30,10 @@ public:
     int maxCleDeLaMap();//numéro du dernier Champ affiché
     QString selectDansLOrdre();//chaîne avant le from sans select;
     QMap <int,QString> mapSelect();//renvoie la map numero d'ordre,chaine du champ
+    bool requeteOk;//le mettre a false ds le constructeur
+    QStringList listeDesChampsDuResultat;
+    QCustomGraphicsScene* getScene(){return &scene;};
+    void ajouteTable(table* t);
 
 protected:
     virtual void changeEvent(QEvent *e);
@@ -40,8 +44,10 @@ private:
 
     QVector <lien*> vectLiens;
     QCustomGraphicsScene scene;
+
 private slots:
 
+    void on_toolButtonAddTables_clicked();
     void on_lineEditAgregate_textChanged(QString );
     void on_pushButtonExportCsv_clicked();
     void on_actionZoom_out_triggered();
@@ -51,7 +57,7 @@ private slots:
     void on_listWidgetAggregates_itemClicked(QListWidgetItem* item);
     void on_pushButtonQuitter_clicked();
     void on_listWidgetTables_itemSelectionChanged();
-    void on_toolButtonAddTables_clicked();
+    void allezAllezOnAjouteLesTables(QPoint);
     void on_toolButtonApercuAuto_clicked();
     void on_lineEditQuery_textChanged(QString );
     void on_toolButtonJoin_clicked();//sélection de l'outil relier
@@ -69,7 +75,8 @@ public slots:
     void on_toolButtonFitInView_clicked();//fi in view
     void on_checkBoxGroupBy_clicked();//group by clické
     void on_pushButtonAddAggregate_clicked();//ajout d'un agrégat
-
+signals:
+        void ilYADesTablesAAjouter(QPoint);
 
 };
 

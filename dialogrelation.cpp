@@ -22,6 +22,7 @@ dialogRelation::dialogRelation(QWidget *parent,QSqlDatabase& pdb) :
         QDialog(parent),
         m_ui(new Ui::dialogRelation)
 {
+    requeteOk=false;
     m_ui->setupUi(this);
     //abscisse de la prochaine table
     prochainX=20;
@@ -36,13 +37,12 @@ dialogRelation::dialogRelation(QWidget *parent,QSqlDatabase& pdb) :
 
 
     connect (m_ui->graphicsView,SIGNAL(jointureRequise(table *,table *)),this,SLOT(jointure(table*,table*)));
-    connect (m_ui->graphicsView,SIGNAL(ilYADesTablesAAjouter()),this,SLOT(on_toolButtonAddTables_clicked()));
+    connect (m_ui->graphicsView,SIGNAL(ilYADesTablesAAjouter(QPoint)),this,SLOT(allezAllezOnAjouteLesTables(QPoint)));
+    connect (this,SIGNAL(ilYADesTablesAAjouter(QPoint)),this,SLOT(allezAllezOnAjouteLesTables(QPoint)));  
     connect(m_ui->toolButtonExecuteRequete,SIGNAL(clicked()),this,SLOT(miseAJourResultat()));
     connect (m_ui->checkBoxGroupBy,SIGNAL(clicked()),this,SLOT(on_checkBoxGroupBy_clicked()));
     connect(m_ui->pushButtonAddAgregate,SIGNAL(clicked()),this,SLOT(on_pushButtonAddAggregate_clicked()));
     connect(m_ui->lineEditHaving,SIGNAL(textChanged(QString)),this,SLOT(miseAJourResultat()));
-    //connect(m_ui->pushButtonExportCsv,SIGNAL(clicked()),this,SLOT(on_pushButtonExportCsv_clicked()));
-    //connect(m_ui->actionZoom_in,SIGNAL(triggered()),this,SLOT(on_actionZoom_in_triggered()));
     m_ui->graphicsView->addAction(m_ui->actionZoom_in);
     m_ui->graphicsView->addAction(m_ui->actionZoom_out);
 
@@ -441,10 +441,6 @@ void dialogRelation::changeJoinType(lien * leLien)
 void dialogRelation::supprimerLien(lien * leLien)
 {
     qDebug()<<"void dialogRelation::supprimerLien(lien * leLien)";
-    //effacement du lien du vecteur de la table 1
-    leLien->t1->vectLiens.remove(leLien->t1->vectLiens.indexOf(leLien),1);
-    //effacement du lien du vecteur de la table 2
-    leLien->t2->vectLiens.remove(leLien->t2->vectLiens.indexOf(leLien),1);
     //effacement du lien dans le vecteur central:
     vectLiens.remove(vectLiens.indexOf(leLien),1);
     delete leLien;
@@ -454,6 +450,10 @@ void dialogRelation::supprimerLien(lien * leLien)
 
 void dialogRelation::on_lineEditQuery_textChanged(QString leSql )
 {
+    requeteOk=false;
+    for(int noChamp=0;noChamp<listeDesChampsDuResultat.count();noChamp++)
+        listeDesChampsDuResultat.removeAt(0);
+
     qDebug()<<"void dialogRelation::on_lineEditQuery_textChanged(QString leSql )";
     qlonglong nbLignes;
     if(m_ui->toolButtonApercuAuto->isChecked())
@@ -504,7 +504,17 @@ void dialogRelation::on_lineEditQuery_textChanged(QString leSql )
                 //affichage des titres
                 //req.first();
                 QSqlRecord leRecord=req.record();
-                m_ui->tableWidgetPreview->setColumnCount(leRecord.count());
+                int nbDeChamp=leRecord.count();
+                //la requête est ok si le nb de champ est supérieur à 0
+                requeteOk=nbDeChamp>0;
+                if(requeteOk)
+                {
+                    for(int noChamp=0;noChamp<leRecord.count();noChamp++)
+                    {
+                      listeDesChampsDuResultat<<leRecord.fieldName(noChamp);
+                    }
+                }
+                m_ui->tableWidgetPreview->setColumnCount(nbDeChamp);
                 QStringList listeDesNomsDeChamp;
                 for(int noCol=0;noCol<leRecord.count();noCol++)
                 {
@@ -531,15 +541,20 @@ void dialogRelation::on_lineEditQuery_textChanged(QString leSql )
                 }
             }
         }
-        else
+
+
+    }
+    //si la requête n'est pas bonne
+    if(!(requeteOk))
         {
             //m_ui->tableWidgetPreview->setStyleSheet("background-color:red");
             m_ui->labelQueryState->setStyleSheet("background-color:red;color:white;");
             m_ui->tableWidgetPreview->clear();
+            m_ui->tableWidgetPreview->setRowCount(0);
+            m_ui->tableWidgetPreview->setColumnCount(0);
+            m_ui->tableWidgetPreview->clear();
             //todo: affichage du message d'erreur quelque part
         }
-
-    }
 
 }
 
@@ -559,9 +574,9 @@ void dialogRelation::on_toolButtonApercuAuto_clicked()
     }
 }
 
-void dialogRelation::on_toolButtonAddTables_clicked()
+void dialogRelation::allezAllezOnAjouteLesTables(QPoint lePoint=QPoint(0,0))
 {
-    qDebug()<<"void dialogRelation::on_toolButtonAddTables_clicked()";
+    qDebug()<<"void dialogRelation::allezAllezOnAjouteLesTables(QPoint lePoint)";
     //ajout de la table sélectionnée à la customGraphicsView
     if(!m_ui->listWidgetTables->selectedItems().empty())
     {
@@ -578,12 +593,16 @@ void dialogRelation::on_toolButtonAddTables_clicked()
                 listeDesChamps<<enr.fieldName(noChamp);
             }
             table* tableAjoutee=new table(this,nomTable,0,0,0,&scene,listeDesChamps);
-            tableAjoutee->setPos(prochainX,30);
+            if (lePoint.x()==0 &&lePoint.y()==0)
+            {
+                //calcul de la position la plus sympa
+                //il va falloir travailler sur ce prochainX
+                lePoint=QPoint(prochainX,30);
+            }
+            tableAjoutee->setPos(lePoint);
 
-            vectTables.push_back(tableAjoutee);
-            prochainX+=tableAjoutee->boundingRect().width()+10;
-            tableAjoutee->setFlag(QGraphicsItem::ItemIsSelectable);
-            tableAjoutee->setFlag(QGraphicsItem::ItemIsMovable);
+            ajouteTable(tableAjoutee);
+
         }
         m_ui->listWidgetTables->clearSelection();
     }
@@ -802,4 +821,18 @@ void dialogRelation::on_lineEditAgregate_textChanged(QString leContenu)
 {
     qDebug()<<"void dialogRelation::on_lineEditAgregate_textChanged(QString leContenu)";
     m_ui->pushButtonAddAgregate->setEnabled( !leContenu.isEmpty());
+}
+
+void dialogRelation::on_toolButtonAddTables_clicked()
+{
+    emit(ilYADesTablesAAjouter(QPoint(0,0)));
+}
+void dialogRelation::ajouteTable(table* t)
+{
+
+        vectTables.append(t);
+        prochainX=t->pos().x()+t->boundingRect().width()+10;
+        t->setFlag(QGraphicsItem::ItemIsSelectable);
+        t->setFlag(QGraphicsItem::ItemIsMovable);
+
 }

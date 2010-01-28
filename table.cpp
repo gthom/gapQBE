@@ -26,12 +26,14 @@ table::table(dialogRelation* mum,QString nom,qreal x,qreal y, QGraphicsItem* par
 {
 qDebug()<<"constructeur de table";
     nomTable=nom;
+
+
     alias="";
     //le titre
     title=new QGraphicsTextItem(this);
     title->setFont(QFont("Verdana",10,QFont::Bold,false));
     //déterminons la largeur de la table:
-    long largeurMaxi=QFontMetrics(title->font()).width(nomTable);
+    long largeurMaxi=QFontMetrics(title->font()).width(nomTableTronque());
     for(int noChamp=0;noChamp<listeDesChamps.count();noChamp++)
     {
         long largeurDuChamp=QFontMetrics(title->font()).width(listeDesChamps[noChamp]);
@@ -43,7 +45,7 @@ qDebug()<<"constructeur de table";
     setBrush(QColor("#FFFF00"));//jaune
     title->setPos(0,0);//par rapport à son parent
     title->setTextWidth(boundingRect().width());
-    title->setHtml("<center>"+nomTable+"</center>");
+    title->setHtml("<center>"+nomTableTronque()+"</center>");
 
     //stockage de quelques infos
     //c'est une table
@@ -89,12 +91,30 @@ qDebug()<<"constructeur de table";
      QObject::connect(removeAction, SIGNAL(triggered()),maman, SLOT(tableSupprimer()));
      QAction *addFreeFieldAction = menu.addAction(QObject::tr("&Add free Field"));
      QAction *removeOrAddAliasAction;
+     QAction * editAlias;
+     //les alias ne sont pas accessibles pour les sous-requêtes
+     //comment savoir si une table est une sous-requête
+     if(!(data(36).toString()=="QUERY"))
+     {
      if(this->alias!="")
      removeOrAddAliasAction=menu.addAction(QObject::tr("&Remove alias"));
      else
      removeOrAddAliasAction=menu.addAction(QObject::tr("&Add alias"));
+ }
+     else//c'est une sous-requête
+     {
+         editAlias=menu.addAction(QObject::tr("&Edit alias"));
+     }
+
      //exécution du menu
      QAction * actionChoisie=menu.exec(event->screenPos());
+     if(actionChoisie==editAlias)
+     {
+         //affichage d'une boîte de dialogue de saisie de l'alias
+
+     }
+     else
+     {
      if(actionChoisie==addFreeFieldAction)
      {
          maman->tableAjouterChamp(this);
@@ -106,7 +126,7 @@ qDebug()<<"constructeur de table";
              if(alias!="")//il y a un alias c'est donc qu'on veut l'enlever
              {
 
-                 this->title->setHtml(nomTable);
+                 this->title->setHtml(nomTableTronque());
                  foreach (lien *leLien, vectLiens)
                  {
                      if(leLien->typeDeJointure!="Natural")
@@ -148,8 +168,8 @@ qDebug()<<"constructeur de table";
                  if(ok)
                  {
                      alias=candidat;
-                     QString nomAvecAlias=nomTable+" as "+alias;
-                     //this->title->setHtml(nomAvecAlias);
+                     QString nomAvecAlias=nomTableTronque()+" as "+alias;
+
                      //obtention de la largeur
                      long largeurNouveauTitre=QFontMetrics(title->font()).width(nomAvecAlias);
                      //s'il ne tient pas on élargit la table
@@ -193,6 +213,7 @@ qDebug()<<"constructeur de table";
              }
          }
      }
+ }
 
  }
 
@@ -205,7 +226,7 @@ QVariant table::itemChange(GraphicsItemChange change,const QVariant &value)
              leLien->updatePosition();
          }
      }
-
+    qDebug()<<"fin table::itemChange()";
      return value;
 }
 

@@ -38,6 +38,7 @@ public:
     QVariant itemChange(GraphicsItemChange change,const QVariant &value);//qd la table change
     dialogRelation* maman;// lien vers la maman
     QPolygonF polygon(){return QPolygonF(this->boundingRect());};
+    QString nomTableTronque(){return (nomTable.length()>13)?nomTable.left(10)+"...":nomTable;};
 
 };
 

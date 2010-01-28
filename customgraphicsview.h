@@ -20,7 +20,7 @@ public:
     void dropEvent(QDropEvent *event);
 signals:
     void jointureRequise(table*,table*);
-    void ilYADesTablesAAjouter();
+    void ilYADesTablesAAjouter(QPoint);
     void supprimerTable(QString nomTable);
 public slots:
     void zoomIn() { scale(1.2, 1.2); }

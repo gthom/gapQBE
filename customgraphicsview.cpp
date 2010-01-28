@@ -88,10 +88,12 @@ void customGraphicsView::dragMoveEvent(QDragMoveEvent *event)
  }
 
 void customGraphicsView::dropEvent(QDropEvent *event)
-{  if(event->source()->objectName()=="listWidgetTables")
+{  QPointF lePointMapp=this->mapToScene(event->pos());
+   QPoint  lePointMappe=lePointMapp.toPoint();
+    if(event->source()->objectName()=="listWidgetTables")
     {
         //ajout  des tables sélectionnées
-        emit ilYADesTablesAAjouter();
+        emit ilYADesTablesAAjouter(lePointMappe);
     }
     else
     {
@@ -99,8 +101,7 @@ void customGraphicsView::dropEvent(QDropEvent *event)
         //si une table est à l'origine du dragndrop
         if(event->mimeData()->hasFormat("text/table"))
         {
-            QPointF lePointMapp=this->mapToScene(event->pos());
-            QPoint  lePointMappe=lePointMapp.toPoint();
+
             if (this->scene()->itemAt(lePointMappe)->data(32).toString()=="Table")
             {
                 table* table1=(table*)this->scene()->itemAt(lePointMappe)->data(34).toLongLong();
@@ -124,8 +125,7 @@ void customGraphicsView::dropEvent(QDropEvent *event)
         else
         {
             //ça peut être un drag de valeur pour condition sur champ
-            QPointF lePointMapp=this->mapToScene(event->pos());
-            QPoint  lePointMappe=lePointMapp.toPoint();
+
             if (this->scene()->itemAt(lePointMappe)->data(32).toString()=="Field")
             {
                 //on va modifier la condition sur champ

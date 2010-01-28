@@ -6,14 +6,20 @@
 #include <QPainter>
 #include "math.h"
 #include <QInputDialog>
+#include <QVector>
 
 lien::~lien()
 {
-    qDebug()<<"ddestructeur du lien";
+    qDebug()<<"destructeur du lien";
+    //je me retire du vecteur de mes deux tables
+    t1->vectLiens.remove(t1->vectLiens.indexOf(this),1);
+    t2->vectLiens.remove(t2->vectLiens.indexOf(this),1);
+    //l'effacement du lien dans le vecteur central est réalisé par la méthode supprimeLien de la classe dialogRelation
     if(condition!=NULL)
         delete condition;
     delete texte1;
     delete texte2;
+
 }
 
 lien::lien(table* pt1,table* pt2,QGraphicsItem * parent,QGraphicsScene* laScene,QString typ):QGraphicsLineItem(pt1->pos().x()+pt1->boundingRect().width()/2,pt1->pos().y(),pt2->pos().x()+pt2->boundingRect().width()/2,pt2->pos().y(),parent,laScene)

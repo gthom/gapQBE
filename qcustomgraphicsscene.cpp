@@ -2,12 +2,14 @@
 #include <QGraphicsItem>
 #include <QDrag>
 #include <QDebug>
-
+#include "query.h"
 #include "table.h"
 #include "field.h"
 #include "types.h"
+#include "ui_dialogrelation.h"
 #include <QMenu>
 #include <QAction>
+#include <QInputDialog>
 
 QCustomGraphicsScene::QCustomGraphicsScene(QWidget * parent):QGraphicsScene(parent)
 {
@@ -57,10 +59,19 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
                     QMenu menuContextuelDeRien;
                     QAction* ajouteUnChampARien=menuContextuelDeRien.addAction(tr("Add a &free field"));
                     QAction* ajouteUnAgregat=menuContextuelDeRien.addAction(tr("Add an aggregate"));
+                    QAction* enregistreCommeSourceDeDonnees;
+                    //option de menu permettant de mémoriser la requête en tant que source de donnée
+                    //si la requête est ok
+                    //on propose l'action mémoriser
+                    dialogRelation* maman=(dialogRelation*)parent();
+                    if(maman->requeteOk)
+                    {
+                        enregistreCommeSourceDeDonnees=menuContextuelDeRien.addAction(tr("Save as SubQuery"));
+                    }
                     QAction * actionChoisie=menuContextuelDeRien.exec(mouseEvent->screenPos());
                     if(actionChoisie==ajouteUnChampARien)
                     {
-                        dialogRelation* maman=(dialogRelation*)parent();
+
                         field * nouveauChamp=new field(maman,true,this,"\"something\"",0);
                         //c'est un champ en dehors de tte table
                         nouveauChamp->laTable=NULL;
@@ -75,6 +86,23 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
                         //connect(nouveauChamp->document(),SIGNAL(contentsChanged()),maman, SLOT(miseAJourResultat()));
                         maman->vectChampsLibres.append(nouveauChamp);
 
+                    }
+                    else
+                    {
+                        if(actionChoisie==enregistreCommeSourceDeDonnees)
+                        {
+                            //création de la sub query
+                            bool saisieAliasOk;
+                            QString alias=QInputDialog::getText(maman,maman->windowTitle()+tr("Sub Query"),tr("Give Query's Alias:"),QLineEdit::Normal,"REQ1", &saisieAliasOk);
+                            if(saisieAliasOk)
+                            {
+
+                                query * newQuery=new query(maman,"("+maman->m_uip()->lineEditQuery->text()+")",maman->prochainX,30,0,maman->getScene(),maman->listeDesChampsDuResultat,maman->m_uip()->lineEditQuery->text(),alias);
+                                newQuery->setData(36,"QUERY");
+                                maman->ajouteTable(newQuery);
+                            }
+
+                        }
                     }
 
                 }
@@ -119,8 +147,8 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
         }
     }
-    qDebug()<<"fin du mousemachin et début plantage";
+
     QGraphicsScene::mousePressEvent(mouseEvent);
-    qDebug()<<"fin du mousemachin et fin plantage";
+
 }
 
