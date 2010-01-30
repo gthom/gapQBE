@@ -34,7 +34,7 @@ public:
     QStringList listeDesChampsDuResultat;
     QCustomGraphicsScene* getScene(){return &scene;};
     void ajouteTable(table* t);
-
+    QString messageDErreur;
 protected:
     virtual void changeEvent(QEvent *e);
 
@@ -47,6 +47,7 @@ private:
 
 private slots:
 
+    void on_pushButtonQueryState_clicked();
     void on_toolButtonAddTables_clicked();
     void on_lineEditAgregate_textChanged(QString );
     void on_pushButtonExportCsv_clicked();

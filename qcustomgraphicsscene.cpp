@@ -58,8 +58,9 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
                     QMenu menuContextuelDeRien;
                     QAction* ajouteUnChampARien=menuContextuelDeRien.addAction(tr("Add a &free field"));
-                    QAction* ajouteUnAgregat=menuContextuelDeRien.addAction(tr("Add an aggregate"));
+
                     QAction* enregistreCommeSourceDeDonnees;
+                    QAction* enregistreCommeValeur;
                     //option de menu permettant de mémoriser la requête en tant que source de donnée
                     //si la requête est ok
                     //on propose l'action mémoriser
@@ -67,8 +68,38 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
                     if(maman->requeteOk)
                     {
                         enregistreCommeSourceDeDonnees=menuContextuelDeRien.addAction(tr("Save as SubQuery"));
+                        //si une seule valeur
+                        if(maman->m_uip()->tableWidgetPreview->rowCount()==1 &&maman->m_uip()->tableWidgetPreview->columnCount()==1)
+                         enregistreCommeValeur=   menuContextuelDeRien.addAction(tr("Save as Value"));
                     }
                     QAction * actionChoisie=menuContextuelDeRien.exec(mouseEvent->screenPos());
+                    if(actionChoisie==enregistreCommeValeur)
+                    {
+                        //création de la sub query
+                            bool saisieAliasOk;
+                            QString alias=QInputDialog::getText(maman,maman->windowTitle()+tr("Register as value"),tr("Give query's Alias:"),QLineEdit::Normal,"VALUE1", &saisieAliasOk);
+                            if(saisieAliasOk)
+                            {
+                                field * newChamp=new field(maman,true,maman->getScene(),0);
+                                newChamp->setData(32,"Field");
+                                newChamp->setData(36,"QUERY");
+                                newChamp->nomInitial="("+maman->m_uip()->lineEditQuery->text()+") as "+alias;
+                                newChamp->document()->setPlainText(newChamp->nomInitial);
+                                newChamp->cond=NULL;
+                                //newChamp->setTextInteractionFlags(Qt::TextEditable);
+                                newChamp->setFlag(QGraphicsItem::ItemIsMovable,true);
+                                newChamp->setFlag(QGraphicsItem::ItemIsSelectable,true);
+                        //lorsque le texte du champ libre est modifié, mettre à jour la requête
+                        //connect(nouveauChamp->document(),SIGNAL(contentsChanged()),maman, SLOT(miseAJourResultat()));
+                                maman->vectChampsLibres.append(newChamp);
+
+                                //vider la liste des fonctions agrégat et décocher grouper
+                                maman->m_uip()->checkBoxGroupBy->setChecked(false);
+                                maman->m_uip()->listWidgetAggregates->clear();
+                            }
+                    }
+                    else
+                    {
                     if(actionChoisie==ajouteUnChampARien)
                     {
 
@@ -100,10 +131,14 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
                                 query * newQuery=new query(maman,"("+maman->m_uip()->lineEditQuery->text()+")",maman->prochainX,30,0,maman->getScene(),maman->listeDesChampsDuResultat,maman->m_uip()->lineEditQuery->text(),alias);
                                 newQuery->setData(36,"QUERY");
                                 maman->ajouteTable(newQuery);
+                                //vider la liste des fonctions agrégat et décocher grouper
+                                maman->m_uip()->checkBoxGroupBy->setChecked(false);
+                                maman->m_uip()->listWidgetAggregates->clear();
                             }
 
                         }
                     }
+                }
 
                 }
                 else//qlq chose ds le rectangle

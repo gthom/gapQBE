@@ -15,6 +15,7 @@
 #include    <QMessageBox>
 #include "ui_dialogsortorder.h"
 #include <QFileDialog>
+#include <QSqlDriver>
 
 
 dialogRelation::dialogRelation(QWidget *parent,QSqlDatabase& pdb) :
@@ -22,6 +23,7 @@ dialogRelation::dialogRelation(QWidget *parent,QSqlDatabase& pdb) :
         QDialog(parent),
         m_ui(new Ui::dialogRelation)
 {
+    messageDErreur=tr("Unknown query state");
     requeteOk=false;
     m_ui->setupUi(this);
     //abscisse de la prochaine table
@@ -349,10 +351,31 @@ void dialogRelation::miseAJourResultat()
             if(unChamp->cond!=NULL) listeDuWhere.append(nomCompletDuChamp+" "+unChamp->cond->document()->toPlainText());
         }
     }
+    QStringList listeDesChosesDuGroupBy=listeDesChosesAAfficher;
     //ajout des champs libres:
     foreach (field* leChamp,vectChampsLibres)
     {
-        if(leChamp->affiche)listeDesChosesAAfficher.append(leChamp->document()->toPlainText());
+        if(leChamp->affiche)
+        {
+            listeDesChosesAAfficher.append(leChamp->document()->toPlainText());
+            if(!leChamp->alias.isEmpty())
+            {
+                listeDesChosesDuGroupBy.append(leChamp->alias);
+            }
+            else
+            {
+                QString sonTexte=leChamp->document()->toPlainText();
+                if(sonTexte.contains(" as "))
+                {
+                    QStringList qsl=sonTexte.split(" as ");
+                    listeDesChosesDuGroupBy.append(qsl[qsl.count()-1]);
+                }
+                else
+                {
+                    listeDesChosesDuGroupBy.append(leChamp->document()->toPlainText());
+                }
+            }
+        }
     }
     if(!listeDesChosesAAfficher.empty() && m_ui->toolButtonDistinct->isChecked())
         select+=" distinct ";
@@ -405,7 +428,7 @@ void dialogRelation::miseAJourResultat()
         if(m_ui->checkBoxGroupBy->isChecked())
         {
             if(!listeDesChosesAAfficher.empty())
-                requete+= " GROUP BY "+listeDesChosesAAfficher.join(",");
+                requete+= " GROUP BY "+listeDesChosesDuGroupBy.join(",");
         }
         if(!m_ui->lineEditHaving->text().isEmpty())
         {
@@ -450,15 +473,20 @@ void dialogRelation::supprimerLien(lien * leLien)
 
 void dialogRelation::on_lineEditQuery_textChanged(QString leSql )
 {
+    QSqlQuery req;
     requeteOk=false;
-    for(int noChamp=0;noChamp<listeDesChampsDuResultat.count();noChamp++)
+    //on vide la listeDesChampsDuResultat
+    int nbDeChamp=listeDesChampsDuResultat.count();
+    for(int noChamp=0;noChamp<nbDeChamp;noChamp++)
+    {
         listeDesChampsDuResultat.removeAt(0);
+    }
 
     qDebug()<<"void dialogRelation::on_lineEditQuery_textChanged(QString leSql )";
     qlonglong nbLignes;
     if(m_ui->toolButtonApercuAuto->isChecked())
     {
-        QSqlQuery req;
+
         //attention aux big queries
         //essais d'obtention du nombre de lignes concernées:
         QStringList qsl=leSql.split("FROM");
@@ -497,8 +525,9 @@ void dialogRelation::on_lineEditQuery_textChanged(QString leSql )
             {
 
                 //m_ui->tableWidgetPreview->setStyleSheet("background-color:green");
-                m_ui->labelQueryState->setStyleSheet("background-color:green;color:yellow;");
+                m_ui->pushButtonQueryState->setStyleSheet("background-color:green;color:yellow;");
                 m_ui->tableWidgetPreview->clear();
+
                 //si aperçu auto alors affichage du résultat de la requête
 
                 //affichage des titres
@@ -511,8 +540,9 @@ void dialogRelation::on_lineEditQuery_textChanged(QString leSql )
                 {
                     for(int noChamp=0;noChamp<leRecord.count();noChamp++)
                     {
-                      listeDesChampsDuResultat<<leRecord.fieldName(noChamp);
+                      listeDesChampsDuResultat<<leRecord.fieldName(noChamp);//+" as champ"+QString::number(noChamp);
                     }
+                    messageDErreur=tr("Query seems good,\n no error detected");
                 }
                 m_ui->tableWidgetPreview->setColumnCount(nbDeChamp);
                 QStringList listeDesNomsDeChamp;
@@ -537,7 +567,7 @@ void dialogRelation::on_lineEditQuery_textChanged(QString leSql )
                 }
                 if(noLigne==500)
                 {
-                    QMessageBox::critical(this,this->windowTitle(),"The result is to big to be displayed entirely",QMessageBox::Ok);
+                    QMessageBox::critical(this,this->windowTitle(),tr("The result is to big to be displayed entirely"),QMessageBox::Ok);
                 }
             }
         }
@@ -548,13 +578,17 @@ void dialogRelation::on_lineEditQuery_textChanged(QString leSql )
     if(!(requeteOk))
         {
             //m_ui->tableWidgetPreview->setStyleSheet("background-color:red");
-            m_ui->labelQueryState->setStyleSheet("background-color:red;color:white;");
+            m_ui->pushButtonQueryState->setStyleSheet("background-color:red;color:white;");
             m_ui->tableWidgetPreview->clear();
             m_ui->tableWidgetPreview->setRowCount(0);
             m_ui->tableWidgetPreview->setColumnCount(0);
             m_ui->tableWidgetPreview->clear();
-            //todo: affichage du message d'erreur quelque part
+            messageDErreur=req.lastError().text();
+            //désactivation du bouton exporter
+
         }
+    //activation/désactivation du bouton exporter au format csv
+    m_ui->pushButtonExportCsv->setEnabled(requeteOk);
 
 }
 
@@ -640,12 +674,19 @@ void dialogRelation::on_checkBoxGroupBy_clicked()
 void dialogRelation::on_pushButtonAddAggregate_clicked()
 {
     qDebug()<<"void dialogRelation::on_pushButtonAddAggregate_clicked()";
-    QListWidgetItem * agregat=new QListWidgetItem(0,1002) ;
-    agregat->setFlags (agregat->flags () | Qt::ItemIsEditable);
-    agregat->setText(m_ui->lineEditAgregate->text());
-    m_ui->listWidgetAggregates->addItem(agregat);
-    m_ui->lineEditAgregate->setText("");
-    miseAJourResultat();
+    if(m_ui->lineEditAgregate->text().contains(" as "))
+    {
+        QListWidgetItem * agregat=new QListWidgetItem(0,1002) ;
+        agregat->setFlags (agregat->flags () | Qt::ItemIsEditable);
+        agregat->setText(m_ui->lineEditAgregate->text());
+        m_ui->listWidgetAggregates->addItem(agregat);
+        m_ui->lineEditAgregate->setText("");
+        miseAJourResultat();
+    }
+    else
+    {
+        QMessageBox::warning(this, this->windowTitle()+tr("add aggregate"),tr("Alias is often needed Sample: \"as average\"\n so please complete your input"));
+    }
  }
 //menu contextuel de la liste des agrégats
 
@@ -834,5 +875,16 @@ void dialogRelation::ajouteTable(table* t)
         prochainX=t->pos().x()+t->boundingRect().width()+10;
         t->setFlag(QGraphicsItem::ItemIsSelectable);
         t->setFlag(QGraphicsItem::ItemIsMovable);
+
+}
+
+void dialogRelation::on_pushButtonQueryState_clicked()
+{
+
+   QMessageBox::information(this, windowTitle()+tr(" Database Message"),
+                                messageDErreur,
+                                QMessageBox::Ok,
+                                QMessageBox::Ok);
+
 
 }

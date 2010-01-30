@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'dialogrelation.ui'
 **
-** Created: Thu Jan 28 11:42:31 2010
+** Created: Fri Jan 29 15:48:52 2010
 **      by: Qt User Interface Compiler version 4.5.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -65,7 +65,7 @@ public:
     QHBoxLayout *horizontalLayout;
     QLabel *label;
     QLineEdit *lineEditQuery;
-    QLabel *labelQueryState;
+    QPushButton *pushButtonQueryState;
     QWidget *layoutWidget3;
     QHBoxLayout *horizontalLayout_8;
     QTableWidget *tableWidgetPreview;
@@ -240,10 +240,10 @@ public:
 
         horizontalLayout->addWidget(lineEditQuery);
 
-        labelQueryState = new QLabel(layoutWidget2);
-        labelQueryState->setObjectName(QString::fromUtf8("labelQueryState"));
+        pushButtonQueryState = new QPushButton(layoutWidget2);
+        pushButtonQueryState->setObjectName(QString::fromUtf8("pushButtonQueryState"));
 
-        horizontalLayout->addWidget(labelQueryState);
+        horizontalLayout->addWidget(pushButtonQueryState);
 
         splitter_2->addWidget(layoutWidget2);
         layoutWidget3 = new QWidget(splitter_2);
@@ -317,6 +317,10 @@ public:
 
         pushButtonExportCsv = new QPushButton(layoutWidget3);
         pushButtonExportCsv->setObjectName(QString::fromUtf8("pushButtonExportCsv"));
+        pushButtonExportCsv->setEnabled(false);
+        QIcon icon7;
+        icon7.addFile(QString::fromUtf8(":/filesave.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButtonExportCsv->setIcon(icon7);
 
         verticalLayout_3->addWidget(pushButtonExportCsv);
 
@@ -335,9 +339,9 @@ public:
 
         pushButtonQuitter = new QPushButton(layoutWidget4);
         pushButtonQuitter->setObjectName(QString::fromUtf8("pushButtonQuitter"));
-        QIcon icon7;
-        icon7.addFile(QString::fromUtf8(":/close.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButtonQuitter->setIcon(icon7);
+        QIcon icon8;
+        icon8.addFile(QString::fromUtf8(":/close.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButtonQuitter->setIcon(icon8);
 
         horizontalLayout_2->addWidget(pushButtonQuitter);
 
@@ -415,15 +419,27 @@ public:
 #ifndef QT_NO_TOOLTIP
         lineEditQuery->setToolTip(QApplication::translate("dialogRelation", "the sql query", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
-        labelQueryState->setText(QApplication::translate("dialogRelation", "?", 0, QApplication::UnicodeUTF8));
+        pushButtonQueryState->setText(QApplication::translate("dialogRelation", "?", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         tableWidgetPreview->setToolTip(QApplication::translate("dialogRelation", "The query's rows ", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
+#ifndef QT_NO_TOOLTIP
+        checkBoxGroupBy->setToolTip(QApplication::translate("dialogRelation", "Check this if you want to compute results by that is displayed", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
         checkBoxGroupBy->setText(QApplication::translate("dialogRelation", "Group By", 0, QApplication::UnicodeUTF8));
         label_3->setText(QApplication::translate("dialogRelation", "Aggregate:", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        lineEditAgregate->setToolTip(QApplication::translate("dialogRelation", "type here some function like sum or avg or ...", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
         pushButtonAddAgregate->setText(QApplication::translate("dialogRelation", "&Add", 0, QApplication::UnicodeUTF8));
         label_2->setText(QApplication::translate("dialogRelation", "Postcondition", 0, QApplication::UnicodeUTF8));
-        pushButtonExportCsv->setText(QApplication::translate("dialogRelation", "&Enregistrer csv", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        lineEditHaving->setToolTip(QApplication::translate("dialogRelation", "this is a  s\303\251lection on aggregates's result", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_TOOLTIP
+        pushButtonExportCsv->setToolTip(QApplication::translate("dialogRelation", "Export query's result as csv file", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+        pushButtonExportCsv->setText(QApplication::translate("dialogRelation", "&Export csv", 0, QApplication::UnicodeUTF8));
         pushButtonQuitter->setText(QApplication::translate("dialogRelation", "&Quit", 0, QApplication::UnicodeUTF8));
         Q_UNUSED(dialogRelation);
     } // retranslateUi

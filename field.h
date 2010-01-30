@@ -36,6 +36,8 @@ public:
     QGraphicsLineItem * trait;//trait entre le champ et la condition
     //son nom
     QString nomInitial;
+    //son alias
+    QString alias;
     //en dehors des tables
     bool freeField;
     table * laTable;//table dans laquelle il est NULL si pas de table

@@ -252,7 +252,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="labelQueryState">
+        <widget class="QPushButton" name="pushButtonQueryState">
          <property name="text">
           <string>?</string>
          </property>
@@ -285,6 +285,9 @@
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
           <widget class="QCheckBox" name="checkBoxGroupBy">
+           <property name="toolTip">
+            <string>Check this if you want to compute results by that is displayed</string>
+           </property>
            <property name="text">
             <string>Group By</string>
            </property>
@@ -300,7 +303,11 @@
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEditAgregate"/>
+            <widget class="QLineEdit" name="lineEditAgregate">
+             <property name="toolTip">
+              <string>type here some function like sum or avg or ...</string>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QPushButton" name="pushButtonAddAgregate">
@@ -335,14 +342,28 @@
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEditHaving"/>
+            <widget class="QLineEdit" name="lineEditHaving">
+             <property name="toolTip">
+              <string>this is a  sélection on aggregates's result</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
          <item>
           <widget class="QPushButton" name="pushButtonExportCsv">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="toolTip">
+            <string>Export query's result as csv file</string>
+           </property>
            <property name="text">
-            <string>&amp;Enregistrer csv</string>
+            <string>&amp;Export csv</string>
+           </property>
+           <property name="icon">
+            <iconset resource="gapQBE.qrc">
+             <normaloff>:/filesave.png</normaloff>:/filesave.png</iconset>
            </property>
           </widget>
          </item>

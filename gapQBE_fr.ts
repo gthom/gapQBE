@@ -27,7 +27,7 @@
     <message>
         <location filename="dialoglogin.ui" line="61"/>
         <source>Database Name:</source>
-        <translation>Nom de la Base</translation>
+        <translation>Nom de la Base:</translation>
     </message>
     <message>
         <location filename="dialoglogin.ui" line="68"/>
@@ -91,66 +91,86 @@
 <context>
     <name>QCustomGraphicsScene</name>
     <message>
-        <location filename="qcustomgraphicsscene.cpp" line="52"/>
+        <location filename="qcustomgraphicsscene.cpp" line="60"/>
         <source>Add a &amp;free field</source>
         <translation>ajout d&apos;un champ &amp;libre</translation>
     </message>
     <message>
-        <location filename="qcustomgraphicsscene.cpp" line="53"/>
+        <location filename="qcustomgraphicsscene.cpp" line="61"/>
         <source>Add an aggregate</source>
         <translation>Ajouter une fonction agrégat</translation>
+    </message>
+    <message>
+        <location filename="qcustomgraphicsscene.cpp" line="69"/>
+        <source>Save as SubQuery</source>
+        <translation>Enregistrer en tant que sous requête</translation>
+    </message>
+    <message>
+        <location filename="qcustomgraphicsscene.cpp" line="96"/>
+        <source>Sub Query</source>
+        <translation>Sous-Requête</translation>
+    </message>
+    <message>
+        <location filename="qcustomgraphicsscene.cpp" line="96"/>
+        <source>Give Query&apos;s Alias:</source>
+        <translation>Alias de la sous-requête:</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="lien.cpp" line="230"/>
-        <location filename="table.cpp" line="75"/>
+        <location filename="lien.cpp" line="235"/>
+        <location filename="table.cpp" line="90"/>
         <source>&amp;Remove</source>
         <translation>&amp;Supprimer</translation>
     </message>
     <message>
-        <location filename="lien.cpp" line="231"/>
+        <location filename="lien.cpp" line="236"/>
         <source>&amp;Change join type</source>
         <translation>&amp;Changer le type de jointure</translation>
     </message>
     <message>
-        <location filename="lien.cpp" line="236"/>
+        <location filename="lien.cpp" line="241"/>
         <source>&amp;Edit join condition</source>
         <translation>&amp;Editer la condition de jointure</translation>
     </message>
     <message>
-        <location filename="lien.cpp" line="254"/>
+        <location filename="lien.cpp" line="259"/>
         <source>Edit Join Condition</source>
         <translation>Edition de la condition de jointure</translation>
     </message>
     <message>
-        <location filename="lien.cpp" line="255"/>
+        <location filename="lien.cpp" line="260"/>
         <source>Join Condition:</source>
         <translation>Condition:</translation>
     </message>
     <message>
-        <location filename="table.cpp" line="77"/>
+        <location filename="table.cpp" line="92"/>
         <source>&amp;Add free Field</source>
         <translation>&amp;Ajouter un champ libre</translation>
     </message>
     <message>
-        <location filename="table.cpp" line="80"/>
+        <location filename="table.cpp" line="100"/>
         <source>&amp;Remove alias</source>
         <translation>&amp;Retirer l&apos;alias</translation>
     </message>
     <message>
-        <location filename="table.cpp" line="82"/>
+        <location filename="table.cpp" line="102"/>
         <source>&amp;Add alias</source>
         <translation>&amp;Donner un alias</translation>
     </message>
     <message>
-        <location filename="table.cpp" line="132"/>
+        <location filename="table.cpp" line="106"/>
+        <source>&amp;Edit alias</source>
+        <translation>&amp;Editer l&apos;alias</translation>
+    </message>
+    <message>
+        <location filename="table.cpp" line="165"/>
         <source>Give alias name</source>
         <translation>Donner un alias</translation>
     </message>
     <message>
-        <location filename="table.cpp" line="133"/>
+        <location filename="table.cpp" line="166"/>
         <source>Alias:</source>
         <translation></translation>
     </message>
@@ -158,14 +178,53 @@
 <context>
     <name>dialogRelation</name>
     <message>
-        <location filename="dialogrelation.cpp" line="589"/>
+        <location filename="dialogrelation.cpp" line="26"/>
+        <source>Unknown query state</source>
+        <translation>Etat de la requête indéterminé</translation>
+    </message>
+    <message>
+        <location filename="dialogrelation.cpp" line="520"/>
+        <source>Query seems good,
+ no error detected</source>
+        <translation>La requête semble correcte
+Aucune erreur n&apos;a été détectée</translation>
+    </message>
+    <message>
+        <location filename="dialogrelation.cpp" line="545"/>
+        <source>The result is to big to be displayed entirely</source>
+        <translation>Le résultat contient un nombre de ligne trop important pour être affiché en entier</translation>
+    </message>
+    <message>
+        <location filename="dialogrelation.cpp" line="633"/>
         <source>Do you really want to Quit</source>
         <translation>Voulez-vous réellement quitter l&apos;application?</translation>
     </message>
     <message>
-        <location filename="dialogrelation.cpp" line="630"/>
+        <location filename="dialogrelation.cpp" line="663"/>
+        <source>add aggregate</source>
+        <translation>Ajouter une fonction de groupe</translation>
+    </message>
+    <message>
+        <location filename="dialogrelation.cpp" line="663"/>
+        <source>Alias is often needed Sample: &quot;as average&quot;
+ so please complete your input</source>
+        <translation>Un alias doit être fourni par exemple &quot;as Moyenne&quot;
+Complétez votre fonction en rajoutant  as suivi de l&apos;alias</translation>
+    </message>
+    <message>
+        <location filename="dialogrelation.cpp" line="685"/>
         <source>Define sort order</source>
         <translation>Définition de l&apos;ordre de tri</translation>
+    </message>
+    <message>
+        <location filename="dialogrelation.cpp" line="814"/>
+        <source>Text files (*.csv *.txt)</source>
+        <translation>Fichiers CSV (*.csv *.txt)</translation>
+    </message>
+    <message>
+        <location filename="dialogrelation.cpp" line="859"/>
+        <source> Database Message</source>
+        <translation>Message de la base de donnée</translation>
     </message>
     <message>
         <location filename="dialogrelation.ui" line="14"/>
@@ -270,68 +329,73 @@
         <translation>Le résultat de la requête</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="283"/>
+        <location filename="dialogrelation.ui" line="289"/>
         <source>Group By</source>
         <translation>Groupement</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="292"/>
+        <location filename="dialogrelation.ui" line="298"/>
         <source>Aggregate:</source>
         <translation>Fonctions de groupe:</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="302"/>
+        <location filename="dialogrelation.ui" line="311"/>
         <source>&amp;Add</source>
         <translation>&amp;Ajouter</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="320"/>
+        <location filename="dialogrelation.ui" line="333"/>
         <source>Postcondition</source>
         <translation>Condition sur le résultat d&apos;une fonction de groupe</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="351"/>
+        <location filename="dialogrelation.ui" line="345"/>
+        <source>&amp;Export csv</source>
+        <translation>&amp;Exporter en csv</translation>
+    </message>
+    <message>
+        <location filename="dialogrelation.ui" line="375"/>
         <source>&amp;Quit</source>
         <translation>&amp;Quitter</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="366"/>
+        <location filename="dialogrelation.ui" line="390"/>
         <source>suprime</source>
         <translation>Supprime</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="369"/>
+        <location filename="dialogrelation.ui" line="393"/>
         <source>supprimer le champ</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="372"/>
+        <location filename="dialogrelation.ui" line="396"/>
         <source>Del</source>
         <translation>Effacer</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="377"/>
+        <location filename="dialogrelation.ui" line="401"/>
         <source>actionSuprTable</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="382"/>
+        <location filename="dialogrelation.ui" line="406"/>
         <source>zoom in</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="385"/>
+        <location filename="dialogrelation.ui" line="409"/>
         <source>Ctrl++</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="393"/>
-        <location filename="dialogrelation.ui" line="396"/>
+        <location filename="dialogrelation.ui" line="417"/>
+        <location filename="dialogrelation.ui" line="420"/>
         <source>zoom out</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="399"/>
+        <location filename="dialogrelation.ui" line="423"/>
         <source>Ctrl+-</source>
         <translation></translation>
     </message>
@@ -367,47 +431,47 @@
 <context>
     <name>field</name>
     <message>
-        <location filename="field.cpp" line="40"/>
+        <location filename="field.cpp" line="63"/>
         <source>&amp;Remove</source>
         <translation>&amp;Supprimer</translation>
     </message>
     <message>
-        <location filename="field.cpp" line="42"/>
+        <location filename="field.cpp" line="65"/>
         <source>&amp;Display(on/off)</source>
         <translation>&amp;Afficher(on/off)</translation>
     </message>
     <message>
-        <location filename="field.cpp" line="48"/>
+        <location filename="field.cpp" line="71"/>
         <source>&amp;AddCondition</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="field.cpp" line="52"/>
+        <location filename="field.cpp" line="75"/>
         <source>&amp;removeCondition</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="field.cpp" line="55"/>
+        <location filename="field.cpp" line="78"/>
         <source>Sort(asc,desc,off)</source>
         <translation>Tri(croissant,décroissant pas de tri)</translation>
     </message>
     <message>
-        <location filename="field.cpp" line="71"/>
+        <location filename="field.cpp" line="102"/>
         <source>&amp;Asc</source>
         <translation>&amp;Croissant</translation>
     </message>
     <message>
-        <location filename="field.cpp" line="72"/>
+        <location filename="field.cpp" line="103"/>
         <source>&amp;Desc</source>
         <translation>&amp;Décroissant</translation>
     </message>
     <message>
-        <location filename="field.cpp" line="73"/>
+        <location filename="field.cpp" line="104"/>
         <source>&amp;Off</source>
         <translation>&amp;Pas de tri</translation>
     </message>
     <message>
-        <location filename="field.cpp" line="111"/>
+        <location filename="field.cpp" line="142"/>
         <source>=&quot;something&quot;</source>
         <translation>=&quot;valeur&quot;</translation>
     </message>

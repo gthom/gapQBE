@@ -13,5 +13,6 @@
         <file>close.png</file>
         <file>stock_sort-criteria.png</file>
         <file>list-add.png</file>
+        <file>filesave.png</file>
     </qresource>
 </RCC>

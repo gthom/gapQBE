@@ -111,7 +111,14 @@ qDebug()<<"constructeur de table";
      if(actionChoisie==editAlias)
      {
          //affichage d'une boîte de dialogue de saisie de l'alias
-
+                bool ok;
+                 QString candidat=QInputDialog::getText(maman, QObject::tr("Give alias name"),
+                                          QObject::tr("Alias:"), QLineEdit::Normal,
+                                          alias, &ok);
+                 if(ok)
+                 {
+                     alias=candidat;
+                 }
      }
      else
      {
