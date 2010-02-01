@@ -327,6 +327,9 @@
          </item>
          <item>
           <widget class="QListWidget" name="listWidgetAggregates">
+           <property name="contextMenuPolicy">
+            <enum>Qt::CustomContextMenu</enum>
+           </property>
            <property name="editTriggers">
             <set>QAbstractItemView::AnyKeyPressed|QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
            </property>
@@ -343,6 +346,9 @@
            </item>
            <item>
             <widget class="QLineEdit" name="lineEditHaving">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="toolTip">
               <string>this is a  sélection on aggregates's result</string>
              </property>

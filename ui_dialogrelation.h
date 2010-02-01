@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'dialogrelation.ui'
 **
-** Created: Fri Jan 29 15:48:52 2010
+** Created: Mon Feb 1 14:30:22 2010
 **      by: Qt User Interface Compiler version 4.5.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -296,6 +296,7 @@ public:
 
         listWidgetAggregates = new QListWidget(layoutWidget3);
         listWidgetAggregates->setObjectName(QString::fromUtf8("listWidgetAggregates"));
+        listWidgetAggregates->setContextMenuPolicy(Qt::CustomContextMenu);
         listWidgetAggregates->setEditTriggers(QAbstractItemView::AnyKeyPressed|QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed);
 
         verticalLayout_3->addWidget(listWidgetAggregates);
@@ -309,6 +310,7 @@ public:
 
         lineEditHaving = new QLineEdit(layoutWidget3);
         lineEditHaving->setObjectName(QString::fromUtf8("lineEditHaving"));
+        lineEditHaving->setEnabled(false);
 
         horizontalLayout_7->addWidget(lineEditHaving);
 

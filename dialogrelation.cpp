@@ -16,6 +16,7 @@
 #include "ui_dialogsortorder.h"
 #include <QFileDialog>
 #include <QSqlDriver>
+#include <QMenu>
 
 
 dialogRelation::dialogRelation(QWidget *parent,QSqlDatabase& pdb) :
@@ -44,6 +45,7 @@ dialogRelation::dialogRelation(QWidget *parent,QSqlDatabase& pdb) :
     connect(m_ui->toolButtonExecuteRequete,SIGNAL(clicked()),this,SLOT(miseAJourResultat()));
     connect (m_ui->checkBoxGroupBy,SIGNAL(clicked()),this,SLOT(on_checkBoxGroupBy_clicked()));
     connect(m_ui->pushButtonAddAgregate,SIGNAL(clicked()),this,SLOT(on_pushButtonAddAggregate_clicked()));
+    connect(m_ui->listWidgetAggregates,SIGNAL(customContextMenuRequested(QPoint)),this,SLOT(on_customContextMenuAggregate(QPoint)));
     connect(m_ui->lineEditHaving,SIGNAL(textChanged(QString)),this,SLOT(miseAJourResultat()));
     m_ui->graphicsView->addAction(m_ui->actionZoom_in);
     m_ui->graphicsView->addAction(m_ui->actionZoom_out);
@@ -384,25 +386,24 @@ void dialogRelation::miseAJourResultat()
     //Remplacé par
     QString what=selectDansLOrdre();
     select+=what;
-    //ajouter ici les champs calculés
-    /*QStringList listeDesChampCalcules;
+    //regardons si les champs calculés participent au tri
+    QString tabTri[]={"no","asc","desc"};
     for(int noChamp=0;noChamp<m_ui->listWidgetAggregates->count();noChamp++)
     {
-        listeDesChampCalcules<<m_ui->listWidgetAggregates->item(noChamp)->text();
-    }
-    if(!listeDesChampCalcules.empty())
-    {
-        if(!listeDesChosesAAfficher.empty())
+        if(m_ui->listWidgetAggregates->item(noChamp)->data(34)!=0) //si le champ participe au tri
         {
-            select+=',';
+            //attention au as
+            QString nomSansAlias=m_ui->listWidgetAggregates->item(noChamp)->text().split(" as ")[0];
+            maMap[m_ui->listWidgetAggregates->item(noChamp)->data(35).toInt()]=nomSansAlias+" "+tabTri[m_ui->listWidgetAggregates->item(noChamp)->data(34).toInt()];
         }
-        select+=listeDesChampCalcules.join(",");
+
     }
-    */
+
     //trier la liste des champs participants au tri par leur ordre d'apparition
 
     //order by
     //a partir de la map formation de la liste
+
     foreach (QString champ, maMap)
     {
         listeDesChampsParticipantsAuTri.append(champ);
@@ -504,7 +505,7 @@ void dialogRelation::on_lineEditQuery_textChanged(QString leSql )
                 qDebug()<<"Nombre de ligne:"<<nbLignes;
                 if(nbLignes>100)
                 {
-                    if(QMessageBox::warning(this,this->windowTitle(),"The row count is "+QString::number(nbLignes)+"\r\n are you really sure you want to display them?",QMessageBox::Yes|QMessageBox::No,QMessageBox::No)==QMessageBox::No)
+                    if(QMessageBox::warning(this,this->windowTitle(),tr("The row count is ")+QString::number(nbLignes)+tr("\r\n are you really sure you want to display them?"),QMessageBox::Yes|QMessageBox::No,QMessageBox::No)==QMessageBox::No)
                     {
                         affichageDemande=false;
                     }
@@ -540,7 +541,7 @@ void dialogRelation::on_lineEditQuery_textChanged(QString leSql )
                 {
                     for(int noChamp=0;noChamp<leRecord.count();noChamp++)
                     {
-                      listeDesChampsDuResultat<<leRecord.fieldName(noChamp);//+" as champ"+QString::number(noChamp);
+                      listeDesChampsDuResultat<<leRecord.fieldName(noChamp);
                     }
                     messageDErreur=tr("Query seems good,\n no error detected");
                 }
@@ -677,11 +678,18 @@ void dialogRelation::on_pushButtonAddAggregate_clicked()
     if(m_ui->lineEditAgregate->text().contains(" as "))
     {
         QListWidgetItem * agregat=new QListWidgetItem(0,1002) ;
-        agregat->setFlags (agregat->flags () | Qt::ItemIsEditable);
+        //agregat->setFlags (agregat->flags () | Qt::ItemIsEditable);
         agregat->setText(m_ui->lineEditAgregate->text());
+        agregat->setData(34,0);//pas de tri
+        agregat->setData(33,false);//pas affiché
+        agregat->setData(32,0);//no ds le select
+        agregat->setData(35,0);//no ds le tri
+
         m_ui->listWidgetAggregates->addItem(agregat);
-        m_ui->lineEditAgregate->setText("");
+        m_ui->lineEditAgregate->setText("");//j'efface la zone de saisie
         miseAJourResultat();
+        //active/desactive le having
+        m_ui->lineEditHaving->setEnabled(m_ui->listWidgetAggregates->count()>0);
     }
     else
     {
@@ -698,6 +706,7 @@ void dialogRelation::on_listWidgetAggregates_itemClicked(QListWidgetItem* item)
     //et effacement de l'elt
     m_ui->listWidgetAggregates->takeItem(m_ui->listWidgetAggregates->currentRow());
     miseAJourResultat();
+    m_ui->lineEditHaving->setEnabled(m_ui->listWidgetAggregates->count()>0);
 }
 
 
@@ -739,9 +748,23 @@ void dialogRelation::on_toolButtonSO_clicked()
                 QListWidgetItem * item=new QListWidgetItem(0,1001);
                 item->setText(nomCompletDuChamp);
                 item->setData(32,(qlonglong) unChamp);
+                item->setData(33,"champ");
                 //qDebug()<<unChamp->nomInitial<<(qlonglong) unChamp<<"numéro"<<unChamp->numeroDansLeTri;
                 ds->m_ui->listWidgetChamps->insertItem(unChamp->numeroDansLeTri,item);
             }
+        }
+    }
+    //ajout des aggrégats participant au tri
+    for(int no=0;no<m_ui->listWidgetAggregates->count();no++)
+    {
+        if(m_ui->listWidgetAggregates->item(no)->data(34).toInt()!=0)
+        {
+                QListWidgetItem * item=new QListWidgetItem(0,1001);
+                item->setText(m_ui->listWidgetAggregates->item(no)->text());
+                item->setData(32,(qlonglong) m_ui->listWidgetAggregates->item(no));
+                item->setData(33,"aggregate");
+                //qDebug()<<unChamp->nomInitial<<(qlonglong) unChamp<<"numéro"<<unChamp->numeroDansLeTri;
+                ds->m_ui->listWidgetChamps->insertItem(m_ui->listWidgetAggregates->item(no)->data(35).toInt(),item);
         }
     }
     if(ds->exec())
@@ -750,12 +773,20 @@ void dialogRelation::on_toolButtonSO_clicked()
         {
             //qDebug()<<"coucou";
             QListWidgetItem * item=ds->m_ui->listWidgetChamps->item(noChamp);
-            field* leChamp=(field*)(item->data(32).toLongLong());
-            leChamp->numeroDansLeTri=noChamp;
-            qDebug()<<item->text()<<item->data(32).toLongLong();
+            if(item->data(33).toString()=="champ")
+            {
+                field* leChamp=(field*)(item->data(32).toLongLong());
+                leChamp->numeroDansLeTri=noChamp;
+            }
+            else
+            {
+                QListWidgetItem * agregate=(QListWidgetItem *)(item->data(32).toLongLong());
+                agregate->setData(35,noChamp);
+            }
+            //qDebug()<<item->text()<<item->data(32).toLongLong();
         }
         //rafraichissement
-       miseAJourResultat();
+        miseAJourResultat();
 
     }
 }
@@ -798,7 +829,12 @@ QMap <int,QString> dialogRelation::mapSelect()
     //et enfin les champs calculés
     for(int noChamp=0;noChamp<m_ui->listWidgetAggregates->count();noChamp++)
     {
-        maMap[m_ui->listWidgetAggregates->item(noChamp)->data(32).toInt()]=m_ui->listWidgetAggregates->item(noChamp)->text();
+        //si le champ doit être affiché
+        if(m_ui->listWidgetAggregates->item(noChamp)->data(33).toBool())
+        {
+          //ds data(32) on a l'ordre ds le select
+          maMap[m_ui->listWidgetAggregates->item(noChamp)->data(32).toInt()]=m_ui->listWidgetAggregates->item(noChamp)->text();
+        }
     }
     return maMap;
 }
@@ -880,6 +916,7 @@ void dialogRelation::ajouteTable(table* t)
 
 void dialogRelation::on_pushButtonQueryState_clicked()
 {
+    qDebug()<<"void dialogRelation::on_pushButtonQueryState_clicked()";
 
    QMessageBox::information(this, windowTitle()+tr(" Database Message"),
                                 messageDErreur,
@@ -887,4 +924,50 @@ void dialogRelation::on_pushButtonQueryState_clicked()
                                 QMessageBox::Ok);
 
 
+}
+
+void dialogRelation::on_customContextMenuAggregate(QPoint p)
+{
+    qDebug()<<"void dialogRelation::on_customContextMenuAggregate(QPoint p)";
+    if(m_ui->listWidgetAggregates->selectedItems().count()>0)
+    {
+        QMenu menuDeLaListeDesAggregats(this);
+        QAction * afficher=menuDeLaListeDesAggregats.addAction(tr("&Display(y/n)"));
+
+        QMenu* menu2= menuDeLaListeDesAggregats.addMenu(tr("Sort order"));
+        QAction * asc=menu2->addAction(tr("&Asc"));
+        QAction * desc=menu2->addAction(tr("&Desc"));
+        QAction * off=menu2->addAction(tr("&Off"));
+
+        QAction * actionChoisie=menuDeLaListeDesAggregats.exec(m_ui->listWidgetAggregates->mapToGlobal(p));
+        //gestion de l'action choisie:
+        QListWidgetItem * eltSelectionne=m_ui->listWidgetAggregates->selectedItems()[0];
+        uint affichee=33;
+        uint sort=34;//0,1,2
+        if (actionChoisie==afficher)
+        {
+            eltSelectionne->setData(affichee,!eltSelectionne->data(affichee).toBool());
+            if(eltSelectionne->data(affichee).toBool())
+            {
+                eltSelectionne->setIcon(QIcon(QPixmap(":/mini-eye.xpm")));
+                //on le met comme dernierChamp affiché
+                eltSelectionne->setData(32,maxCleDeLaMap()+1);
+            }
+            else
+                eltSelectionne->setIcon(QIcon(""));
+            //ds ts les cas
+            miseAJourResultat();
+        }
+        else
+        {
+            if(actionChoisie==asc ||actionChoisie==desc ||actionChoisie==off)
+            {
+                if(actionChoisie==asc)eltSelectionne->setData(sort,1);
+                if(actionChoisie==desc)eltSelectionne->setData(sort,2);
+                if(actionChoisie==off)eltSelectionne->setData(sort,0);
+                eltSelectionne->setData(35,0);//numéro dans le tri
+                miseAJourResultat();
+            }
+        }
+    }
 }

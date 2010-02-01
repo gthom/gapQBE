@@ -9,6 +9,7 @@
 #include <QListWidgetItem>
 #include "qcustomgraphicsscene.h"
 #include "lien.h"
+
 namespace Ui {
     class dialogRelation;
 }
@@ -63,6 +64,7 @@ private slots:
     void on_lineEditQuery_textChanged(QString );
     void on_toolButtonJoin_clicked();//sélection de l'outil relier
     void on_toolButtonMove_clicked();//sélection de l'outil déplacer
+    void on_customContextMenuAggregate(QPoint);
 
 public slots:
 
