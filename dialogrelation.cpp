@@ -47,6 +47,10 @@ dialogRelation::dialogRelation(QWidget *parent,QSqlDatabase& pdb) :
     connect(m_ui->pushButtonAddAgregate,SIGNAL(clicked()),this,SLOT(on_pushButtonAddAggregate_clicked()));
     connect(m_ui->listWidgetAggregates,SIGNAL(customContextMenuRequested(QPoint)),this,SLOT(on_customContextMenuAggregate(QPoint)));
     connect(m_ui->lineEditHaving,SIGNAL(textChanged(QString)),this,SLOT(miseAJourResultat()));
+    connect(m_ui->lineEditIndex,SIGNAL(textChanged(QString)),this,SLOT(miseAJourResultat()));
+    connect(m_ui->lineEditCount,SIGNAL(textChanged(QString)),this,SLOT(miseAJourResultat()));
+
+    m_ui->graphicsView->addAction(m_ui->actionDelete_tables_s);
     m_ui->graphicsView->addAction(m_ui->actionZoom_in);
     m_ui->graphicsView->addAction(m_ui->actionZoom_out);
 
@@ -440,8 +444,15 @@ void dialogRelation::miseAJourResultat()
             requete+=orderBy;
         }
     }
-
-
+    QString limit;
+    if(! m_ui->lineEditIndex->text().isEmpty() || ! m_ui->lineEditCount->text().isEmpty())
+    {
+        limit=" limit ";
+        limit+=(! m_ui->lineEditIndex->text().isEmpty())?m_ui->lineEditIndex->text():"1";
+        limit+=",";
+        limit+=(! m_ui->lineEditCount->text().isEmpty())?m_ui->lineEditCount->text():"1";
+    }
+    if(!limit.isEmpty()) requete+=limit;
     m_ui->lineEditQuery->setText(requete);
 
 
@@ -970,4 +981,10 @@ void dialogRelation::on_customContextMenuAggregate(QPoint p)
             }
         }
     }
+}
+
+void dialogRelation::on_actionDelete_tables_s_triggered()
+{
+    qDebug()<<"void dialogRelation::on_actionDelete_tables_s_triggered()";
+    tableSupprimer();
 }

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'dialogrelation.ui'
 **
-** Created: Mon Feb 1 14:30:22 2010
+** Created: Mon Feb 1 18:39:34 2010
 **      by: Qt User Interface Compiler version 4.5.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -36,12 +36,11 @@ QT_BEGIN_NAMESPACE
 class Ui_dialogRelation
 {
 public:
-    QAction *actionSuprime;
-    QAction *actionActionSuprTable;
+    QAction *actionSuprimeChamp;
     QAction *actionZoom_in;
     QAction *actionZoom_out;
-    QVBoxLayout *verticalLayout_4;
-    QSplitter *splitter_2;
+    QAction *actionDelete_tables_s;
+    QVBoxLayout *verticalLayout_5;
     QSplitter *splitter;
     QWidget *layoutWidget;
     QVBoxLayout *verticalLayout;
@@ -61,14 +60,19 @@ public:
     QToolButton *toolButtonDistinct;
     QSpacerItem *verticalSpacer_2;
     customGraphicsView *graphicsView;
-    QWidget *layoutWidget2;
     QHBoxLayout *horizontalLayout;
     QLabel *label;
     QLineEdit *lineEditQuery;
     QPushButton *pushButtonQueryState;
-    QWidget *layoutWidget3;
     QHBoxLayout *horizontalLayout_8;
+    QVBoxLayout *verticalLayout_4;
     QTableWidget *tableWidgetPreview;
+    QHBoxLayout *horizontalLayout_3;
+    QLabel *label_4;
+    QLineEdit *lineEditIndex;
+    QHBoxLayout *horizontalLayout_5;
+    QLabel *label_5;
+    QLineEdit *lineEditCount;
     QVBoxLayout *verticalLayout_3;
     QCheckBox *checkBoxGroupBy;
     QHBoxLayout *horizontalLayout_6;
@@ -80,7 +84,6 @@ public:
     QLabel *label_2;
     QLineEdit *lineEditHaving;
     QPushButton *pushButtonExportCsv;
-    QWidget *layoutWidget4;
     QHBoxLayout *horizontalLayout_2;
     QSpacerItem *horizontalSpacer;
     QPushButton *pushButtonQuitter;
@@ -90,22 +93,19 @@ public:
         if (dialogRelation->objectName().isEmpty())
             dialogRelation->setObjectName(QString::fromUtf8("dialogRelation"));
         dialogRelation->resize(748, 559);
-        actionSuprime = new QAction(dialogRelation);
-        actionSuprime->setObjectName(QString::fromUtf8("actionSuprime"));
-        actionActionSuprTable = new QAction(dialogRelation);
-        actionActionSuprTable->setObjectName(QString::fromUtf8("actionActionSuprTable"));
+        actionSuprimeChamp = new QAction(dialogRelation);
+        actionSuprimeChamp->setObjectName(QString::fromUtf8("actionSuprimeChamp"));
         actionZoom_in = new QAction(dialogRelation);
         actionZoom_in->setObjectName(QString::fromUtf8("actionZoom_in"));
         actionZoom_in->setShortcutContext(Qt::ApplicationShortcut);
         actionZoom_out = new QAction(dialogRelation);
         actionZoom_out->setObjectName(QString::fromUtf8("actionZoom_out"));
         actionZoom_out->setShortcutContext(Qt::ApplicationShortcut);
-        verticalLayout_4 = new QVBoxLayout(dialogRelation);
-        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
-        splitter_2 = new QSplitter(dialogRelation);
-        splitter_2->setObjectName(QString::fromUtf8("splitter_2"));
-        splitter_2->setOrientation(Qt::Vertical);
-        splitter = new QSplitter(splitter_2);
+        actionDelete_tables_s = new QAction(dialogRelation);
+        actionDelete_tables_s->setObjectName(QString::fromUtf8("actionDelete_tables_s"));
+        verticalLayout_5 = new QVBoxLayout(dialogRelation);
+        verticalLayout_5->setObjectName(QString::fromUtf8("verticalLayout_5"));
+        splitter = new QSplitter(dialogRelation);
         splitter->setObjectName(QString::fromUtf8("splitter"));
         splitter->setOrientation(Qt::Horizontal);
         layoutWidget = new QWidget(splitter);
@@ -224,34 +224,34 @@ public:
         horizontalLayout_4->addWidget(graphicsView);
 
         splitter->addWidget(layoutWidget1);
-        splitter_2->addWidget(splitter);
-        layoutWidget2 = new QWidget(splitter_2);
-        layoutWidget2->setObjectName(QString::fromUtf8("layoutWidget2"));
-        horizontalLayout = new QHBoxLayout(layoutWidget2);
+
+        verticalLayout_5->addWidget(splitter);
+
+        horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-        horizontalLayout->setContentsMargins(0, 0, 0, 0);
-        label = new QLabel(layoutWidget2);
+        label = new QLabel(dialogRelation);
         label->setObjectName(QString::fromUtf8("label"));
 
         horizontalLayout->addWidget(label);
 
-        lineEditQuery = new QLineEdit(layoutWidget2);
+        lineEditQuery = new QLineEdit(dialogRelation);
         lineEditQuery->setObjectName(QString::fromUtf8("lineEditQuery"));
 
         horizontalLayout->addWidget(lineEditQuery);
 
-        pushButtonQueryState = new QPushButton(layoutWidget2);
+        pushButtonQueryState = new QPushButton(dialogRelation);
         pushButtonQueryState->setObjectName(QString::fromUtf8("pushButtonQueryState"));
 
         horizontalLayout->addWidget(pushButtonQueryState);
 
-        splitter_2->addWidget(layoutWidget2);
-        layoutWidget3 = new QWidget(splitter_2);
-        layoutWidget3->setObjectName(QString::fromUtf8("layoutWidget3"));
-        horizontalLayout_8 = new QHBoxLayout(layoutWidget3);
+
+        verticalLayout_5->addLayout(horizontalLayout);
+
+        horizontalLayout_8 = new QHBoxLayout();
         horizontalLayout_8->setObjectName(QString::fromUtf8("horizontalLayout_8"));
-        horizontalLayout_8->setContentsMargins(0, 0, 0, 0);
-        tableWidgetPreview = new QTableWidget(layoutWidget3);
+        verticalLayout_4 = new QVBoxLayout();
+        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
+        tableWidgetPreview = new QTableWidget(dialogRelation);
         tableWidgetPreview->setObjectName(QString::fromUtf8("tableWidgetPreview"));
         QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Expanding);
         sizePolicy1.setHorizontalStretch(2);
@@ -261,28 +261,61 @@ public:
         tableWidgetPreview->setDragDropMode(QAbstractItemView::DragOnly);
         tableWidgetPreview->setAlternatingRowColors(true);
 
-        horizontalLayout_8->addWidget(tableWidgetPreview);
+        verticalLayout_4->addWidget(tableWidgetPreview);
+
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
+        label_4 = new QLabel(dialogRelation);
+        label_4->setObjectName(QString::fromUtf8("label_4"));
+
+        horizontalLayout_3->addWidget(label_4);
+
+        lineEditIndex = new QLineEdit(dialogRelation);
+        lineEditIndex->setObjectName(QString::fromUtf8("lineEditIndex"));
+
+        horizontalLayout_3->addWidget(lineEditIndex);
+
+
+        verticalLayout_4->addLayout(horizontalLayout_3);
+
+        horizontalLayout_5 = new QHBoxLayout();
+        horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
+        label_5 = new QLabel(dialogRelation);
+        label_5->setObjectName(QString::fromUtf8("label_5"));
+
+        horizontalLayout_5->addWidget(label_5);
+
+        lineEditCount = new QLineEdit(dialogRelation);
+        lineEditCount->setObjectName(QString::fromUtf8("lineEditCount"));
+
+        horizontalLayout_5->addWidget(lineEditCount);
+
+
+        verticalLayout_4->addLayout(horizontalLayout_5);
+
+
+        horizontalLayout_8->addLayout(verticalLayout_4);
 
         verticalLayout_3 = new QVBoxLayout();
         verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
-        checkBoxGroupBy = new QCheckBox(layoutWidget3);
+        checkBoxGroupBy = new QCheckBox(dialogRelation);
         checkBoxGroupBy->setObjectName(QString::fromUtf8("checkBoxGroupBy"));
 
         verticalLayout_3->addWidget(checkBoxGroupBy);
 
         horizontalLayout_6 = new QHBoxLayout();
         horizontalLayout_6->setObjectName(QString::fromUtf8("horizontalLayout_6"));
-        label_3 = new QLabel(layoutWidget3);
+        label_3 = new QLabel(dialogRelation);
         label_3->setObjectName(QString::fromUtf8("label_3"));
 
         horizontalLayout_6->addWidget(label_3);
 
-        lineEditAgregate = new QLineEdit(layoutWidget3);
+        lineEditAgregate = new QLineEdit(dialogRelation);
         lineEditAgregate->setObjectName(QString::fromUtf8("lineEditAgregate"));
 
         horizontalLayout_6->addWidget(lineEditAgregate);
 
-        pushButtonAddAgregate = new QPushButton(layoutWidget3);
+        pushButtonAddAgregate = new QPushButton(dialogRelation);
         pushButtonAddAgregate->setObjectName(QString::fromUtf8("pushButtonAddAgregate"));
         pushButtonAddAgregate->setEnabled(false);
         QIcon icon6;
@@ -294,7 +327,7 @@ public:
 
         verticalLayout_3->addLayout(horizontalLayout_6);
 
-        listWidgetAggregates = new QListWidget(layoutWidget3);
+        listWidgetAggregates = new QListWidget(dialogRelation);
         listWidgetAggregates->setObjectName(QString::fromUtf8("listWidgetAggregates"));
         listWidgetAggregates->setContextMenuPolicy(Qt::CustomContextMenu);
         listWidgetAggregates->setEditTriggers(QAbstractItemView::AnyKeyPressed|QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed);
@@ -303,12 +336,12 @@ public:
 
         horizontalLayout_7 = new QHBoxLayout();
         horizontalLayout_7->setObjectName(QString::fromUtf8("horizontalLayout_7"));
-        label_2 = new QLabel(layoutWidget3);
+        label_2 = new QLabel(dialogRelation);
         label_2->setObjectName(QString::fromUtf8("label_2"));
 
         horizontalLayout_7->addWidget(label_2);
 
-        lineEditHaving = new QLineEdit(layoutWidget3);
+        lineEditHaving = new QLineEdit(dialogRelation);
         lineEditHaving->setObjectName(QString::fromUtf8("lineEditHaving"));
         lineEditHaving->setEnabled(false);
 
@@ -317,7 +350,7 @@ public:
 
         verticalLayout_3->addLayout(horizontalLayout_7);
 
-        pushButtonExportCsv = new QPushButton(layoutWidget3);
+        pushButtonExportCsv = new QPushButton(dialogRelation);
         pushButtonExportCsv->setObjectName(QString::fromUtf8("pushButtonExportCsv"));
         pushButtonExportCsv->setEnabled(false);
         QIcon icon7;
@@ -329,17 +362,16 @@ public:
 
         horizontalLayout_8->addLayout(verticalLayout_3);
 
-        splitter_2->addWidget(layoutWidget3);
-        layoutWidget4 = new QWidget(splitter_2);
-        layoutWidget4->setObjectName(QString::fromUtf8("layoutWidget4"));
-        horizontalLayout_2 = new QHBoxLayout(layoutWidget4);
+
+        verticalLayout_5->addLayout(horizontalLayout_8);
+
+        horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
-        horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout_2->addItem(horizontalSpacer);
 
-        pushButtonQuitter = new QPushButton(layoutWidget4);
+        pushButtonQuitter = new QPushButton(dialogRelation);
         pushButtonQuitter->setObjectName(QString::fromUtf8("pushButtonQuitter"));
         QIcon icon8;
         icon8.addFile(QString::fromUtf8(":/close.png"), QSize(), QIcon::Normal, QIcon::Off);
@@ -347,9 +379,8 @@ public:
 
         horizontalLayout_2->addWidget(pushButtonQuitter);
 
-        splitter_2->addWidget(layoutWidget4);
 
-        verticalLayout_4->addWidget(splitter_2);
+        verticalLayout_5->addLayout(horizontalLayout_2);
 
 
         retranslateUi(dialogRelation);
@@ -360,12 +391,11 @@ public:
     void retranslateUi(QDialog *dialogRelation)
     {
         dialogRelation->setWindowTitle(QApplication::translate("dialogRelation", "Gap Query Builder QBE", 0, QApplication::UnicodeUTF8));
-        actionSuprime->setText(QApplication::translate("dialogRelation", "suprime", 0, QApplication::UnicodeUTF8));
+        actionSuprimeChamp->setText(QApplication::translate("dialogRelation", "delete field", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
-        actionSuprime->setToolTip(QApplication::translate("dialogRelation", "supprimer le champ", 0, QApplication::UnicodeUTF8));
+        actionSuprimeChamp->setToolTip(QApplication::translate("dialogRelation", "supprimer le champ", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
-        actionSuprime->setShortcut(QApplication::translate("dialogRelation", "Del", 0, QApplication::UnicodeUTF8));
-        actionActionSuprTable->setText(QApplication::translate("dialogRelation", "actionSuprTable", 0, QApplication::UnicodeUTF8));
+        actionSuprimeChamp->setShortcut(QApplication::translate("dialogRelation", "Del", 0, QApplication::UnicodeUTF8));
         actionZoom_in->setText(QApplication::translate("dialogRelation", "zoom in", 0, QApplication::UnicodeUTF8));
         actionZoom_in->setShortcut(QApplication::translate("dialogRelation", "Ctrl++", 0, QApplication::UnicodeUTF8));
         actionZoom_out->setText(QApplication::translate("dialogRelation", "zoom out", 0, QApplication::UnicodeUTF8));
@@ -373,6 +403,8 @@ public:
         actionZoom_out->setToolTip(QApplication::translate("dialogRelation", "zoom out", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         actionZoom_out->setShortcut(QApplication::translate("dialogRelation", "Ctrl+-", 0, QApplication::UnicodeUTF8));
+        actionDelete_tables_s->setText(QApplication::translate("dialogRelation", "delete tables(s)", 0, QApplication::UnicodeUTF8));
+        actionDelete_tables_s->setShortcut(QApplication::translate("dialogRelation", "Shift+Del", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         listWidgetTables->setToolTip(QApplication::translate("dialogRelation", "Table's list from database", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
@@ -425,6 +457,8 @@ public:
 #ifndef QT_NO_TOOLTIP
         tableWidgetPreview->setToolTip(QApplication::translate("dialogRelation", "The query's rows ", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
+        label_4->setText(QApplication::translate("dialogRelation", "Index:", 0, QApplication::UnicodeUTF8));
+        label_5->setText(QApplication::translate("dialogRelation", "Number:", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         checkBoxGroupBy->setToolTip(QApplication::translate("dialogRelation", "Check this if you want to compute results by that is displayed", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP

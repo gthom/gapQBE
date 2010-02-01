@@ -48,6 +48,7 @@ private:
 
 private slots:
 
+    void on_actionDelete_tables_s_triggered();
     void on_pushButtonQueryState_clicked();
     void on_toolButtonAddTables_clicked();
     void on_lineEditAgregate_textChanged(QString );
