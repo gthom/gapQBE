@@ -28,6 +28,8 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
         elt->setSelected(!elt->isSelected());
         if(outil=="drag")
         {
+            if(!(elt->data(32).toString()=="Field"))
+            {
             QDrag *drag = new QDrag(((QWidget*)this->parent()));
             QMimeData *mimeData = new QMimeData;
             QByteArray qba;
@@ -36,10 +38,11 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
             qba.append(elt->data(33).toString());
             qba.append(";");
             qba.append(elt->data(34).toString());
-            mimeData->setData("text/table",qba);
+            mimeData->setData("text/"+elt->data(32).toString(),qba);
             drag->setMimeData(mimeData);
             //drag->setPixmap(iconPixmap);
             Qt::DropAction dropAction = drag->exec();
+        }
         }
 
     }
@@ -81,7 +84,10 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
                             if(saisieAliasOk)
                             {
                                 field * newChamp=new field(maman,true,maman->getScene(),0);
-                                newChamp->setData(32,"Field");
+                                newChamp->setData(32,"Value");
+                                newChamp->setData(33,"("+maman->m_uip()->lineEditQuery->text()+")");
+                                newChamp->setData(34,(qlonglong)newChamp);
+
                                 newChamp->setData(36,"QUERY");
                                 newChamp->nomInitial="("+maman->m_uip()->lineEditQuery->text()+") as "+alias;
                                 newChamp->document()->setPlainText(newChamp->nomInitial);
@@ -130,6 +136,9 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
                                 query * newQuery=new query(maman,"("+maman->m_uip()->lineEditQuery->text()+")",maman->prochainX,30,0,maman->getScene(),maman->listeDesChampsDuResultat,maman->m_uip()->lineEditQuery->text(),alias);
                                 newQuery->setData(36,"QUERY");
+                                newQuery->setData(32,"Table");
+                                newQuery->setData(33,"("+maman->m_uip()->lineEditQuery->text()+")");
+                                newQuery->setData(34,(qlonglong)newQuery);
                                 maman->ajouteTable(newQuery);
                                 //vider la liste des fonctions agrégat et décocher grouper
                                 maman->m_uip()->checkBoxGroupBy->setChecked(false);

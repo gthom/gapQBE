@@ -99,14 +99,15 @@ void customGraphicsView::dropEvent(QDropEvent *event)
     {
         qDebug()<<"customGraphicsView::dropEvent(QDropEvent *event)";
         //si une table est à l'origine du dragndrop
-        if(event->mimeData()->hasFormat("text/table"))
+        if(event->mimeData()->hasFormat("text/Table"))
         {
-
+            qDebug()<<"il a le format text/Table";
+            //si la destination est une table
             if (this->scene()->itemAt(lePointMappe)->data(32).toString()=="Table")
             {
                 table* table1=(table*)this->scene()->itemAt(lePointMappe)->data(34).toLongLong();
                 qDebug()<<"table1:"<<table1;
-                QByteArray qba=event->mimeData()->data("text/table");
+                QByteArray qba=event->mimeData()->data("text/Table");
                 QString data(qba);
                 QStringList typeEtNomEtAdresse=data.split(';');
                 table * table2=(table*) typeEtNomEtAdresse[2].toLongLong();//recup de l'adresse de la table2
@@ -116,37 +117,71 @@ void customGraphicsView::dropEvent(QDropEvent *event)
                 if(table1!=table2)
                     emit jointureRequise(table1,table2);
                 else
-                    qDebug()<<"jointure réflexive interdite";
+                    qDebug()<<"jointure réflexive interdite créez un alias";
 
             }
             else
+            {
+                //on relâche sur un champ
+
+                if(this->scene()->itemAt(lePointMappe)->data(32).toString()=="Field")
+                {
+                    field* leChamp=(field*)this->scene()->itemAt(lePointMappe);
+                    //si c'est une query à l'origine du drag
+                    if(event->mimeData()->data("text/Table").split(';')[1].at(0)=='(')
+                    {
+                        QString condition=event->mimeData()->data("text/Table").split(';')[1];
+                        if(leChamp->cond==NULL)
+                        {
+                            leChamp->ajouteCondition(" in"+condition);
+
+                        }
+                        else
+                        {
+                            leChamp->modifieCondition(" in"+condition);
+
+
+                        }
+
+                    }
+                }
+                else
                 event->ignore();
+            }
+
         }
-        else
+        else //l'emmetteur du drag n'est ni une table ni une query
         {
             //ça peut être un drag de valeur pour condition sur champ
-
+            qDebug()<<"n'a pas le type text/Table";
             if (this->scene()->itemAt(lePointMappe)->data(32).toString()=="Field")
             {
                 //on va modifier la condition sur champ
                 qDebug()<<"drag and drop sur champ";
                 qDebug()<<"mimedata de la cellule"<<event->mimeData()->formats();
                 field * leChamp=(field*)this->scene()->itemAt(lePointMappe);
-                //obtention des items droppés
-
-                QStandardItemModel model(this->parent());
-                model.dropMimeData(event->mimeData(), Qt::CopyAction, 0,0, QModelIndex());
-                QString leContenuDeLaCellule="\""+model.item(0,0)->text()+"\"";
+                QString condition;
+                if(event->mimeData()->hasFormat("text/Value")) //drag an drop de value sur champ
+                {
+                    condition=QString(event->mimeData()->data("text/Value").split(';')[1]);
+                }
+                else
+                {
+                    //obtention des items droppés si valeur de la grille
+                    QStandardItemModel model(this->parent());
+                    model.dropMimeData(event->mimeData(), Qt::CopyAction, 0,0, QModelIndex());
+                    condition="\""+model.item(0,0)->text()+"\"";
+                }
 
                 //s'il n'y a pas encore de condition sur le champ
                 if(leChamp->cond==NULL)
                 {
-                    leChamp->ajouteCondition("="+leContenuDeLaCellule);
+                    leChamp->ajouteCondition("="+condition);
 
                 }
                 else
                 {
-                    leChamp->modifieCondition("="+leContenuDeLaCellule);
+                    leChamp->modifieCondition("="+condition);
 
 
                 }
