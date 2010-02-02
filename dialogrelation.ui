@@ -189,6 +189,11 @@
            <property name="text">
             <string>D</string>
            </property>
+           <property name="icon">
+            <iconset resource="gapQBE.qrc">
+             <normaloff>:/doublons.png</normaloff>
+             <normalon>:/sansDoublons.png</normalon>:/doublons.png</iconset>
+           </property>
            <property name="checkable">
             <bool>true</bool>
            </property>

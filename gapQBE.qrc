@@ -14,5 +14,7 @@
         <file>stock_sort-criteria.png</file>
         <file>list-add.png</file>
         <file>filesave.png</file>
+        <file>doublons.png</file>
+        <file>sansDoublons.png</file>
     </qresource>
 </RCC>
