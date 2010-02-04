@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Gap Query Builder QBE</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>gapQBE.png</normaloff>gapQBE.png</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_5">
    <item>
     <widget class="QSplitter" name="splitter">

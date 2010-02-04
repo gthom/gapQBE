@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'dialogrelation.ui'
 **
-** Created: Tue Feb 2 14:03:05 2010
+** Created: Tue Feb 2 14:50:12 2010
 **      by: Qt User Interface Compiler version 4.5.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -93,6 +93,9 @@ public:
         if (dialogRelation->objectName().isEmpty())
             dialogRelation->setObjectName(QString::fromUtf8("dialogRelation"));
         dialogRelation->resize(748, 559);
+        QIcon icon;
+        icon.addFile(QString::fromUtf8("gapQBE.png"), QSize(), QIcon::Normal, QIcon::Off);
+        dialogRelation->setWindowIcon(icon);
         actionSuprimeChamp = new QAction(dialogRelation);
         actionSuprimeChamp->setObjectName(QString::fromUtf8("actionSuprimeChamp"));
         actionZoom_in = new QAction(dialogRelation);
@@ -147,25 +150,25 @@ public:
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
         toolButtonJoin = new QToolButton(layoutWidget1);
         toolButtonJoin->setObjectName(QString::fromUtf8("toolButtonJoin"));
-        QIcon icon;
-        icon.addFile(QString::fromUtf8(":/tables-relation.png"), QSize(), QIcon::Normal, QIcon::Off);
-        toolButtonJoin->setIcon(icon);
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8(":/tables-relation.png"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButtonJoin->setIcon(icon1);
 
         verticalLayout_2->addWidget(toolButtonJoin);
 
         toolButtonMove = new QToolButton(layoutWidget1);
         toolButtonMove->setObjectName(QString::fromUtf8("toolButtonMove"));
-        QIcon icon1;
-        icon1.addFile(QString::fromUtf8(":/arrow-move.png"), QSize(), QIcon::Normal, QIcon::Off);
-        toolButtonMove->setIcon(icon1);
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8(":/arrow-move.png"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButtonMove->setIcon(icon2);
 
         verticalLayout_2->addWidget(toolButtonMove);
 
         toolButtonApercuAuto = new QToolButton(layoutWidget1);
         toolButtonApercuAuto->setObjectName(QString::fromUtf8("toolButtonApercuAuto"));
-        QIcon icon2;
-        icon2.addFile(QString::fromUtf8(":/previewOn"), QSize(), QIcon::Normal, QIcon::Off);
-        toolButtonApercuAuto->setIcon(icon2);
+        QIcon icon3;
+        icon3.addFile(QString::fromUtf8(":/previewOn"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButtonApercuAuto->setIcon(icon3);
         toolButtonApercuAuto->setCheckable(true);
         toolButtonApercuAuto->setChecked(true);
 
@@ -173,9 +176,9 @@ public:
 
         toolButtonExecuteRequete = new QToolButton(layoutWidget1);
         toolButtonExecuteRequete->setObjectName(QString::fromUtf8("toolButtonExecuteRequete"));
-        QIcon icon3;
-        icon3.addFile(QString::fromUtf8(":/make"), QSize(), QIcon::Normal, QIcon::Off);
-        toolButtonExecuteRequete->setIcon(icon3);
+        QIcon icon4;
+        icon4.addFile(QString::fromUtf8(":/make"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButtonExecuteRequete->setIcon(icon4);
 
         verticalLayout_2->addWidget(toolButtonExecuteRequete);
 
@@ -187,26 +190,26 @@ public:
 
         toolButtonFitInView = new QToolButton(layoutWidget1);
         toolButtonFitInView->setObjectName(QString::fromUtf8("toolButtonFitInView"));
-        QIcon icon4;
-        icon4.addFile(QString::fromUtf8(":/zoom-fit-best.png"), QSize(), QIcon::Normal, QIcon::Off);
-        toolButtonFitInView->setIcon(icon4);
+        QIcon icon5;
+        icon5.addFile(QString::fromUtf8(":/zoom-fit-best.png"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButtonFitInView->setIcon(icon5);
 
         verticalLayout_2->addWidget(toolButtonFitInView);
 
         toolButtonSO = new QToolButton(layoutWidget1);
         toolButtonSO->setObjectName(QString::fromUtf8("toolButtonSO"));
-        QIcon icon5;
-        icon5.addFile(QString::fromUtf8(":/stock_sort-criteria.png"), QSize(), QIcon::Normal, QIcon::Off);
-        toolButtonSO->setIcon(icon5);
+        QIcon icon6;
+        icon6.addFile(QString::fromUtf8(":/stock_sort-criteria.png"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButtonSO->setIcon(icon6);
 
         verticalLayout_2->addWidget(toolButtonSO);
 
         toolButtonDistinct = new QToolButton(layoutWidget1);
         toolButtonDistinct->setObjectName(QString::fromUtf8("toolButtonDistinct"));
-        QIcon icon6;
-        icon6.addFile(QString::fromUtf8(":/doublons.png"), QSize(), QIcon::Normal, QIcon::Off);
-        icon6.addFile(QString::fromUtf8(":/sansDoublons.png"), QSize(), QIcon::Normal, QIcon::On);
-        toolButtonDistinct->setIcon(icon6);
+        QIcon icon7;
+        icon7.addFile(QString::fromUtf8(":/doublons.png"), QSize(), QIcon::Normal, QIcon::Off);
+        icon7.addFile(QString::fromUtf8(":/sansDoublons.png"), QSize(), QIcon::Normal, QIcon::On);
+        toolButtonDistinct->setIcon(icon7);
         toolButtonDistinct->setCheckable(true);
         toolButtonDistinct->setChecked(true);
 
@@ -322,9 +325,9 @@ public:
         pushButtonAddAgregate = new QPushButton(dialogRelation);
         pushButtonAddAgregate->setObjectName(QString::fromUtf8("pushButtonAddAgregate"));
         pushButtonAddAgregate->setEnabled(false);
-        QIcon icon7;
-        icon7.addFile(QString::fromUtf8(":/list-add.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButtonAddAgregate->setIcon(icon7);
+        QIcon icon8;
+        icon8.addFile(QString::fromUtf8(":/list-add.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButtonAddAgregate->setIcon(icon8);
 
         horizontalLayout_6->addWidget(pushButtonAddAgregate);
 
@@ -357,9 +360,9 @@ public:
         pushButtonExportCsv = new QPushButton(dialogRelation);
         pushButtonExportCsv->setObjectName(QString::fromUtf8("pushButtonExportCsv"));
         pushButtonExportCsv->setEnabled(false);
-        QIcon icon8;
-        icon8.addFile(QString::fromUtf8(":/filesave.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButtonExportCsv->setIcon(icon8);
+        QIcon icon9;
+        icon9.addFile(QString::fromUtf8(":/filesave.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButtonExportCsv->setIcon(icon9);
 
         verticalLayout_3->addWidget(pushButtonExportCsv);
 
@@ -377,9 +380,9 @@ public:
 
         pushButtonQuitter = new QPushButton(dialogRelation);
         pushButtonQuitter->setObjectName(QString::fromUtf8("pushButtonQuitter"));
-        QIcon icon9;
-        icon9.addFile(QString::fromUtf8(":/close.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButtonQuitter->setIcon(icon9);
+        QIcon icon10;
+        icon10.addFile(QString::fromUtf8(":/close.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButtonQuitter->setIcon(icon10);
 
         horizontalLayout_2->addWidget(pushButtonQuitter);
 

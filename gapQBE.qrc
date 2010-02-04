@@ -16,5 +16,6 @@
         <file>filesave.png</file>
         <file>doublons.png</file>
         <file>sansDoublons.png</file>
+        <file>gapQBE.png</file>
     </qresource>
 </RCC>
