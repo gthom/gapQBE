@@ -36,6 +36,7 @@ public:
     QCustomGraphicsScene* getScene(){return &scene;};
     void ajouteTable(table* t);
     QString messageDErreur;
+    QString delimiteur;//suivant les moteurs c'est soit simple soit double quote
 protected:
     virtual void changeEvent(QEvent *e);
 

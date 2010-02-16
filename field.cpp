@@ -139,7 +139,7 @@ void field::contextMenuEvent(QGraphicsSceneMouseEvent *event)
                     //et le trait et l'opérateur
                     //is null is not null
                     //= < > <>
-                    ajouteCondition(tr("=\"something\""));
+                    ajouteCondition("="+maman->delimiteur+tr("something")+maman->delimiteur);
 
                 }
                 else

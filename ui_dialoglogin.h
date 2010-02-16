@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'dialoglogin.ui'
 **
-** Created: Thu Jan 28 10:03:41 2010
+** Created: Tue Feb 16 07:18:47 2010
 **      by: Qt User Interface Compiler version 4.5.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -55,6 +55,9 @@ public:
         if (DialogLogin->objectName().isEmpty())
             DialogLogin->setObjectName(QString::fromUtf8("DialogLogin"));
         DialogLogin->resize(277, 230);
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/gapQBE.png"), QSize(), QIcon::Normal, QIcon::Off);
+        DialogLogin->setWindowIcon(icon);
         verticalLayout = new QVBoxLayout(DialogLogin);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         horizontalLayout = new QHBoxLayout();

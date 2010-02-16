@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'dialogtypejointure.ui'
 **
-** Created: Thu Jan 28 10:03:41 2010
+** Created: Tue Feb 16 07:18:47 2010
 **      by: Qt User Interface Compiler version 4.5.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -39,6 +39,9 @@ public:
             DialogTypeJointure->setObjectName(QString::fromUtf8("DialogTypeJointure"));
         DialogTypeJointure->setWindowModality(Qt::ApplicationModal);
         DialogTypeJointure->resize(268, 68);
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/gapQBE.png"), QSize(), QIcon::Normal, QIcon::Off);
+        DialogTypeJointure->setWindowIcon(icon);
         verticalLayout = new QVBoxLayout(DialogTypeJointure);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         horizontalLayout = new QHBoxLayout();

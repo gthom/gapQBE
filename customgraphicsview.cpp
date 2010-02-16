@@ -170,7 +170,8 @@ void customGraphicsView::dropEvent(QDropEvent *event)
                     //obtention des items droppés si valeur de la grille
                     QStandardItemModel model(this->parent());
                     model.dropMimeData(event->mimeData(), Qt::CopyAction, 0,0, QModelIndex());
-                    condition="\""+model.item(0,0)->text()+"\"";
+                    QString delim=((dialogRelation*)parent())->delimiteur;
+                    condition=delim+model.item(0,0)->text()+delim;
                 }
 
                 //s'il n'y a pas encore de condition sur le champ

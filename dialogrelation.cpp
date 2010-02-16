@@ -31,6 +31,13 @@ dialogRelation::dialogRelation(QWidget *parent,QSqlDatabase& pdb) :
     prochainX=20;
     //recup de la base
     db=db.cloneDatabase(pdb,"ploum");
+    //determination du délimiteur
+    if(db.driverName()=="QMYSQL")
+    {
+        delimiteur="\"";
+    }
+    else
+        delimiteur="'";
     //QMessageBox::warning(this,"pb",db.lastError().text());
     db.open();
     //recup des tables de la base
@@ -164,7 +171,7 @@ void dialogRelation::tableAjouterChamp(table * laTable)
     //attention aux titres qui se font passer pour des tables
 
     qDebug()<<"void dialogRelation::tableAjouterChamp()";
-    QString nomDuChamp="\"Some Text\"";
+    QString nomDuChamp=delimiteur+"Some Text"+delimiteur;
     field* nouveauChamp=new field(this,true,&scene,nomDuChamp,laTable);
     //c'est sa table
     nouveauChamp->laTable=laTable;
