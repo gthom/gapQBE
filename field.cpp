@@ -54,28 +54,34 @@ void field::contextMenuEvent(QGraphicsSceneMouseEvent *event)
 {
     //ce qui se passe lorsque le menu contextuel du champ est appelé
     qDebug()<<"void field::contextMenuEvent(QGraphicsSceneMouseEvent *event)";
-    QMenu menu;
-    //si je n'était pas sélectionnée, je le deviens
+    //création du menu cntextuel du champ
+    QMenu menu(QObject::tr("Field Menu"));
+    //titre du menu contextuel
+    QAction* titre=new QAction(menu.title(),this);
+    titre->setDisabled(true);
+    menu.addAction(titre);
+    titre->setFont(QFont("verdana",9,3,true));
+    //si je n'était pas sélectionné, je le deviens
     this->setSelected(!this->isSelected());
     //création des actions du menu
     QAction *removeAction ;
     if(freeField)
         removeAction = menu.addAction(tr("&Remove"));
 
-    QAction *afficherAction = menu.addAction(tr("&Display(on/off)"));
+    QAction *afficherAction = menu.addAction(QIcon(":/mini-eye.xpm"),tr("&Display(on/off)"));
     //affichage conditionnel du menu concernant les conditions
     QAction *addCondAction;
     QAction *removeCondAction;
     if(cond==NULL)
     {
-        addCondAction= menu.addAction(tr("&AddCondition"));
+        addCondAction= menu.addAction(QIcon(":/list-add.png"),tr("&Add Condition"));
     }
     else
     {
         removeCondAction= menu.addAction(tr("&removeCondition"));
     }
     //fin affichage du menu concernant les conditions
-    QAction *choisirCritereDeTriAction=menu.addAction(tr("Sort(asc,desc,off)"));
+    QAction *choisirCritereDeTriAction=menu.addAction(QIcon(":/stock_sort-criteria.png"),tr("Sort(asc,desc,off)"));
     //exécution du menu
     QAction* actionChoisie=menu.exec(event->screenPos());
     if(actionChoisie!=NULL)
@@ -99,8 +105,8 @@ void field::contextMenuEvent(QGraphicsSceneMouseEvent *event)
             if(actionChoisie==choisirCritereDeTriAction)
             {
                 QMenu menu2;
-                QAction * asc=menu2.addAction(tr("&Asc"));
-                QAction * desc=menu2.addAction(tr("&Desc"));
+                QAction * asc=menu2.addAction(QIcon(":/upSort.xpm"),tr("&Asc"));
+                QAction * desc=menu2.addAction(QIcon(":/downSort.xpm"),tr("&Desc"));
                 QAction * off=menu2.addAction(tr("&Off"));
                 QAction* triChoisi=menu2.exec(event->screenPos());
                 if(triChoisi==asc)

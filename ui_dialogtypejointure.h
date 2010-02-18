@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'dialogtypejointure.ui'
 **
-** Created: Tue Feb 16 07:18:47 2010
+** Created: Tue Feb 16 15:02:43 2010
 **      by: Qt User Interface Compiler version 4.5.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!

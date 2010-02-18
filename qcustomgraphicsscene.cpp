@@ -57,9 +57,16 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
                 //et personne dans le rectangle autour
                 if(items(QRectF(mouseEvent->scenePos().x()-1,mouseEvent->scenePos().y()-1,2,2)).count()==0)
                 {
-                    //appel du menu contextuel de la zone de travail
+                    //construction et appel du menu contextuel de la zone de travail
+                    QMenu menuContextuelDeRien(QObject::tr("Workspace Menu"));
+                    //ajout du titre
+                    QAction* titre=new QAction(menuContextuelDeRien.title(),this);
+                    titre->setDisabled(true);
+                    menuContextuelDeRien.addAction(titre);
+                    //titre->setSeparator(true);
+                    titre->setFont(QFont("verdana",9,3,true));
 
-                    QMenu menuContextuelDeRien;
+                    //ajout des actions du menu:
                     QAction* ajouteUnChampARien=menuContextuelDeRien.addAction(tr("Add a &free field"));
 
                     QAction* enregistreCommeSourceDeDonnees;
@@ -108,8 +115,8 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
                     {
                     if(actionChoisie==ajouteUnChampARien)
                     {
-
-                        field * nouveauChamp=new field(maman,true,this,"\"something\"",0);
+                        QString what=maman->delimiteur+QObject::tr("something")+maman->delimiteur;
+                        field * nouveauChamp=new field(maman,true,this,what,0);
                         //c'est un champ en dehors de tte table
                         nouveauChamp->laTable=NULL;
                         nouveauChamp->setPos(mouseEvent->scenePos());

@@ -83,7 +83,17 @@ qDebug()<<"constructeur de table";
  {
      //ce qui se passe lorsque le menu contextuel de la table est appelé
      qDebug()<<"void table::contextMenuEvent(QGraphicsSceneMouseEvent *event)";
-     QMenu menu;
+     QMenu menu(QObject::tr("Table Menu"));
+     //ajout du titre
+
+     QAction* titre=new QAction(menu.title(),this->maman);
+    titre->setDisabled(true);
+    menu.addAction(titre);
+    //titre->setSeparator(true);
+    titre->setFont(QFont("verdana",9,3,true));
+    //si je n'était pas sélectionnée, je le deviens
+    this->setSelected(!this->isSelected());
+
      //si je n'était pas sélectionnée, je le deviens
      this->setSelected(true);
      //création des actions du menu

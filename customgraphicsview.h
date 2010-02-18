@@ -18,6 +18,7 @@ public:
     void dragEnterEvent(QDragEnterEvent *event);
     void dragMoveEvent(QDragMoveEvent *event);
     void dropEvent(QDropEvent *event);
+    QString delimiteur;
 signals:
     void jointureRequise(table*,table*);
     void ilYADesTablesAAjouter(QPoint);

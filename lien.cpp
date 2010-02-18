@@ -228,9 +228,17 @@ void lien::contextMenuEvent(QGraphicsSceneMouseEvent *event)
 {
     //ce qui se passe lorsque le menu contextuel de la table est appelé
      qDebug()<<"void lien::contextMenuEvent(QGraphicsSceneMouseEvent *event)";
-     QMenu menu;
+     QMenu menu(QObject::tr("Link Menu"));
      //si je n'était pas sélectionnée, je le deviens
      this->setSelected(true);
+     //titre du menu
+     QAction* titre=new QAction(menu.title(),scene());
+    titre->setDisabled(true);
+    menu.addAction(titre);
+    //titre->setSeparator(true);
+    titre->setFont(QFont("verdana",9,3,true));
+    //si je n'était pas sélectionnée, je le deviens
+    this->setSelected(!this->isSelected());
      //création des actions du menu
      QAction *removeAction = menu.addAction(QObject::tr("&Remove"));
      QAction *changeJoinType = menu.addAction(QObject::tr("&Change join type"));

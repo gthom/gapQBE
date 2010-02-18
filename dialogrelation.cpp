@@ -31,13 +31,15 @@ dialogRelation::dialogRelation(QWidget *parent,QSqlDatabase& pdb) :
     prochainX=20;
     //recup de la base
     db=db.cloneDatabase(pdb,"ploum");
-    //determination du délimiteur
-    if(db.driverName()=="QMYSQL")
+    //determination du délimiteur en fonction du driver
+    if(db.driverName().contains("MYSQL"))
     {
         delimiteur="\"";
     }
     else
         delimiteur="'";
+    //on donne le delimiteur à la customGraphicsView
+    m_ui->graphicsView->delimiteur=delimiteur;
     //QMessageBox::warning(this,"pb",db.lastError().text());
     db.open();
     //recup des tables de la base
@@ -103,7 +105,9 @@ void dialogRelation::tableSupprimer()
             //puis
             //supprime une des tables ajoutée
             int noDeLaTableASupprimer=vectTables.indexOf(t);
+            //libération mémoire
             delete vectTables[noDeLaTableASupprimer];
+            //suppression de la case du vecteur
             vectTables.remove(noDeLaTableASupprimer,1);
         }
 
@@ -533,7 +537,7 @@ void dialogRelation::on_lineEditQuery_textChanged(QString leSql )
             }
             else
             {
-                affichageDemande=false;
+                //affichageDemande=false;
                 qDebug()<<"la requête permettant d'obtenir le nb de ligne a échoué";
             }
         }
