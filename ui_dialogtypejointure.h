@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'dialogtypejointure.ui'
 **
-** Created: Tue Feb 16 15:02:43 2010
+** Created: Fri Feb 19 07:09:18 2010
 **      by: Qt User Interface Compiler version 4.5.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -81,6 +81,7 @@ public:
         comboBoxType->clear();
         comboBoxType->insertItems(0, QStringList()
          << QApplication::translate("DialogTypeJointure", "Natural", 0, QApplication::UnicodeUTF8)
+         << QApplication::translate("DialogTypeJointure", "Cross", 0, QApplication::UnicodeUTF8)
          << QApplication::translate("DialogTypeJointure", "Inner", 0, QApplication::UnicodeUTF8)
          << QApplication::translate("DialogTypeJointure", "left outer", 0, QApplication::UnicodeUTF8)
          << QApplication::translate("DialogTypeJointure", "right outer", 0, QApplication::UnicodeUTF8)

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'dialoglogin.ui'
 **
-** Created: Tue Feb 16 15:02:43 2010
+** Created: Thu Feb 18 16:03:45 2010
 **      by: Qt User Interface Compiler version 4.5.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -144,11 +144,15 @@ public:
 
         pushButtonOk = new QPushButton(DialogLogin);
         pushButtonOk->setObjectName(QString::fromUtf8("pushButtonOk"));
+        pushButtonOk->setIcon(icon);
 
         horizontalLayout_6->addWidget(pushButtonOk);
 
         pushButtonAnnuler = new QPushButton(DialogLogin);
         pushButtonAnnuler->setObjectName(QString::fromUtf8("pushButtonAnnuler"));
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8(":/close.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButtonAnnuler->setIcon(icon1);
 
         horizontalLayout_6->addWidget(pushButtonAnnuler);
 
@@ -165,13 +169,25 @@ public:
     {
         DialogLogin->setWindowTitle(QApplication::translate("DialogLogin", "GapTableConceptor-login", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("DialogLogin", "Login:", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_STATUSTIP
+        lineEditLogin->setStatusTip(QApplication::translate("DialogLogin", "user's login as defined into database engine", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
         lineEditLogin->setText(QApplication::translate("DialogLogin", "root", 0, QApplication::UnicodeUTF8));
         label_2->setText(QApplication::translate("DialogLogin", "Password:", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_STATUSTIP
+        lineEditLoginPassword->setStatusTip(QApplication::translate("DialogLogin", "This is the user's password as defined into database engine", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
         lineEditLoginPassword->setText(QString());
         label_3->setText(QApplication::translate("DialogLogin", "Database Name:", 0, QApplication::UnicodeUTF8));
         lineEditLoginDatabaseName->setText(QApplication::translate("DialogLogin", "mysql", 0, QApplication::UnicodeUTF8));
         label_4->setText(QApplication::translate("DialogLogin", "Host:", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_STATUSTIP
+        lineEditLoginHost->setStatusTip(QApplication::translate("DialogLogin", "server's name or ip adress", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
         label_5->setText(QApplication::translate("DialogLogin", "Database Engine:", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_STATUSTIP
+        comboBox->setStatusTip(QApplication::translate("DialogLogin", "list of available drivers", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
         pushButtonOk->setText(QApplication::translate("DialogLogin", "&Ok", 0, QApplication::UnicodeUTF8));
         pushButtonAnnuler->setText(QApplication::translate("DialogLogin", "&Cancel", 0, QApplication::UnicodeUTF8));
         Q_UNUSED(DialogLogin);

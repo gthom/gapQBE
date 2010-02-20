@@ -47,7 +47,7 @@ dialogRelation::dialogRelation(QWidget *parent,QSqlDatabase& pdb) :
     m_ui->listWidgetTables->insertItems(0,listeDesTables);
     m_ui->graphicsView->setScene(&scene);
 
-
+//connexion des signaux aux slots
     connect (m_ui->graphicsView,SIGNAL(jointureRequise(table *,table *)),this,SLOT(jointure(table*,table*)));
     connect (m_ui->graphicsView,SIGNAL(ilYADesTablesAAjouter(QPoint)),this,SLOT(allezAllezOnAjouteLesTables(QPoint)));
     connect (this,SIGNAL(ilYADesTablesAAjouter(QPoint)),this,SLOT(allezAllezOnAjouteLesTables(QPoint)));  
@@ -58,7 +58,7 @@ dialogRelation::dialogRelation(QWidget *parent,QSqlDatabase& pdb) :
     connect(m_ui->lineEditHaving,SIGNAL(textChanged(QString)),this,SLOT(miseAJourResultat()));
     connect(m_ui->lineEditIndex,SIGNAL(textChanged(QString)),this,SLOT(miseAJourResultat()));
     connect(m_ui->lineEditCount,SIGNAL(textChanged(QString)),this,SLOT(miseAJourResultat()));
-
+//quelques actions
     m_ui->graphicsView->addAction(m_ui->actionDelete_tables_s);
     m_ui->graphicsView->addAction(m_ui->actionZoom_in);
     m_ui->graphicsView->addAction(m_ui->actionZoom_out);
@@ -197,7 +197,6 @@ void dialogRelation::tableAjouterChamp(table * laTable)
     ancien.setHeight(ancien.height()+hauteurChamp);
     laTable->setRect(ancien);
 
-    //THE end
 }
 void dialogRelation::miseAJourResultat()
 {
@@ -284,7 +283,7 @@ void dialogRelation::miseAJourResultat()
                     tablesDuGroupe.append(t2);
 
                     chaineDuGroupe+=nomTableT1AvecAlias+" "+typeDeJointure+" JOIN "+nomTableT2AvecAlias;
-                    if(typeDeJointure!="Natural")
+                    if(typeDeJointure!="Natural" && typeDeJointure!="Cross")
                     {
                         chaineDuGroupe+=" on "+condition;
                     }
@@ -292,9 +291,9 @@ void dialogRelation::miseAJourResultat()
                 else //ne contient pas t1 mais contient t2
                 {
                     chaineDuGroupe+=" "+typeDeJointure+" JOIN "+nomTableT1AvecAlias;
-                    if(typeDeJointure!="Natural")
+                    if(typeDeJointure!="Natural"&& typeDeJointure!="Cross")
                     {
-                        chaineDuGroupe+=" on "+condition;
+                        chaineDuGroupe+=" ON "+condition;
                     }
                     tablesDuGroupe.append(t1);
                 }
@@ -302,9 +301,9 @@ void dialogRelation::miseAJourResultat()
             else //contient t1
             {
                 chaineDuGroupe+=" "+typeDeJointure+" JOIN "+nomTableT2AvecAlias;
-                if(typeDeJointure!="Natural")
+                if(typeDeJointure!="Natural"&& typeDeJointure!="Cross")
                 {
-                    chaineDuGroupe+=" on "+condition;
+                    chaineDuGroupe+=" ON "+condition;
                 }
                 tablesDuGroupe.append(t2);
             }
@@ -327,14 +326,15 @@ void dialogRelation::miseAJourResultat()
             if(t->alias!="") nomComplet+=" "+t->alias;
             listeDesNomdesTablesRestantAMettreDansLeFrom.append(nomComplet);
         }
+
         from+= listeDesNomdesTablesRestantAMettreDansLeFrom.join(",");
     }
 
     qDebug()<<from;
     //recherche des champs à afficher et formation simultannée du where ainsi que du order by:
-    QString select="select ";
-    QString where=" where ";
-    QString orderBy=" order by ";
+    QString select="SELECT ";
+    QString where=" WHERE ";
+    QString orderBy=" ORDER BY ";
 
     QStringList listeDesChosesAAfficher;
     QStringList listeDesChampsParticipantsAuTri;
@@ -382,9 +382,9 @@ void dialogRelation::miseAJourResultat()
             else
             {
                 QString sonTexte=leChamp->document()->toPlainText();
-                if(sonTexte.contains(" as "))
+                if(sonTexte.contains(" AS "))
                 {
-                    QStringList qsl=sonTexte.split(" as ");
+                    QStringList qsl=sonTexte.split(" AS ");
                     listeDesChosesDuGroupBy.append(qsl[qsl.count()-1]);
                 }
                 else
@@ -395,7 +395,7 @@ void dialogRelation::miseAJourResultat()
         }
     }
     if(!listeDesChosesAAfficher.empty() && m_ui->toolButtonDistinct->isChecked())
-        select+=" distinct ";
+        select+=" DISTINCT ";
     //ATTENTION TEST
     //select +=listeDesChosesAAfficher.join(",");
     //Remplacé par
@@ -408,7 +408,7 @@ void dialogRelation::miseAJourResultat()
         if(m_ui->listWidgetAggregates->item(noChamp)->data(34)!=0) //si le champ participe au tri
         {
             //attention au as
-            QString nomSansAlias=m_ui->listWidgetAggregates->item(noChamp)->text().split(" as ")[0];
+            QString nomSansAlias=m_ui->listWidgetAggregates->item(noChamp)->text().split(" AS ")[0];
             maMap[m_ui->listWidgetAggregates->item(noChamp)->data(35).toInt()]=nomSansAlias+" "+tabTri[m_ui->listWidgetAggregates->item(noChamp)->data(34).toInt()];
         }
 
@@ -424,7 +424,7 @@ void dialogRelation::miseAJourResultat()
         listeDesChampsParticipantsAuTri.append(champ);
     }
     orderBy+=listeDesChampsParticipantsAuTri.join(",");
-    where+=listeDuWhere.join(" and ");
+    where+=listeDuWhere.join(" AND ");
 
     //ajouter maintenant au select les agrégats affichés
     //construire le having
@@ -458,10 +458,11 @@ void dialogRelation::miseAJourResultat()
     QString limit;
     if(! m_ui->lineEditIndex->text().isEmpty() || ! m_ui->lineEditCount->text().isEmpty())
     {
-        limit=" limit ";
-        limit+=(! m_ui->lineEditIndex->text().isEmpty())?m_ui->lineEditIndex->text():"1";
-        limit+=",";
+        limit=" LIMIT ";
         limit+=(! m_ui->lineEditCount->text().isEmpty())?m_ui->lineEditCount->text():"1";
+        limit+=" OFFSET ";
+        limit+=(! m_ui->lineEditIndex->text().isEmpty())?m_ui->lineEditIndex->text():"1";
+
     }
     if(!limit.isEmpty()) requete+=limit;
     m_ui->lineEditQuery->setText(requete);
@@ -571,9 +572,14 @@ void dialogRelation::on_lineEditQuery_textChanged(QString leSql )
                 QStringList listeDesNomsDeChamp;
                 for(int noCol=0;noCol<leRecord.count();noCol++)
                 {
-                    listeDesNomsDeChamp<<leRecord.fieldName(noCol);
+                    listeDesNomsDeChamp<<leRecord.fieldName(noCol);      
                 }
                 m_ui->tableWidgetPreview->setHorizontalHeaderLabels(listeDesNomsDeChamp);
+                 for(int noCol=0;noCol<leRecord.count();noCol++)
+                {
+
+                    m_ui->tableWidgetPreview->horizontalHeaderItem(noCol)->setFont(QFont("verdana",10,5,true));
+                }
                 int noLigne=0;
                 m_ui->tableWidgetPreview->setRowCount(0);
 
@@ -606,8 +612,9 @@ void dialogRelation::on_lineEditQuery_textChanged(QString leSql )
             m_ui->tableWidgetPreview->setRowCount(0);
             m_ui->tableWidgetPreview->setColumnCount(0);
             m_ui->tableWidgetPreview->clear();
+            //message d'erreur
             messageDErreur=req.lastError().text();
-            //désactivation du bouton exporter
+
 
         }
     //activation/désactivation du bouton exporter au format csv
@@ -873,7 +880,7 @@ QString dialogRelation::selectDansLOrdre()
 }
 int dialogRelation::maxCleDeLaMap()
 {   qDebug()<<"int dialogRelation::maxCleDeLaMap()";
-    //renvoie le + gros numéro d'affichage donc le numéro d'ordre du champ juste avent le from
+    //renvoie le + gros numéro d'affichage donc le numéro d'ordre du champ juste avant le from
     int max=0;
 
     foreach (int valeur,mapSelect().keys())

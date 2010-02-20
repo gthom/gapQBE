@@ -146,7 +146,7 @@ qDebug()<<"constructeur de table";
                  this->title->setHtml(nomTableTronque());
                  foreach (lien *leLien, vectLiens)
                  {
-                     if(leLien->typeDeJointure!="Natural")
+                     if(leLien->typeDeJointure!="Natural" && leLien->typeDeJointure!="Cross")
                      {//à améliorer remplacement de l'alias par le nom de la table dans la condition
                          //leLien->texteDeLaCondition.replace(alias,nomTable);
                          //leLien->condition->setPlainText(leLien->texteDeLaCondition);
@@ -200,7 +200,7 @@ qDebug()<<"constructeur de table";
                      this->title->setHtml("<center>"+nomAvecAlias+"</center>");
                      foreach (lien *leLien, vectLiens)
                      {
-                         if(leLien->typeDeJointure!="Natural")
+                         if(leLien->typeDeJointure!="Natural"&& leLien->typeDeJointure!="Cross")
                          {
                              //qDebug()<<"textedelacondition :"<<leLien->texteDeLaCondition;
                              //je split sur l'opérateur

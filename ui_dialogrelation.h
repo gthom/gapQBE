@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'dialogrelation.ui'
 **
-** Created: Tue Feb 16 15:15:30 2010
+** Created: Fri Feb 19 07:15:04 2010
 **      by: Qt User Interface Compiler version 4.5.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -64,7 +64,8 @@ public:
     QLabel *label;
     QLineEdit *lineEditQuery;
     QPushButton *pushButtonQueryState;
-    QHBoxLayout *horizontalLayout_8;
+    QSplitter *splitter_2;
+    QWidget *layoutWidget2;
     QVBoxLayout *verticalLayout_4;
     QTableWidget *tableWidgetPreview;
     QHBoxLayout *horizontalLayout_3;
@@ -73,6 +74,7 @@ public:
     QHBoxLayout *horizontalLayout_5;
     QLabel *label_5;
     QLineEdit *lineEditCount;
+    QWidget *layoutWidget3;
     QVBoxLayout *verticalLayout_3;
     QCheckBox *checkBoxGroupBy;
     QHBoxLayout *horizontalLayout_6;
@@ -211,7 +213,7 @@ public:
         icon7.addFile(QString::fromUtf8(":/sansDoublons.png"), QSize(), QIcon::Normal, QIcon::On);
         toolButtonDistinct->setIcon(icon7);
         toolButtonDistinct->setCheckable(true);
-        toolButtonDistinct->setChecked(true);
+        toolButtonDistinct->setChecked(false);
 
         verticalLayout_2->addWidget(toolButtonDistinct);
 
@@ -254,11 +256,15 @@ public:
 
         verticalLayout_5->addLayout(horizontalLayout);
 
-        horizontalLayout_8 = new QHBoxLayout();
-        horizontalLayout_8->setObjectName(QString::fromUtf8("horizontalLayout_8"));
-        verticalLayout_4 = new QVBoxLayout();
+        splitter_2 = new QSplitter(dialogRelation);
+        splitter_2->setObjectName(QString::fromUtf8("splitter_2"));
+        splitter_2->setOrientation(Qt::Horizontal);
+        layoutWidget2 = new QWidget(splitter_2);
+        layoutWidget2->setObjectName(QString::fromUtf8("layoutWidget2"));
+        verticalLayout_4 = new QVBoxLayout(layoutWidget2);
         verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
-        tableWidgetPreview = new QTableWidget(dialogRelation);
+        verticalLayout_4->setContentsMargins(0, 0, 0, 0);
+        tableWidgetPreview = new QTableWidget(layoutWidget2);
         tableWidgetPreview->setObjectName(QString::fromUtf8("tableWidgetPreview"));
         QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Expanding);
         sizePolicy1.setHorizontalStretch(2);
@@ -272,12 +278,12 @@ public:
 
         horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
-        label_4 = new QLabel(dialogRelation);
+        label_4 = new QLabel(layoutWidget2);
         label_4->setObjectName(QString::fromUtf8("label_4"));
 
         horizontalLayout_3->addWidget(label_4);
 
-        lineEditIndex = new QLineEdit(dialogRelation);
+        lineEditIndex = new QLineEdit(layoutWidget2);
         lineEditIndex->setObjectName(QString::fromUtf8("lineEditIndex"));
 
         horizontalLayout_3->addWidget(lineEditIndex);
@@ -287,12 +293,12 @@ public:
 
         horizontalLayout_5 = new QHBoxLayout();
         horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
-        label_5 = new QLabel(dialogRelation);
+        label_5 = new QLabel(layoutWidget2);
         label_5->setObjectName(QString::fromUtf8("label_5"));
 
         horizontalLayout_5->addWidget(label_5);
 
-        lineEditCount = new QLineEdit(dialogRelation);
+        lineEditCount = new QLineEdit(layoutWidget2);
         lineEditCount->setObjectName(QString::fromUtf8("lineEditCount"));
 
         horizontalLayout_5->addWidget(lineEditCount);
@@ -300,29 +306,31 @@ public:
 
         verticalLayout_4->addLayout(horizontalLayout_5);
 
-
-        horizontalLayout_8->addLayout(verticalLayout_4);
-
-        verticalLayout_3 = new QVBoxLayout();
+        splitter_2->addWidget(layoutWidget2);
+        layoutWidget3 = new QWidget(splitter_2);
+        layoutWidget3->setObjectName(QString::fromUtf8("layoutWidget3"));
+        verticalLayout_3 = new QVBoxLayout(layoutWidget3);
         verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
-        checkBoxGroupBy = new QCheckBox(dialogRelation);
+        verticalLayout_3->setSizeConstraint(QLayout::SetMaximumSize);
+        verticalLayout_3->setContentsMargins(0, 0, 0, 0);
+        checkBoxGroupBy = new QCheckBox(layoutWidget3);
         checkBoxGroupBy->setObjectName(QString::fromUtf8("checkBoxGroupBy"));
 
         verticalLayout_3->addWidget(checkBoxGroupBy);
 
         horizontalLayout_6 = new QHBoxLayout();
         horizontalLayout_6->setObjectName(QString::fromUtf8("horizontalLayout_6"));
-        label_3 = new QLabel(dialogRelation);
+        label_3 = new QLabel(layoutWidget3);
         label_3->setObjectName(QString::fromUtf8("label_3"));
 
         horizontalLayout_6->addWidget(label_3);
 
-        lineEditAgregate = new QLineEdit(dialogRelation);
+        lineEditAgregate = new QLineEdit(layoutWidget3);
         lineEditAgregate->setObjectName(QString::fromUtf8("lineEditAgregate"));
 
         horizontalLayout_6->addWidget(lineEditAgregate);
 
-        pushButtonAddAgregate = new QPushButton(dialogRelation);
+        pushButtonAddAgregate = new QPushButton(layoutWidget3);
         pushButtonAddAgregate->setObjectName(QString::fromUtf8("pushButtonAddAgregate"));
         pushButtonAddAgregate->setEnabled(false);
         QIcon icon8;
@@ -334,7 +342,7 @@ public:
 
         verticalLayout_3->addLayout(horizontalLayout_6);
 
-        listWidgetAggregates = new QListWidget(dialogRelation);
+        listWidgetAggregates = new QListWidget(layoutWidget3);
         listWidgetAggregates->setObjectName(QString::fromUtf8("listWidgetAggregates"));
         listWidgetAggregates->setContextMenuPolicy(Qt::CustomContextMenu);
         listWidgetAggregates->setEditTriggers(QAbstractItemView::AnyKeyPressed|QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed);
@@ -343,12 +351,12 @@ public:
 
         horizontalLayout_7 = new QHBoxLayout();
         horizontalLayout_7->setObjectName(QString::fromUtf8("horizontalLayout_7"));
-        label_2 = new QLabel(dialogRelation);
+        label_2 = new QLabel(layoutWidget3);
         label_2->setObjectName(QString::fromUtf8("label_2"));
 
         horizontalLayout_7->addWidget(label_2);
 
-        lineEditHaving = new QLineEdit(dialogRelation);
+        lineEditHaving = new QLineEdit(layoutWidget3);
         lineEditHaving->setObjectName(QString::fromUtf8("lineEditHaving"));
         lineEditHaving->setEnabled(false);
 
@@ -357,7 +365,7 @@ public:
 
         verticalLayout_3->addLayout(horizontalLayout_7);
 
-        pushButtonExportCsv = new QPushButton(dialogRelation);
+        pushButtonExportCsv = new QPushButton(layoutWidget3);
         pushButtonExportCsv->setObjectName(QString::fromUtf8("pushButtonExportCsv"));
         pushButtonExportCsv->setEnabled(false);
         QIcon icon9;
@@ -366,11 +374,9 @@ public:
 
         verticalLayout_3->addWidget(pushButtonExportCsv);
 
+        splitter_2->addWidget(layoutWidget3);
 
-        horizontalLayout_8->addLayout(verticalLayout_3);
-
-
-        verticalLayout_5->addLayout(horizontalLayout_8);
+        verticalLayout_5->addWidget(splitter_2);
 
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));

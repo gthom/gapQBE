@@ -39,6 +39,11 @@
        </item>
        <item>
         <property name="text">
+         <string>Cross</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>Inner</string>
         </property>
        </item>

@@ -32,7 +32,7 @@ lien::lien(table* pt1,table* pt2,QGraphicsItem * parent,QGraphicsScene* laScene,
     //il est sélectionnable
     this->setFlag(QGraphicsItem::ItemIsSelectable,true);
     //ajout de la condition de jointure
-    if(typ!="Natural")
+    if(typ!="Natural"&& typ!="Cross")
     {
         condition=new QGraphicsTextItem(this);
         condition->setData(32,"Lien");
@@ -49,22 +49,7 @@ lien::lien(table* pt1,table* pt2,QGraphicsItem * parent,QGraphicsScene* laScene,
         condition=NULL;
     this->typeDeJointure=typ;
     setData(32,"Lien");
-    //aspect différent en fonction du type de jointure:
-    if(typ=="Natural")
-    {
-
-        this->setPen(QPen(QColor("green")));
-
-
-    }
-    else
-    {
-        if(typ=="Inner")
-        {
-            this->setPen(QPen(QColor("blue")));
-        }
-        //etc pour les autre types de jointure
-    }
+    //en arrière plan
     setZValue(-1000.0);
     updatePosition();
 }
@@ -113,8 +98,15 @@ lien::lien(table* pt1,table* pt2,QGraphicsItem * parent,QGraphicsScene* laScene,
          p1 = p2;
      }
      setLine(QLineF(intersectPointT1,intersectPointT2));
+if(typeDeJointure=="Cross")
+     {
 
+         texte1->document()->setPlainText("X");
 
+         texte2->document()->setPlainText("X");
+     }
+     else
+{
      if(typeDeJointure=="Natural")
      {
 
@@ -154,6 +146,7 @@ lien::lien(table* pt1,table* pt2,QGraphicsItem * parent,QGraphicsScene* laScene,
 
          }
      }
+ }
          QPointF posTexte1,posTexte2;
 
          if(intersectPointT1.x()<intersectPointT2.x())
@@ -217,7 +210,7 @@ void lien::updatePosition()
 
     this->setLine(t1->pos().x()+t1->boundingRect().width()/2,t1->pos().y(),t2->pos().x()+t2->boundingRect().width()/2,t2->pos().y());
 
-    if(this->typeDeJointure!="Natural")
+    if(this->typeDeJointure!="Natural" && this->typeDeJointure!="Cross")
     {
         QPoint position=boundingRect().center().toPoint();
         position.setX(position.x()-QFontMetrics(condition->font()).width(condition->toPlainText())/2);

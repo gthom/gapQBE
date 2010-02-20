@@ -29,6 +29,9 @@
      </item>
      <item>
       <widget class="QLineEdit" name="lineEditLogin">
+       <property name="statusTip">
+        <string>user's login as defined into database engine</string>
+       </property>
        <property name="text">
         <string>root</string>
        </property>
@@ -47,6 +50,9 @@
      </item>
      <item>
       <widget class="QLineEdit" name="lineEditLoginPassword">
+       <property name="statusTip">
+        <string>This is the user's password as defined into database engine</string>
+       </property>
        <property name="text">
         <string/>
        </property>
@@ -85,7 +91,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEditLoginHost"/>
+      <widget class="QLineEdit" name="lineEditLoginHost">
+       <property name="statusTip">
+        <string>server's name or ip adress</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -99,7 +109,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBox"/>
+      <widget class="QComboBox" name="comboBox">
+       <property name="statusTip">
+        <string>list of available drivers</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -123,12 +137,20 @@
        <property name="text">
         <string>&amp;Ok</string>
        </property>
+       <property name="icon">
+        <iconset resource="gapQBE.qrc">
+         <normaloff>:/gapQBE.png</normaloff>:/gapQBE.png</iconset>
+       </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="pushButtonAnnuler">
        <property name="text">
         <string>&amp;Cancel</string>
+       </property>
+       <property name="icon">
+        <iconset resource="gapQBE.qrc">
+         <normaloff>:/close.png</normaloff>:/close.png</iconset>
        </property>
       </widget>
      </item>

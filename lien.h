@@ -28,7 +28,7 @@ public:
     void updateType();//maj du type de jointure
     QGraphicsTextItem* condition;//UI:condition de jointure exemple: on cde.nocli=client.nocli
     QString texteDeLaCondition;//idem ci-dessus
-    QString typeDeJointure;//inner, left outer, right outer, Natural
+    QString typeDeJointure;//inner, left outer, right outer, Natural, Cross
     void contextMenuEvent(QGraphicsSceneMouseEvent *event);//menu contextuel du lien
     bool estRelieA(lien* autreLien){return ((autreLien->t1==t1) or (autreLien->t1==t2) or (autreLien->t2==t1) or (autreLien->t2==t2));};//utilitaire
      void paint(QPainter *painter, const QStyleOptionGraphicsItem *,
