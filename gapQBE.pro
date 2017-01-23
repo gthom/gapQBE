@@ -1,7 +1,7 @@
-# -------------------------------------------------
-# Project created by QtCreator 2009-11-17T13:24:40
-# -------------------------------------------------
-QT += sql
+
+
+QT += core gui sql widgets
+
 TARGET = gapQBE
 TEMPLATE = app
 SOURCES += main.cpp \

@@ -29,9 +29,9 @@ void customGraphicsView::dragEnterEvent(QDragEnterEvent *event)
         qDebug()<<"Voici le point mappé:"<<lePointMappe;
         //jointures acceptées entre deux tables
         qDebug()<<"this.item at event->pos():"<<this->itemAt(lePointMappe)->data(32).toString();
-        qDebug()<<"scene.item at event->pos():"<<this->scene()->itemAt(lePointMappe)->data(32).toString();
+        qDebug()<<"scene.item at event->pos():"<<this->scene()->itemAt(lePointMapp,QTransform())->data(32).toString();
 
-        if (this->scene()->itemAt(lePointMappe)->data(32).toString()=="Table")
+        if (this->scene()->itemAt(lePointMapp,QTransform())->data(32).toString()=="Table")
         {
             event->accept();
             qDebug("drag accepté");
@@ -39,7 +39,7 @@ void customGraphicsView::dragEnterEvent(QDragEnterEvent *event)
         else
         {
             //si c'est un champ et que l'origine est une valeur de la grille des résultats alors on l'accepte
-            if(this->scene()->itemAt(lePointMappe)->data(32).toString()=="Field")
+            if(this->scene()->itemAt(lePointMapp,QTransform())->data(32).toString()=="Field")
             {
                 qDebug()<<"dragEnterEvent c'est un champ";
                 event->accept();
@@ -47,7 +47,7 @@ void customGraphicsView::dragEnterEvent(QDragEnterEvent *event)
             else
             {
                 QGraphicsView::dragEnterEvent(event);
-                qDebug()<<this->scene()->itemAt(lePointMappe)->data(32).toString();
+                qDebug()<<this->scene()->itemAt(lePointMappe,QTransform())->data(32).toString();
 
             }
         }
@@ -65,14 +65,14 @@ void customGraphicsView::dragMoveEvent(QDragMoveEvent *event)
 
         QPointF lePointMapp=this->mapToScene(event->pos());
         QPoint  lePointMappe=lePointMapp.toPoint();
-        if (this->scene()->itemAt(lePointMappe)->data(32).toString()=="Table")
+        if (this->scene()->itemAt(lePointMappe,QTransform())->data(32).toString()=="Table")
         {
             event->setDropAction(Qt::MoveAction);
             event->accept();
         }
         else
         {
-            if(this->scene()->itemAt(lePointMappe)->data(32).toString()=="Field")
+            if(this->scene()->itemAt(lePointMappe,QTransform())->data(32).toString()=="Field")
             {
                 qDebug()<<"c'est un champ";
                 event->setDropAction(Qt::MoveAction);
@@ -103,9 +103,9 @@ void customGraphicsView::dropEvent(QDropEvent *event)
         {
             qDebug()<<"il a le format text/Table";
             //si la destination est une table
-            if (this->scene()->itemAt(lePointMappe)->data(32).toString()=="Table")
+            if (this->scene()->itemAt(lePointMappe,QTransform())->data(32).toString()=="Table")
             {
-                table* table1=(table*)this->scene()->itemAt(lePointMappe)->data(34).toLongLong();
+                table* table1=(table*)this->scene()->itemAt(lePointMappe,QTransform())->data(34).toLongLong();
                 qDebug()<<"table1:"<<table1;
                 QByteArray qba=event->mimeData()->data("text/Table");
                 QString data(qba);
@@ -124,9 +124,9 @@ void customGraphicsView::dropEvent(QDropEvent *event)
             {
                 //on relâche sur un champ
 
-                if(this->scene()->itemAt(lePointMappe)->data(32).toString()=="Field")
+                if(this->scene()->itemAt(lePointMappe,QTransform())->data(32).toString()=="Field")
                 {
-                    field* leChamp=(field*)this->scene()->itemAt(lePointMappe);
+                    field* leChamp=(field*)this->scene()->itemAt(lePointMappe,QTransform());
                     //si c'est une query à l'origine du drag
                     if(event->mimeData()->data("text/Table").split(';')[1].at(0)=='(')
                     {
@@ -154,12 +154,12 @@ void customGraphicsView::dropEvent(QDropEvent *event)
         {
             //ça peut être un drag de valeur pour condition sur champ
             qDebug()<<"n'a pas le type text/Table";
-            if (this->scene()->itemAt(lePointMappe)->data(32).toString()=="Field")
+            if (this->scene()->itemAt(lePointMappe,QTransform())->data(32).toString()=="Field")
             {
                 //on va modifier la condition sur champ
                 qDebug()<<"drag and drop sur champ";
                 qDebug()<<"mimedata de la cellule"<<event->mimeData()->formats();
-                field * leChamp=(field*)this->scene()->itemAt(lePointMappe);
+                field * leChamp=(field*)this->scene()->itemAt(lePointMappe,QTransform());
                 QString condition;
                 if(event->mimeData()->hasFormat("text/Value")) //drag an drop de value sur champ
                 {

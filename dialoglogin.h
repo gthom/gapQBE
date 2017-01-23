@@ -1,7 +1,7 @@
 #ifndef DIALOGLOGIN_H
 #define DIALOGLOGIN_H
 
-#include <QtGui/QDialog>
+#include <QDialog>
 #include <QSqlDatabase>
 
 namespace Ui {
@@ -12,7 +12,7 @@ class DialogLogin : public QDialog {
     Q_OBJECT
     Q_DISABLE_COPY(DialogLogin)
 public:
-    explicit DialogLogin(QWidget *parent,QSqlDatabase&);
+    explicit DialogLogin(QWidget *parent);
     virtual ~DialogLogin();
     QSqlDatabase* db;
 

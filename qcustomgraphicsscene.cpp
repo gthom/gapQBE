@@ -10,6 +10,7 @@
 #include <QMenu>
 #include <QAction>
 #include <QInputDialog>
+#include <QMimeData>
 
 QCustomGraphicsScene::QCustomGraphicsScene(QWidget * parent):QGraphicsScene(parent)
 {
@@ -20,11 +21,11 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
     qDebug("void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)");
     if (mouseEvent->button() == Qt::LeftButton
-        && (itemAt(mouseEvent->scenePos())!=NULL))
+        && (itemAt(mouseEvent->scenePos(),QTransform())!=NULL))
     {
         //trouver l'objet à la position:
 
-        QGraphicsItem * elt=itemAt(mouseEvent->scenePos());
+        QGraphicsItem * elt=itemAt(mouseEvent->scenePos(),QTransform());
         elt->setSelected(!elt->isSelected());
         if(outil=="drag")
         {
@@ -52,7 +53,7 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
         if (mouseEvent->button() == Qt::RightButton)
         {   QGraphicsItem * elementConcerne=NULL;
             //si personne à la position de la souris
-            if(itemAt(mouseEvent->scenePos())==NULL)
+            if(itemAt(mouseEvent->scenePos(),QTransform())==NULL)
             {
                 //et personne dans le rectangle autour
                 if(items(QRectF(mouseEvent->scenePos().x()-1,mouseEvent->scenePos().y()-1,2,2)).count()==0)
@@ -162,7 +163,7 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
                     elementConcerne=items(QRectF(mouseEvent->scenePos().x()-1,mouseEvent->scenePos().y()-1,2,2))[0];
                 }
             }
-            else elementConcerne=itemAt(mouseEvent->scenePos());
+            else elementConcerne=itemAt(mouseEvent->scenePos(),QTransform());
             if(elementConcerne!=NULL)
             {
                 if(elementConcerne->data(32)=="Table")

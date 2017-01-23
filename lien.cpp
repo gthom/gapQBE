@@ -22,13 +22,13 @@ lien::~lien()
 
 }
 
-lien::lien(table* pt1,table* pt2,QGraphicsItem * parent,QGraphicsScene* laScene,QString typ):QGraphicsLineItem(pt1->pos().x()+pt1->boundingRect().width()/2,pt1->pos().y(),pt2->pos().x()+pt2->boundingRect().width()/2,pt2->pos().y(),parent,laScene)
+lien::lien(table* pt1,table* pt2,QGraphicsItem * parent,QGraphicsScene* laScene,QString typ):QGraphicsLineItem(pt1->pos().x()+pt1->boundingRect().width()/2,pt1->pos().y(),pt2->pos().x()+pt2->boundingRect().width()/2,pt2->pos().y(),parent)
 {
     //constructeur du lien
     t1=pt2;
     t2=pt1;
-    texte1=new QGraphicsTextItem(this,this->scene());
-    texte2=new QGraphicsTextItem(this,this->scene());
+    texte1=new QGraphicsTextItem(this);
+    texte2=new QGraphicsTextItem(this);
     //il est sélectionnable
     this->setFlag(QGraphicsItem::ItemIsSelectable,true);
     //ajout de la condition de jointure

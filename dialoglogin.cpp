@@ -5,14 +5,15 @@
 #include <QFile>
 #include <QDebug>
 #include <fstream>
+#include <QSqlError>
 
-DialogLogin::DialogLogin(QWidget *parent, QSqlDatabase& pdb) :
+DialogLogin::DialogLogin(QWidget *parent) :
     QDialog(parent),
     m_ui(new Ui::DialogLogin)
 {
     m_ui->setupUi(this);
-    db=&pdb;
-    m_ui->comboBox->insertItems(0,db->drivers());
+
+    m_ui->comboBox->insertItems(0,QSqlDatabase::database().drivers());
     QFile ficParam(".gapQbe");
 
     if(ficParam.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -52,13 +53,15 @@ void DialogLogin::changeEvent(QEvent *e)
 void DialogLogin::on_pushButtonOk_clicked()
 {
 
+    QSqlDatabase::database()=QSqlDatabase::addDatabase(m_ui->comboBox->currentText());
 
-    *db=QSqlDatabase::addDatabase(m_ui->comboBox->currentText());
-    db->setHostName(m_ui->lineEditLoginHost->text());
-    db->setUserName(m_ui->lineEditLogin->text());
-    db->setDatabaseName(m_ui->lineEditLoginDatabaseName->text());
-    db->setPassword(m_ui->lineEditLoginPassword->text());
-    if(db->open())
+
+    //db->cloneDatabase(dbEssai,"pof");
+    QSqlDatabase::database().setHostName(m_ui->lineEditLoginHost->text());
+    QSqlDatabase::database().setUserName(m_ui->lineEditLogin->text());
+    QSqlDatabase::database().setDatabaseName(m_ui->lineEditLoginDatabaseName->text());
+    QSqlDatabase::database().setPassword(m_ui->lineEditLoginPassword->text());
+    if(QSqlDatabase::database().open())
     {
         //la connexion a réussi
         //on sauve les renseignements donnés
@@ -78,7 +81,7 @@ void DialogLogin::on_pushButtonOk_clicked()
     }
     else
     {
-        QMessageBox::warning(this,this->windowTitle(),"Erreur lors de la connexion");
+        QMessageBox::warning(this,this->windowTitle(),tr("Database connection rejected")+db->lastError().databaseText());
     }
 }
 

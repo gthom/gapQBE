@@ -19,7 +19,7 @@
 #include <QMenu>
 
 
-dialogRelation::dialogRelation(QWidget *parent,QSqlDatabase& pdb) :
+dialogRelation::dialogRelation(QWidget *parent) :
         scene(this),
         QDialog(parent),
         m_ui(new Ui::dialogRelation)
@@ -30,7 +30,7 @@ dialogRelation::dialogRelation(QWidget *parent,QSqlDatabase& pdb) :
     //abscisse de la prochaine table
     prochainX=20;
     //recup de la base
-    db=db.cloneDatabase(pdb,"ploum");
+    db=QSqlDatabase::database();
     //determination du délimiteur en fonction du driver
     if(db.driverName().contains("MYSQL"))
     {
@@ -145,6 +145,7 @@ void dialogRelation::jointure(table* t1,table* t2)
 
             }
             lien * nouveauLien=new lien(table2,table1,0,&this->scene,typ);
+            scene.addItem(nouveauLien);
             table1->vectLiens.push_back(nouveauLien);
             table2->vectLiens.push_back(nouveauLien);
             vectLiens.push_back(nouveauLien);
@@ -666,7 +667,6 @@ void dialogRelation::allezAllezOnAjouteLesTables(QPoint lePoint=QPoint(0,0))
             tableAjoutee->setPos(lePoint);
 
             ajouteTable(tableAjoutee);
-
         }
         m_ui->listWidgetTables->clearSelection();
     }
@@ -940,6 +940,8 @@ void dialogRelation::ajouteTable(table* t)
         prochainX=t->pos().x()+t->boundingRect().width()+10;
         t->setFlag(QGraphicsItem::ItemIsSelectable);
         t->setFlag(QGraphicsItem::ItemIsMovable);
+        //essais
+        scene.addItem(t);
 
 }
 

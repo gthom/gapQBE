@@ -7,20 +7,20 @@
 #include <QTextDocument>
 
 field::field(dialogRelation* mum ,bool isFree,QGraphicsScene* pScene,QString pName,QGraphicsItem* pParent)
-    :QGraphicsTextItem(pName,pParent,pScene)
+    :QGraphicsTextItem(pName,pParent)
 {
     qDebug()<<"constructeur de field";
     maman=mum;
     nomInitial=pName;
     //affichage de l'oeil fermé: le champ n'est pas affiché
     affiche=false;
-    oeil=new QGraphicsPixmapItem(QPixmap(":/mini-eye.xpm"),this,pScene);
+    oeil=new QGraphicsPixmapItem(QPixmap(":/mini-eye.xpm"),this);
     oeil->setPos(-20,5);
     oeil->setVisible(affiche);//false puisque non affiché
     freeField=isFree;
     //affichage du tri
     tri=noSort;//pas de tri sur le champ
-    iconSort=new QGraphicsPixmapItem(QPixmap(),this,pScene);
+    iconSort=new QGraphicsPixmapItem(QPixmap(),this);
     iconSort->setPos(-8,5);
     numeroOrdreDansLeSelect=-1;
     //pas de condition sur le champ pour l'instant genre ='Dupond' ou <123
@@ -203,12 +203,12 @@ QString field::getTri()
 void field::ajouteCondition(QString texteCondition)
 {
     qDebug()<<"void field::ajouteCondition(QString texteCondition)";
-    cond=new QGraphicsTextItem(texteCondition,this,scene());
+    cond=new QGraphicsTextItem(texteCondition,this);
     QObject::connect(cond->document(),SIGNAL(contentsChanged()),maman, SLOT(miseAJourResultat()));
     cond->setPos(100+this->boundingRect().width(),0);
     cond->setTextInteractionFlags(Qt::TextEditable);
     //et le trait
-    trait=new QGraphicsLineItem(this->pos().x()+this->boundingRect().width(),QFontMetrics(cond->font()).height()/2,cond->pos().x(),cond->pos().y()+QFontMetrics(cond->font()).height()/2,this, scene());
+    trait=new QGraphicsLineItem(this->pos().x()+this->boundingRect().width(),QFontMetrics(cond->font()).height()/2,cond->pos().x(),cond->pos().y()+QFontMetrics(cond->font()).height()/2,this);
     //prise en compte de la modif pour raffraîchir le résultat de la requête
     emit jAiChange();
 }

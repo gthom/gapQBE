@@ -23,7 +23,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Login:</string>
+        <string>Logiin:</string>
        </property>
       </widget>
      </item>

@@ -4,5 +4,4 @@
 #define TITLE   65538
 #define TABLE   65539
 #define LIEN    65540
-
 #endif // TYPES_H

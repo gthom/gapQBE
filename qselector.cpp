@@ -3,6 +3,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QModelIndexList>
+#include <QMimeData>
 
 
 QSelector::QSelector(QWidget* parent): QTableWidget(parent)

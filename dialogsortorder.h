@@ -1,7 +1,7 @@
 #ifndef DIALOGSORTORDER_H
 #define DIALOGSORTORDER_H
 
-#include <QtGui/QDialog>
+#include <QDialog>
 
 namespace Ui {
     class dialogSortOrder;

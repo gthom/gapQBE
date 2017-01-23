@@ -21,7 +21,7 @@ table::~table()
     }
 }
 table::table(dialogRelation* mum,QString nom,qreal x,qreal y, QGraphicsItem* parent, QGraphicsScene * laScene,QStringList listeDesChamps)
-        :maman(mum),QGraphicsRectItem(x,y,200,200,parent,laScene)
+        :maman(mum),QGraphicsRectItem(x,y,200,200,parent)
 
 {
 qDebug()<<"constructeur de table";
@@ -58,7 +58,7 @@ qDebug()<<"constructeur de table";
     setData(34,qVariantFromValue((qlonglong)this));
     long ordonne=title->boundingRect().height();
     //ajout d'une ligne sous le titre
-    laLigne=new QGraphicsLineItem(0,ordonne,boundingRect().width(),ordonne,this,laScene);
+    laLigne=new QGraphicsLineItem(0,ordonne,boundingRect().width(),ordonne,this);
     this->setRect(0,0,largeurMaxi+10,ordonne+10);
     //création des champs dans la table
     for(int noChamp=0;noChamp<listeDesChamps.count();noChamp++)

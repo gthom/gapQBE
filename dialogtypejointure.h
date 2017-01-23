@@ -1,7 +1,7 @@
 #ifndef DIALOGTYPEJOINTURE_H
 #define DIALOGTYPEJOINTURE_H
 
-#include <QtGui/QDialog>
+#include <QDialog>
 
 namespace Ui {
     class DialogTypeJointure;

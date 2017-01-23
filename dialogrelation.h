@@ -1,7 +1,7 @@
 #ifndef DIALOGRELATION_H
 #define DIALOGRELATION_H
 
-#include <QtGui/QDialog>
+#include <QDialog>
 #include "table.h"
 #include <QGraphicsScene>
 #include <QSqlDatabase>
@@ -20,11 +20,11 @@ class dialogRelation : public QDialog {
     Q_OBJECT
     Q_DISABLE_COPY(dialogRelation)
 public:
-    explicit dialogRelation(QWidget *parent,QSqlDatabase&);
+    explicit dialogRelation(QWidget *parent);
     virtual ~dialogRelation();
     QSqlDatabase  db;//la database de travail
     long prochainX;//abscisse de la prochaine table insérée
-    Ui::dialogRelation * m_uip(){return m_ui;};
+    Ui::dialogRelation * m_uip(){return m_ui;}
     QVector <field*> vectChampsLibres;
     //qlulques méthodes
     int nombreDeChampsDansLeSelect();//nb de champs affichés
@@ -33,7 +33,7 @@ public:
     QMap <int,QString> mapSelect();//renvoie la map numero d'ordre,chaine du champ
     bool requeteOk;//le mettre a false ds le constructeur
     QStringList listeDesChampsDuResultat;
-    QCustomGraphicsScene* getScene(){return &scene;};
+    QCustomGraphicsScene* getScene(){return &scene;}
     void ajouteTable(table* t);
     QString messageDErreur;
     QString delimiteur;//suivant les moteurs c'est soit simple soit double quote
