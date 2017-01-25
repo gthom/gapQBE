@@ -87,6 +87,9 @@
            <property name="toolTip">
             <string>oin tables</string>
            </property>
+           <property name="statusTip">
+            <string>Join tables tool</string>
+           </property>
            <property name="text">
             <string>...</string>
            </property>
@@ -101,6 +104,9 @@
            <property name="toolTip">
             <string>move tables</string>
            </property>
+           <property name="statusTip">
+            <string>Move table tool</string>
+           </property>
            <property name="text">
             <string>...</string>
            </property>
@@ -114,6 +120,9 @@
           <widget class="QToolButton" name="toolButtonApercuAuto">
            <property name="toolTip">
             <string>automatic update of result</string>
+           </property>
+           <property name="statusTip">
+            <string>always update result</string>
            </property>
            <property name="text">
             <string/>
@@ -149,6 +158,9 @@
            <property name="toolTip">
             <string>addselected  tables to work space</string>
            </property>
+           <property name="statusTip">
+            <string>use in query</string>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -161,6 +173,9 @@
           <widget class="QToolButton" name="toolButtonFitInView">
            <property name="toolTip">
             <string>best fit in view</string>
+           </property>
+           <property name="statusTip">
+            <string>fit in view</string>
            </property>
            <property name="text">
             <string>...</string>
@@ -255,10 +270,16 @@
        <property name="toolTip">
         <string>the sql query</string>
        </property>
+       <property name="statusTip">
+        <string>SQL Query</string>
+       </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="pushButtonQueryState">
+       <property name="statusTip">
+        <string>Query execution and status</string>
+       </property>
        <property name="text">
         <string>?</string>
        </property>
@@ -283,6 +304,9 @@
          </property>
          <property name="toolTip">
           <string>The query's rows </string>
+         </property>
+         <property name="statusTip">
+          <string>Query result</string>
          </property>
          <property name="dragDropMode">
           <enum>QAbstractItemView::DragOnly</enum>
@@ -357,6 +381,9 @@
           <widget class="QPushButton" name="pushButtonAddAgregate">
            <property name="enabled">
             <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string>add aggregate function</string>
            </property>
            <property name="text">
             <string>&amp;Add</string>

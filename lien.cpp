@@ -22,8 +22,9 @@ lien::~lien()
 
 }
 
-lien::lien(table* pt1,table* pt2,QGraphicsItem * parent,QGraphicsScene* laScene,QString typ):QGraphicsLineItem(pt1->pos().x()+pt1->boundingRect().width()/2,pt1->pos().y(),pt2->pos().x()+pt2->boundingRect().width()/2,pt2->pos().y(),parent)
+lien::lien(table* pt1,table* pt2,QGraphicsItem * parent,QGraphicsScene* laScene,QString typ)
 {
+    laLigne=new QGraphicsLineItem(pt1->pos().x()+pt1->boundingRect().width()/2,pt1->pos().y(),pt2->pos().x()+pt2->boundingRect().width()/2,pt2->pos().y(),parent);
     //constructeur du lien
     t1=pt2;
     t2=pt1;
@@ -53,13 +54,13 @@ lien::lien(table* pt1,table* pt2,QGraphicsItem * parent,QGraphicsScene* laScene,
     setZValue(-1000.0);
     updatePosition();
 }
- void lien::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
-           QWidget *)
+void lien::redraw(QPainter *painter, const QStyleOptionGraphicsItem *,QWidget *)
  {
+     qDebug()<<"void lien::paint(QPainter *painter, const QStyleOptionGraphicsItem *,QWidget *)";
      if (t1->collidesWithItem(t2))
          return;
      QColor myColor(Qt::red);
-     QPen myPen = pen();
+     QPen myPen = laLigne->pen();
      myPen.setColor(myColor);
      painter->setPen(myPen);
      painter->setBrush(myColor);
@@ -97,7 +98,7 @@ lien::lien(table* pt1,table* pt2,QGraphicsItem * parent,QGraphicsScene* laScene,
              break;
          p1 = p2;
      }
-     setLine(QLineF(intersectPointT1,intersectPointT2));
+     laLigne->setLine(QLineF(intersectPointT1,intersectPointT2));
 if(typeDeJointure=="Cross")
      {
 
@@ -175,41 +176,54 @@ if(typeDeJointure=="Cross")
          texte2->setPos(posTexte2);
 
 
-    painter->drawLine(line());
+    painter->drawLine(laLigne->line());
 
      //
      if (isSelected())
      {
          painter->setPen(QPen(myColor, 1, Qt::DashLine));
-         QLineF myLine = line();
+         QLineF myLine = laLigne->line();
          myLine.translate(0, 4.0);
          painter->drawLine(myLine);
          myLine.translate(0,-8.0);
          painter->drawLine(myLine);
      }
- }
+}
+
+void lien::ajouteElementsAuGroupe()
+{
+    calculeCoordonnees();
+    addToGroup(laLigne);
+    addToGroup(texte1);
+    addToGroup(texte2);
+    addToGroup(condition);
+}
+
  QRectF lien::boundingRect() const
  {
-     qreal extra = (pen().width() + 20) / 2.0;
+     qreal extra = (laLigne->pen().width() + 20) / 2.0;
 
-     return QRectF(line().p1(), QSizeF(line().p2().x() - line().p1().x(),
-                                       line().p2().y() - line().p1().y()))
+     return QRectF(laLigne->line().p1(), QSizeF(laLigne->line().p2().x() - laLigne->line().p1().x(),
+                                       laLigne->line().p2().y() - laLigne->line().p1().y()))
          .normalized()
          .adjusted(-extra, -extra, extra, extra);
  }
 
  QPainterPath lien::shape() const
  {
-     QPainterPath path = QGraphicsLineItem::shape();
+     QPainterPath path = QGraphicsItemGroup::shape();
      path.addPolygon(arrowHead);
      return path;
  }
+
+ void lien::calculeCoordonnees()
+ {
+     updatePosition();
+ }
 void lien::updatePosition()
 {
-
-
-    this->setLine(t1->pos().x()+t1->boundingRect().width()/2,t1->pos().y(),t2->pos().x()+t2->boundingRect().width()/2,t2->pos().y());
-
+    qDebug()<<"void lien::updatePosition()";
+    laLigne->setLine(t1->pos().x()+t1->boundingRect().width()/2,t1->pos().y(),t2->pos().x()+t2->boundingRect().width()/2,t2->pos().y());
     if(this->typeDeJointure!="Natural" && this->typeDeJointure!="Cross")
     {
         QPoint position=boundingRect().center().toPoint();

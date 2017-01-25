@@ -238,13 +238,15 @@ QVariant table::itemChange(GraphicsItemChange change,const QVariant &value)
 
 {
     qDebug()<<"QVariant table::itemChange(GraphicsItemChange change,const QVariant &value)";
-    if (change == QGraphicsItem::ItemPositionChange) {
+    qDebug()<<change;
+    if (change == ItemPositionHasChanged) {
          foreach (lien *leLien, vectLiens) {
              leLien->updatePosition();
          }
      }
     qDebug()<<"fin table::itemChange()";
-     return value;
+
+     return QGraphicsRectItem::itemChange(change, value);
 }
 
 

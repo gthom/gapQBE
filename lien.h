@@ -9,7 +9,7 @@
 #include "types.h"
 
 class table;
-class lien : public QGraphicsLineItem
+class lien : public QGraphicsItemGroup
 {
 public:
     enum { Type = LIEN};
@@ -22,6 +22,7 @@ public:
     table* t2;
      QGraphicsTextItem * texte1;
      QGraphicsTextItem * texte2;
+     QGraphicsLineItem * laLigne;
     ~lien();//destructeur
     lien(table* qg1,table* qg2,QGraphicsItem* parent, QGraphicsScene * laScene, QString typ="Natural");//constructeur
     void updatePosition();//lorsqu'une des tables bouge, le lien doit bouger
@@ -30,12 +31,13 @@ public:
     QString texteDeLaCondition;//idem ci-dessus
     QString typeDeJointure;//inner, left outer, right outer, Natural, Cross
     void contextMenuEvent(QGraphicsSceneMouseEvent *event);//menu contextuel du lien
-    bool estRelieA(lien* autreLien){return ((autreLien->t1==t1) or (autreLien->t1==t2) or (autreLien->t2==t1) or (autreLien->t2==t2));};//utilitaire
-     void paint(QPainter *painter, const QStyleOptionGraphicsItem *,
-           QWidget *);
+    bool estRelieA(lien* autreLien){return ((autreLien->t1==t1) or (autreLien->t1==t2) or (autreLien->t2==t1) or (autreLien->t2==t2));}//utilitaire
+    void redraw(QPainter *painter, const QStyleOptionGraphicsItem *,QWidget *);
+    void ajouteElementsAuGroupe();
      QPolygonF arrowHead;
      QRectF boundingRect() const;
       QPainterPath shape() const;
+      void calculeCoordonnees();
 };
 
 #endif // LIEN_H

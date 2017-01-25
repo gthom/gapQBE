@@ -139,8 +139,6 @@ void customGraphicsView::dropEvent(QDropEvent *event)
                         else
                         {
                             leChamp->modifieCondition(" in"+condition);
-
-
                         }
 
                     }

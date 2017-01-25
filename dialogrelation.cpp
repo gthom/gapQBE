@@ -146,6 +146,7 @@ void dialogRelation::jointure(table* t1,table* t2)
             }
             lien * nouveauLien=new lien(table2,table1,0,&this->scene,typ);
             scene.addItem(nouveauLien);
+            nouveauLien->ajouteElementsAuGroupe();
             table1->vectLiens.push_back(nouveauLien);
             table2->vectLiens.push_back(nouveauLien);
             vectLiens.push_back(nouveauLien);
@@ -940,6 +941,7 @@ void dialogRelation::ajouteTable(table* t)
         prochainX=t->pos().x()+t->boundingRect().width()+10;
         t->setFlag(QGraphicsItem::ItemIsSelectable);
         t->setFlag(QGraphicsItem::ItemIsMovable);
+        t->setFlag(QGraphicsItem::ItemSendsGeometryChanges);
         //essais
         scene.addItem(t);
 

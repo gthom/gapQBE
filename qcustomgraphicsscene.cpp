@@ -18,7 +18,6 @@ QCustomGraphicsScene::QCustomGraphicsScene(QWidget * parent):QGraphicsScene(pare
 }
 void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-
     qDebug("void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)");
     if (mouseEvent->button() == Qt::LeftButton
         && (itemAt(mouseEvent->scenePos(),QTransform())!=NULL))
@@ -199,8 +198,6 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
         }
     }
-
     QGraphicsScene::mousePressEvent(mouseEvent);
-
 }
 
