@@ -58,10 +58,10 @@ dialogRelation::dialogRelation(QWidget *parent) :
     connect(m_ui->lineEditHaving,SIGNAL(textChanged(QString)),this,SLOT(miseAJourResultat()));
     connect(m_ui->lineEditIndex,SIGNAL(textChanged(QString)),this,SLOT(miseAJourResultat()));
     connect(m_ui->lineEditCount,SIGNAL(textChanged(QString)),this,SLOT(miseAJourResultat()));
-//quelques actions
-    m_ui->graphicsView->addAction(m_ui->actionDelete_tables_s);
+//quelques actions que j'ai enlevé car impossible d'empêcher l'affichage du menu contextuel
+    /*m_ui->graphicsView->addAction(m_ui->actionDelete_tables_s);
     m_ui->graphicsView->addAction(m_ui->actionZoom_in);
-    m_ui->graphicsView->addAction(m_ui->actionZoom_out);
+    m_ui->graphicsView->addAction(m_ui->actionZoom_out);*/
 
 }
 

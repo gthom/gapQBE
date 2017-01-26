@@ -1,58 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr_FR" sourcelanguage="en">
-<defaultcodec>UTF-8</defaultcodec>
+<TS version="2.1" language="fr_FR" sourcelanguage="en">
 <context>
     <name>DialogLogin</name>
     <message>
         <location filename="dialoglogin.ui" line="14"/>
-        <source>GapTableConceptor-login</source>
-        <translation>GapTableConceptor-Connexion</translation>
+        <source>GapQBE-Login</source>
+        <oldsource>GapTableConceptor-login</oldsource>
+        <translation>GapQBE-Connexion</translation>
     </message>
     <message>
         <location filename="dialoglogin.ui" line="26"/>
-        <source>Login:</source>
+        <source>Logiin:</source>
+        <oldsource>Login:</oldsource>
         <translation>Identifiant:</translation>
     </message>
     <message>
         <location filename="dialoglogin.ui" line="33"/>
+        <source>user&apos;s login as defined into database engine</source>
+        <translation>login utilisateur  du sgbd</translation>
+    </message>
+    <message>
+        <location filename="dialoglogin.ui" line="36"/>
         <source>root</source>
         <translation>root</translation>
     </message>
     <message>
-        <location filename="dialoglogin.ui" line="44"/>
+        <location filename="dialoglogin.ui" line="47"/>
         <source>Password:</source>
         <translation>Mot de Passe:</translation>
     </message>
     <message>
-        <location filename="dialoglogin.ui" line="65"/>
+        <location filename="dialoglogin.ui" line="54"/>
+        <source>This is the user&apos;s password as defined into database engine</source>
+        <translation>Mot de passe utilisateur du sgbd</translation>
+    </message>
+    <message>
+        <location filename="dialoglogin.ui" line="71"/>
         <source>Database Name:</source>
         <translation>Nom de la Base:</translation>
     </message>
     <message>
-        <location filename="dialoglogin.ui" line="72"/>
+        <location filename="dialoglogin.ui" line="78"/>
         <source>mysql</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="dialoglogin.ui" line="83"/>
+        <location filename="dialoglogin.ui" line="89"/>
         <source>Host:</source>
         <translation>Serveur:</translation>
     </message>
     <message>
-        <location filename="dialoglogin.ui" line="97"/>
+        <location filename="dialoglogin.ui" line="96"/>
+        <source>server&apos;s name or ip address</source>
+        <oldsource>server&apos;s name or ip adress</oldsource>
+        <translation>Nom ou adresse ip du serveur</translation>
+    </message>
+    <message>
+        <location filename="dialoglogin.ui" line="107"/>
         <source>Database Engine:</source>
         <translation>Type de base:</translation>
     </message>
     <message>
-        <location filename="dialoglogin.ui" line="124"/>
+        <location filename="dialoglogin.ui" line="114"/>
+        <source>list of available drivers</source>
+        <translation>Liste des drivers disponibles</translation>
+    </message>
+    <message>
+        <location filename="dialoglogin.ui" line="138"/>
         <source>&amp;Ok</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="dialoglogin.ui" line="131"/>
+        <location filename="dialoglogin.ui" line="149"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Annuler</translation>
+    </message>
+    <message>
+        <location filename="dialoglogin.cpp" line="84"/>
+        <source>Database connection rejected</source>
+        <translation>Le SBBD a refusé la connexion</translation>
     </message>
 </context>
 <context>
@@ -74,16 +101,21 @@
     </message>
     <message>
         <location filename="dialogtypejointure.ui" line="42"/>
-        <source>Inner</source>
+        <source>Cross</source>
         <translation></translation>
     </message>
     <message>
         <location filename="dialogtypejointure.ui" line="47"/>
-        <source>left outer</source>
+        <source>Inner</source>
         <translation></translation>
     </message>
     <message>
         <location filename="dialogtypejointure.ui" line="52"/>
+        <source>left outer</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="dialogtypejointure.ui" line="57"/>
         <source>right outer</source>
         <translation></translation>
     </message>
@@ -143,33 +175,33 @@
         <translation>quelque chose</translation>
     </message>
     <message>
-        <location filename="lien.cpp" line="231"/>
+        <location filename="lien.cpp" line="238"/>
         <source>Link Menu</source>
         <translation>Menu du lien</translation>
     </message>
     <message>
-        <location filename="lien.cpp" line="243"/>
+        <location filename="lien.cpp" line="250"/>
         <location filename="table.cpp" line="100"/>
         <source>&amp;Remove</source>
         <translation>&amp;Supprimer</translation>
     </message>
     <message>
-        <location filename="lien.cpp" line="244"/>
+        <location filename="lien.cpp" line="251"/>
         <source>&amp;Change join type</source>
         <translation>&amp;Changer le type de jointure</translation>
     </message>
     <message>
-        <location filename="lien.cpp" line="249"/>
+        <location filename="lien.cpp" line="256"/>
         <source>&amp;Edit join condition</source>
         <translation>&amp;Editer la condition de jointure</translation>
     </message>
     <message>
-        <location filename="lien.cpp" line="267"/>
+        <location filename="lien.cpp" line="274"/>
         <source>Edit Join Condition</source>
         <translation>Edition de la condition de jointure</translation>
     </message>
     <message>
-        <location filename="lien.cpp" line="268"/>
+        <location filename="lien.cpp" line="275"/>
         <source>Join Condition:</source>
         <translation>Condition:</translation>
     </message>
@@ -224,82 +256,81 @@
         <translation>Etat de la requête indéterminé</translation>
     </message>
     <message>
-        <location filename="dialogrelation.cpp" line="530"/>
+        <location filename="dialogrelation.cpp" line="533"/>
         <source>The row count is </source>
         <translation>Le nombre de lignes est </translation>
     </message>
     <message>
-        <location filename="dialogrelation.cpp" line="530"/>
         <source>
  are you really sure you want to display them?</source>
-        <translation>êtes vous sûr de vouloir les afficher?</translation>
+        <translation type="vanished">êtes vous sûr de vouloir les afficher?</translation>
     </message>
     <message>
-        <location filename="dialogrelation.cpp" line="568"/>
+        <location filename="dialogrelation.cpp" line="571"/>
         <source>Query seems good,
  no error detected</source>
         <translation>La requête semble correcte
 Aucune erreur n&apos;a été détectée</translation>
     </message>
     <message>
-        <location filename="dialogrelation.cpp" line="593"/>
+        <location filename="dialogrelation.cpp" line="601"/>
         <source>The result is to big to be displayed entirely</source>
         <translation>Le résultat contient un nombre de ligne trop important pour être affiché en entier</translation>
     </message>
     <message>
-        <location filename="dialogrelation.cpp" line="681"/>
+        <location filename="dialogrelation.cpp" line="689"/>
         <source>Do you really want to Quit</source>
         <translation>Voulez-vous réellement quitter l&apos;application?</translation>
     </message>
     <message>
-        <location filename="dialogrelation.cpp" line="718"/>
+        <location filename="dialogrelation.cpp" line="726"/>
         <source>add aggregate</source>
         <translation>Ajouter une fonction de groupe</translation>
     </message>
     <message>
-        <location filename="dialogrelation.cpp" line="718"/>
+        <location filename="dialogrelation.cpp" line="726"/>
         <source>Alias is often needed Sample: &quot;as average&quot;
  so please complete your input</source>
         <translation>Un alias doit être fourni par exemple &quot;as Moyenne&quot;
 Complétez votre fonction en rajoutant  as suivi de l&apos;alias</translation>
     </message>
     <message>
-        <location filename="dialogrelation.cpp" line="741"/>
+        <location filename="dialogrelation.cpp" line="749"/>
         <source>Define sort order</source>
         <translation>Définition de l&apos;ordre de tri</translation>
     </message>
     <message>
-        <location filename="dialogrelation.cpp" line="897"/>
+        <location filename="dialogrelation.cpp" line="905"/>
         <source>Text files (*.csv *.txt)</source>
         <translation>Fichiers CSV (*.csv *.txt)</translation>
     </message>
     <message>
-        <location filename="dialogrelation.cpp" line="943"/>
+        <location filename="dialogrelation.cpp" line="954"/>
         <source> Database Message</source>
         <translation>Message de la base de donnée</translation>
     </message>
     <message>
-        <location filename="dialogrelation.cpp" line="957"/>
+        <location filename="dialogrelation.cpp" line="968"/>
         <source>&amp;Display(y/n)</source>
         <translation>&amp;Afficher(o/n)</translation>
     </message>
     <message>
-        <location filename="dialogrelation.cpp" line="959"/>
+        <location filename="dialogrelation.cpp" line="970"/>
         <source>Sort order</source>
         <translation>Ordre de tri</translation>
     </message>
     <message>
-        <location filename="dialogrelation.cpp" line="960"/>
+        <location filename="dialogrelation.cpp" line="971"/>
         <source>&amp;Asc</source>
         <translation>&amp;Croissant</translation>
     </message>
     <message>
-        <location filename="dialogrelation.cpp" line="961"/>
+        <location filename="dialogrelation.cpp" line="972"/>
         <source>&amp;Desc</source>
         <translation>&amp;Décroissant</translation>
     </message>
     <message>
-        <location filename="dialogrelation.cpp" line="962"/>
+        <location filename="dialogrelation.cpp" line="973"/>
         <source>&amp;Off</source>
         <translation>&amp;Pas de tri</translation>
     </message>
@@ -330,153 +361,208 @@ Complétez votre fonction en rajoutant  as suivi de l&apos;alias</translation>
     </message>
     <message>
         <location filename="dialogrelation.ui" line="91"/>
-        <location filename="dialogrelation.ui" line="105"/>
-        <location filename="dialogrelation.ui" line="166"/>
+        <source>Join tables tool</source>
+        <translation>Outil de jointure de table.</translation>
+    </message>
+    <message>
+        <location filename="dialogrelation.ui" line="94"/>
+        <location filename="dialogrelation.ui" line="111"/>
+        <location filename="dialogrelation.ui" line="181"/>
         <source>...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="102"/>
+        <location filename="dialogrelation.ui" line="105"/>
         <source>move tables</source>
         <translation>déplacer les tables</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="116"/>
+        <location filename="dialogrelation.ui" line="108"/>
+        <source>Move table tool</source>
+        <translation>Outil de déplacement des tables</translation>
+    </message>
+    <message>
+        <location filename="dialogrelation.ui" line="122"/>
         <source>automatic update of result</source>
         <translation>mise à jour automatique du résultat</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="136"/>
+        <location filename="dialogrelation.ui" line="125"/>
+        <source>always update result</source>
+        <translation>Mise à jour automatique du résultat</translation>
+    </message>
+    <message>
+        <location filename="dialogrelation.ui" line="145"/>
         <source>execute  query</source>
         <translation>Executer la requête</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="150"/>
+        <location filename="dialogrelation.ui" line="159"/>
         <source>addselected  tables to work space</source>
         <translation>Ajoute les tables sélectionnées à la requête</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="163"/>
+        <location filename="dialogrelation.ui" line="162"/>
+        <source>use in query</source>
+        <translation>Utiliser dans une requête</translation>
+    </message>
+    <message>
+        <location filename="dialogrelation.ui" line="175"/>
         <source>best fit in view</source>
         <translation>adapte à la fenêtre</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="177"/>
+        <location filename="dialogrelation.ui" line="178"/>
+        <source>fit in view</source>
+        <translation>Adapter la vue au contenu</translation>
+    </message>
+    <message>
+        <location filename="dialogrelation.ui" line="192"/>
         <source>define result&apos;s sort order </source>
         <translation>définir l&apos;ordre de tri</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="180"/>
+        <location filename="dialogrelation.ui" line="195"/>
         <source>SO</source>
         <translation>OT</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="191"/>
+        <location filename="dialogrelation.ui" line="206"/>
         <source>remove result&apos;s doubles</source>
         <translation>retire les doublons</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="194"/>
+        <location filename="dialogrelation.ui" line="209"/>
         <source>D</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="233"/>
+        <location filename="dialogrelation.ui" line="248"/>
         <source>Workspace: tables you need</source>
         <translation>Espace de travail, les tables dont vous avez besoin</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="249"/>
+        <location filename="dialogrelation.ui" line="264"/>
         <source>SQL:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="256"/>
+        <location filename="dialogrelation.ui" line="271"/>
         <source>the sql query</source>
         <translation>la requête sql générée</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="263"/>
+        <location filename="dialogrelation.ui" line="274"/>
+        <source>SQL Query</source>
+        <translation>Requête SQL</translation>
+    </message>
+    <message>
+        <location filename="dialogrelation.ui" line="281"/>
+        <source>Query execution and status</source>
+        <translation>Etat de la requête</translation>
+    </message>
+    <message>
+        <location filename="dialogrelation.ui" line="284"/>
         <source>?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="282"/>
+        <location filename="dialogrelation.ui" line="306"/>
         <source>The query&apos;s rows </source>
         <translation>Le résultat de la requête</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="297"/>
+        <location filename="dialogrelation.ui" line="309"/>
+        <source>Query result</source>
+        <translation>Résultat de la requête</translation>
+    </message>
+    <message>
+        <location filename="dialogrelation.ui" line="324"/>
         <source>Index:</source>
         <translation>De:</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="311"/>
+        <location filename="dialogrelation.ui" line="331"/>
+        <source>first row number you want to display</source>
+        <translation>Première ligne à afficher</translation>
+    </message>
+    <message>
+        <location filename="dialogrelation.ui" line="342"/>
+        <source>maximum result row count</source>
+        <translation>Nombre de ligne à afficher</translation>
+    </message>
+    <message>
+        <location filename="dialogrelation.ui" line="345"/>
         <source>Number:</source>
         <translation>Nombre de Ligne:</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="327"/>
+        <location filename="dialogrelation.ui" line="364"/>
         <source>Check this if you want to compute results by that is displayed</source>
         <translation>Cochez si vous voulez que les fonctions portent sur ce qui est affiché</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="330"/>
+        <location filename="dialogrelation.ui" line="367"/>
         <source>Group By</source>
         <translation>Groupement</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="339"/>
+        <location filename="dialogrelation.ui" line="376"/>
         <source>Aggregate:</source>
         <translation>Fonctions de groupe:</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="346"/>
+        <location filename="dialogrelation.ui" line="383"/>
         <source>type here some function like sum or avg or ...</source>
         <translation>tapez ici une fonction comme sum, avg,max ou ...</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="356"/>
+        <location filename="dialogrelation.ui" line="393"/>
+        <source>add aggregate function</source>
+        <translation>Ajouter une fonction d&apos;aggrégat</translation>
+    </message>
+    <message>
+        <location filename="dialogrelation.ui" line="396"/>
         <source>&amp;Add</source>
         <translation>&amp;Ajouter</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="381"/>
+        <location filename="dialogrelation.ui" line="421"/>
         <source>Postcondition</source>
         <translation>Condition sur le résultat d&apos;une fonction de groupe</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="391"/>
+        <location filename="dialogrelation.ui" line="431"/>
         <source>this is a  sélection on aggregates&apos;s result</source>
         <translation>c&apos;est une condition portant sur le résultat d&apos;une fonction agrégat</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="403"/>
+        <location filename="dialogrelation.ui" line="443"/>
         <source>Export query&apos;s result as csv file</source>
         <translation>Export du résultat de la requête en fichier csv</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="406"/>
+        <location filename="dialogrelation.ui" line="446"/>
         <source>&amp;Export csv</source>
         <translation>&amp;Exporter en csv</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="436"/>
+        <location filename="dialogrelation.ui" line="476"/>
         <source>&amp;Quit</source>
         <translation>&amp;Quitter</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="449"/>
+        <location filename="dialogrelation.ui" line="489"/>
         <source>delete field</source>
         <translation>effacer le champ</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="485"/>
+        <location filename="dialogrelation.ui" line="525"/>
         <source>delete tables(s)</source>
         <translation>efface la table</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="488"/>
+        <location filename="dialogrelation.ui" line="528"/>
         <source>Shift+Del</source>
         <translation></translation>
     </message>
@@ -485,33 +571,33 @@ Complétez votre fonction en rajoutant  as suivi de l&apos;alias</translation>
         <translation type="obsolete">Supprime</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="452"/>
+        <location filename="dialogrelation.ui" line="492"/>
         <source>supprimer le champ</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="455"/>
+        <location filename="dialogrelation.ui" line="495"/>
         <source>Del</source>
         <translation>Effacer</translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="460"/>
+        <location filename="dialogrelation.ui" line="500"/>
         <source>zoom in</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="463"/>
+        <location filename="dialogrelation.ui" line="503"/>
         <source>Ctrl++</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="471"/>
-        <location filename="dialogrelation.ui" line="474"/>
+        <location filename="dialogrelation.ui" line="511"/>
+        <location filename="dialogrelation.ui" line="514"/>
         <source>zoom out</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="dialogrelation.ui" line="477"/>
+        <location filename="dialogrelation.ui" line="517"/>
         <source>Ctrl+-</source>
         <translation></translation>
     </message>
@@ -585,15 +671,6 @@ Complétez votre fonction en rajoutant  as suivi de l&apos;alias</translation>
         <location filename="field.cpp" line="110"/>
         <source>&amp;Off</source>
         <translation>&amp;Pas de tri</translation>
-    </message>
-    <message>
-        <location filename="field.cpp" line="148"/>
-        <source>something</source>
-        <translation>quelque chose</translation>
-    </message>
-    <message>
-        <source>=&quot;something&quot;</source>
-        <translation type="obsolete">=&quot;valeur&quot;</translation>
     </message>
 </context>
 </TS>

@@ -326,7 +326,11 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEditIndex"/>
+          <widget class="QLineEdit" name="lineEditIndex">
+           <property name="statusTip">
+            <string>first row number you want to display</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -334,6 +338,9 @@
         <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
           <widget class="QLabel" name="label_5">
+           <property name="statusTip">
+            <string>maximum result row count</string>
+           </property>
            <property name="text">
             <string>Number:</string>
            </property>

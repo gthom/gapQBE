@@ -12,6 +12,7 @@
 
 class customGraphicsView : public QGraphicsView
 {
+private:
     Q_OBJECT
 public:
     customGraphicsView(QWidget * parent):QGraphicsView(parent){};
@@ -28,5 +29,4 @@ public slots:
     void zoomOut() { scale(1 / 1.2, 1 / 1.2); }
 
 };
-
 #endif // CUSTOMGRAPHICSVIEW_H

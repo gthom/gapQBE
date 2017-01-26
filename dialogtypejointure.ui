@@ -34,27 +34,27 @@
       <widget class="QComboBox" name="comboBoxType">
        <item>
         <property name="text">
-         <string>Natural</string>
+         <string notr="true">Natural</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Cross</string>
+         <string notr="true">Cross</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Inner</string>
+         <string notr="true">Inner</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>left outer</string>
+         <string notr="true">left outer</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>right outer</string>
+         <string notr="true">right outer</string>
         </property>
        </item>
       </widget>

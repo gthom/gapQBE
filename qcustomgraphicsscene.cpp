@@ -30,20 +30,22 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
         {
             if(!(elt->data(32).toString()=="Field"))
             {
-            QDrag *drag = new QDrag(((QWidget*)this->parent()));
-            QMimeData *mimeData = new QMimeData;
-            QByteArray qba;
-            qba.append(elt->data(32).toString());
-            qba.append(";");
-            qba.append(elt->data(33).toString());
-            qba.append(";");
-            qba.append(elt->data(34).toString());
-            mimeData->setData("text/"+elt->data(32).toString(),qba);
-            drag->setMimeData(mimeData);
-            //drag->setPixmap(iconPixmap);
-            Qt::DropAction dropAction = drag->exec();
+                QDrag *drag = new QDrag(((QWidget*)this->parent()));
+                QMimeData *mimeData = new QMimeData;
+                QByteArray qba;
+                qba.append(elt->data(32).toString());
+                qba.append(";");
+                qba.append(elt->data(33).toString());
+                qba.append(";");
+                qba.append(elt->data(34).toString());
+                mimeData->setData("text/"+elt->data(32).toString(),qba);
+                drag->setMimeData(mimeData);
+                //drag->setPixmap(iconPixmap);
+                Qt::DropAction dropAction = drag->exec();
+            }
         }
-        }
+        //permet l'édition par doucle clic
+        QGraphicsScene::mousePressEvent(mouseEvent);
 
     }
     else//bouton droit
@@ -129,6 +131,7 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
                         //lorsque le texte du champ libre est modifié, mettre à jour la requête
                         //connect(nouveauChamp->document(),SIGNAL(contentsChanged()),maman, SLOT(miseAJourResultat()));
                         maman->vectChampsLibres.append(nouveauChamp);
+                        maman->getScene()->addItem(nouveauChamp);
 
                     }
                     else
@@ -197,7 +200,13 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
             }//fin if elementConcerne!=NULL
 
         }
+        //essais 26/01/2017 infructueux:
+        mouseEvent->ignore();
     }
-    QGraphicsScene::mousePressEvent(mouseEvent);
+}
+
+void QCustomGraphicsScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+{
+event->ignore();
 }
 

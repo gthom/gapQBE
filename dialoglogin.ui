@@ -23,7 +23,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Logiin:</string>
+        <string>Login:</string>
        </property>
       </widget>
      </item>
@@ -93,7 +93,7 @@
      <item>
       <widget class="QLineEdit" name="lineEditLoginHost">
        <property name="statusTip">
-        <string>server's name or ip adress</string>
+        <string>server's name or ip address</string>
        </property>
       </widget>
      </item>

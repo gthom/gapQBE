@@ -18,13 +18,11 @@ class table : public QGraphicsRectItem
 public:
 
     enum { Type = TABLE};
-
     int type() const
     {
         // Enable the use of qgraphicsitem_cast with this item.
         return Type;
     }
-
     table(dialogRelation* mum,QString nom,qreal x,qreal y, QGraphicsItem* parent, QGraphicsScene * laScene, QStringList listeDesChamps);
     ~table();
     QGraphicsTextItem* title;//le titre
@@ -39,7 +37,6 @@ public:
     dialogRelation* maman;// lien vers la maman
     QPolygonF polygon(){return QPolygonF(this->boundingRect());}
     QString nomTableTronque(){return (nomTable.length()>13)?nomTable.left(10)+"...":nomTable;}
-
 };
 
 #endif // TABLE_H
