@@ -92,7 +92,7 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
                             QString alias=QInputDialog::getText(maman,maman->windowTitle()+tr("Register as value"),tr("Give query's Alias:"),QLineEdit::Normal,"VALUE1", &saisieAliasOk);
                             if(saisieAliasOk)
                             {
-                                field * newChamp=new field(maman,true,maman->getScene(),0);
+                                Field * newChamp=new Field(maman,true,maman->getScene(),0);
                                 newChamp->setData(32,"Value");
                                 newChamp->setData(33,"("+maman->m_uip()->lineEditQuery->text()+")");
                                 newChamp->setData(34,(qlonglong)newChamp);
@@ -118,7 +118,7 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
                     if(actionChoisie==ajouteUnChampARien)
                     {
                         QString what=maman->delimiteur+QObject::tr("something")+maman->delimiteur;
-                        field * nouveauChamp=new field(maman,true,this,what,0);
+                        Field * nouveauChamp=new Field(maman,true,this,what,0);
                         //c'est un champ en dehors de tte table
                         nouveauChamp->laTable=NULL;
                         nouveauChamp->setPos(mouseEvent->scenePos());
@@ -170,29 +170,29 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
             {
                 if(elementConcerne->data(32)=="Table")
                 {
-                    if (!qgraphicsitem_cast<table*> (elementConcerne ))//le titre dit qu'il est une table
+                    if (!qgraphicsitem_cast<Table*> (elementConcerne ))//le titre dit qu'il est une table
                     {
                         //mais la table est son parent
                         elementConcerne=elementConcerne->parentItem();
                     }
 
-                    ((table*)elementConcerne)->contextMenuEvent(mouseEvent);
+                    ((Table*)elementConcerne)->contextMenuEvent(mouseEvent);
                 }
                 else//cela peut être un lien ou un field
                 {
                     if(elementConcerne->data(32)=="Field")
                     {
-                        ((field*)elementConcerne)->contextMenuEvent(mouseEvent);
+                        ((Field*)elementConcerne)->contextMenuEvent(mouseEvent);
                     }
                     else
                     {
                         if(elementConcerne->data(32)=="Lien")
                         {
-                            if(!qgraphicsitem_cast<lien*> (elementConcerne ))//si c'est sa condition qui a été cliquée
+                            if(!qgraphicsitem_cast<Lien*> (elementConcerne ))//si c'est sa condition qui a été cliquée
                             {
                                 elementConcerne=elementConcerne->parentItem();
                             }
-                            ((lien*)elementConcerne)->contextMenuEvent(mouseEvent);
+                            ((Lien*)elementConcerne)->contextMenuEvent(mouseEvent);
                         }
 
                     }
@@ -207,6 +207,6 @@ void QCustomGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 void QCustomGraphicsScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
-event->ignore();
+  event->ignore();
 }
 

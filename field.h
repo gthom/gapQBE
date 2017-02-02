@@ -8,9 +8,9 @@
 #include "table.h"
 #include "dialogrelation.h"
 
-class table;
+class Table;
 class dialogRelation;
-class field :   public QGraphicsTextItem
+class Field :   public QGraphicsTextItem
 {
     Q_OBJECT
 private:
@@ -24,9 +24,9 @@ public:
         return Type;
     }
     //constructeur
-    field(dialogRelation* mum ,bool,QGraphicsScene* pScene,QString pName="'something'",QGraphicsItem* pParent=0);
+    Field(dialogRelation* mum ,bool,QGraphicsScene* pScene,QString pName="'something'",QGraphicsItem* pParent=0);
     //destructeur
-    ~field();
+    ~Field();
     //affiche: true si le champ est à afficher
     bool affiche;
     //graphisme, visuel
@@ -40,7 +40,7 @@ public:
     QString alias;
     //en dehors des tables
     bool freeField;
-    table * laTable;//table dans laquelle il est NULL si pas de table
+    Table * laTable;//table dans laquelle il est NULL si pas de table
     enum typeDeTri{noSort,ascSort,descSort} tri;
     //son numéro dans le tri
     int  numeroDansLeTri;

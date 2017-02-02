@@ -8,7 +8,7 @@
 #include <QInputDialog>
 #include <QVector>
 
-lien::~lien()
+Lien::~Lien()
 {
     qDebug()<<"destructeur du lien";
     //je me retire du vecteur de mes deux tables
@@ -22,7 +22,7 @@ lien::~lien()
 
 }
 
-lien::lien(table* pt1,table* pt2,QGraphicsItem * parent,QGraphicsScene* laScene,QString typ)
+Lien::Lien(Table* pt1,Table* pt2,QGraphicsItem * parent,QGraphicsScene* laScene,QString typ)
 {
     laLigne=new QGraphicsLineItem(pt1->pos().x()+pt1->boundingRect().width()/2,pt1->pos().y(),pt2->pos().x()+pt2->boundingRect().width()/2,pt2->pos().y(),parent);
     //constructeur du lien
@@ -54,7 +54,7 @@ lien::lien(table* pt1,table* pt2,QGraphicsItem * parent,QGraphicsScene* laScene,
     setZValue(-1000.0);
     updatePosition();
 }
-void lien::redraw(QPainter *painter, const QStyleOptionGraphicsItem *,QWidget *)
+void Lien::redraw(QPainter *painter, const QStyleOptionGraphicsItem *,QWidget *)
  {
      qDebug()<<"void lien::paint(QPainter *painter, const QStyleOptionGraphicsItem *,QWidget *)";
      if (t1->collidesWithItem(t2))
@@ -190,7 +190,7 @@ if(typeDeJointure=="Cross")
      }
 }
 
-void lien::ajouteElementsAuGroupe()
+void Lien::ajouteElementsAuGroupe()
 {
     calculeCoordonnees();
     addToGroup(laLigne);
@@ -199,7 +199,7 @@ void lien::ajouteElementsAuGroupe()
     addToGroup(condition);
 }
 
- QRectF lien::boundingRect() const
+ QRectF Lien::boundingRect() const
  {
      qreal extra = (laLigne->pen().width() + 20) / 2.0;
 
@@ -209,18 +209,18 @@ void lien::ajouteElementsAuGroupe()
          .adjusted(-extra, -extra, extra, extra);
  }
 
- QPainterPath lien::shape() const
+ QPainterPath Lien::shape() const
  {
      QPainterPath path = QGraphicsItemGroup::shape();
      path.addPolygon(arrowHead);
      return path;
  }
 
- void lien::calculeCoordonnees()
+ void Lien::calculeCoordonnees()
  {
      updatePosition();
  }
-void lien::updatePosition()
+void Lien::updatePosition()
 {
     qDebug()<<"void lien::updatePosition()";
     laLigne->setLine(t1->pos().x()+t1->boundingRect().width()/2,t1->pos().y(),t2->pos().x()+t2->boundingRect().width()/2,t2->pos().y());
@@ -231,7 +231,7 @@ void lien::updatePosition()
         condition->setPos(position);
     }
 }
-void lien::contextMenuEvent(QGraphicsSceneMouseEvent *event)
+void Lien::contextMenuEvent(QGraphicsSceneMouseEvent *event)
 {
     //ce qui se passe lorsque le menu contextuel de la table est appelé
      qDebug()<<"void lien::contextMenuEvent(QGraphicsSceneMouseEvent *event)";
@@ -281,7 +281,7 @@ void lien::contextMenuEvent(QGraphicsSceneMouseEvent *event)
          }
       }  
 }
-void lien::updateType()
+void Lien::updateType()
 {//mise à jour du type de jointure
     if(typeDeJointure!="Natural")
     {

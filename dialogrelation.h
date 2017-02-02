@@ -13,9 +13,9 @@
 namespace Ui {
     class dialogRelation;
 }
-class table;
-class lien;
-class field;
+class Table;
+class Lien;
+class Field;
 class dialogRelation : public QDialog {
     Q_OBJECT
     Q_DISABLE_COPY(dialogRelation)
@@ -25,7 +25,7 @@ public:
     QSqlDatabase  db;//la database de travail
     long prochainX;//abscisse de la prochaine table insérée
     Ui::dialogRelation * m_uip(){return m_ui;}
-    QVector <field*> vectChampsLibres;
+    QVector <Field*> vectChampsLibres;
     //qlulques méthodes
     int nombreDeChampsDansLeSelect();//nb de champs affichés
     int maxCleDeLaMap();//numéro du dernier Champ affiché
@@ -34,17 +34,18 @@ public:
     bool requeteOk;//le mettre a false ds le constructeur
     QStringList listeDesChampsDuResultat;
     QCustomGraphicsScene* getScene(){return &scene;}
-    void ajouteTable(table* t);
+    void ajouteTable(Table* t);
     QString messageDErreur;
     QString delimiteur;//suivant les moteurs c'est soit simple soit double quote
+    QList<Lien *> ordonnancer(QList<Lien *> *leGroupe);
+    QList<Lien *> liensSuivants(QList<Lien *> lesLiensRestants, QString nomTable);
 protected:
     virtual void changeEvent(QEvent *e);
 
 private:
     Ui::dialogRelation *m_ui;
-    QVector <table*> vectTables;
-
-    QVector <lien*> vectLiens;
+    QVector <Table*> vectTables;
+    QVector <Lien*> vectLiens;
     QCustomGraphicsScene scene;
 
 private slots:
@@ -71,13 +72,13 @@ private slots:
 public slots:
 
     void tableSupprimer();//suppression d'une table dans la scene
-    void tableAjouterChamp(table*);//ajout d'un champ libre dans une table de la scene
-    void jointure(table*,table*);//jointure demandée entre deux tables de la scene
+    void tableAjouterChamp(Table*);//ajout d'un champ libre dans une table de la scene
+    void jointure(Table*,Table*);//jointure demandée entre deux tables de la scene
     void miseAJourResultat();//ce slot actualise la requête et le résultat de la requête
-    void changeJoinType(lien *);
-    void supprimerLien(lien * leLien);
+    void changeJoinType(Lien *);
+    void supprimerLien(Lien * leLien);
     void closeEvent(QCloseEvent * event);
-    void on_toolButtonFitInView_clicked();//fi in view
+    void on_toolButtonFitInView_clicked();//fit in view
     void on_checkBoxGroupBy_clicked();//group by clické
     void on_pushButtonAddAggregate_clicked();//ajout d'un agrégat
 signals:

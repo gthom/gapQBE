@@ -21,7 +21,7 @@ public:
     void dropEvent(QDropEvent *event);
     QString delimiteur;
 signals:
-    void jointureRequise(table*,table*);
+    void jointureRequise(Table*,Table*);
     void ilYADesTablesAAjouter(QPoint);
     void supprimerTable(QString nomTable);
 public slots:

@@ -10,10 +10,10 @@
 #include "field.h"
 
 
-class lien;
-class field;
+class Lien;
+class Field;
 class dialogRelation;
-class table : public QGraphicsRectItem
+class Table : public QGraphicsRectItem
 {
 public:
 
@@ -23,15 +23,15 @@ public:
         // Enable the use of qgraphicsitem_cast with this item.
         return Type;
     }
-    table(dialogRelation* mum,QString nom,qreal x,qreal y, QGraphicsItem* parent, QGraphicsScene * laScene, QStringList listeDesChamps);
-    ~table();
+    Table(dialogRelation* mum,QString nom,qreal x,qreal y, QGraphicsItem* parent, QGraphicsScene * laScene, QStringList listeDesChamps);
+    ~Table();
     QGraphicsTextItem* title;//le titre
     QGraphicsLineItem* laLigne;//la ligne sous le titre ui
     QString nomTable;//nom de la table
     QString getNomTable(){return (alias.isEmpty())?nomTable:alias;}
     QString alias;  //nom d'alias
-    QVector<lien*> vectLiens;//les liens qui la touchent.
-    QVector<field *> vecteurChamps;//ses champs
+    QVector<Lien*> vectLiens;//les liens qui la touchent.
+    QVector<Field *> vecteurChamps;//ses champs
     void contextMenuEvent(QGraphicsSceneMouseEvent *event);//demande de menu contextuel
     QVariant itemChange(GraphicsItemChange change,const QVariant &value);//qd la table change
     dialogRelation* maman;// lien vers la maman

@@ -12,7 +12,7 @@
 #include "ui_dialogtypejointure.h"
 #include <QTextDocument>
 #include <QSqlResult>
-#include    <QMessageBox>
+#include <QMessageBox>
 #include "ui_dialogsortorder.h"
 #include <QFileDialog>
 #include <QSqlDriver>
@@ -48,7 +48,7 @@ dialogRelation::dialogRelation(QWidget *parent) :
     m_ui->graphicsView->setScene(&scene);
 
 //connexion des signaux aux slots
-    connect (m_ui->graphicsView,SIGNAL(jointureRequise(table *,table *)),this,SLOT(jointure(table*,table*)));
+    connect (m_ui->graphicsView,SIGNAL(jointureRequise(Table *,Table *)),this,SLOT(jointure(Table*,Table*)));
     connect (m_ui->graphicsView,SIGNAL(ilYADesTablesAAjouter(QPoint)),this,SLOT(allezAllezOnAjouteLesTables(QPoint)));
     connect (this,SIGNAL(ilYADesTablesAAjouter(QPoint)),this,SLOT(allezAllezOnAjouteLesTables(QPoint)));  
     connect(m_ui->toolButtonExecuteRequete,SIGNAL(clicked()),this,SLOT(miseAJourResultat()));
@@ -62,6 +62,7 @@ dialogRelation::dialogRelation(QWidget *parent) :
     /*m_ui->graphicsView->addAction(m_ui->actionDelete_tables_s);
     m_ui->graphicsView->addAction(m_ui->actionZoom_in);
     m_ui->graphicsView->addAction(m_ui->actionZoom_out);*/
+
 
 }
 
@@ -91,7 +92,7 @@ void dialogRelation::tableSupprimer()
     {
         if (item->data(32) == "Table")
         {
-            table*t=(table*)item;
+            Table*t=(Table*)item;
             //suppression des liens concernant la table
             for(int noLien=vectLiens.size()-1;noLien>=0;noLien--)
             {
@@ -117,7 +118,7 @@ void dialogRelation::tableSupprimer()
 
 }
 
-void dialogRelation::jointure(table* t1,table* t2)
+void dialogRelation::jointure(Table* t1,Table* t2)
 {
     qDebug()<<"void dialogRelation::jointure(table* t1,table* t2)";
     //j'affiche une boite de dialogue pour saisir le type de jointure
@@ -128,8 +129,8 @@ void dialogRelation::jointure(table* t1,table* t2)
         QString typ=dtj.m_ui->comboBoxType->currentText();
         if(t1!=t2) //pas de jointure entre une table et elle-même
         {
-            table * table1=NULL;
-            table * table2=NULL;
+            Table * table1=NULL;
+            Table * table2=NULL;
             //chtite boucle ds le vecteur on sort qd trouve les deux
             long indice=0;
             while(!(table2!=NULL && table1!=NULL))
@@ -144,7 +145,7 @@ void dialogRelation::jointure(table* t1,table* t2)
                 indice++;
 
             }
-            lien * nouveauLien=new lien(table2,table1,0,&this->scene,typ);
+            Lien * nouveauLien=new Lien(table2,table1,0,&this->scene,typ);
             scene.addItem(nouveauLien);
             nouveauLien->ajouteElementsAuGroupe();
             table1->vectLiens.push_back(nouveauLien);
@@ -170,7 +171,7 @@ void dialogRelation::on_toolButtonJoin_clicked()
     scene.outil="drag";
     m_ui->graphicsView->setCursor(QCursor(Qt::PointingHandCursor));
 }
-void dialogRelation::tableAjouterChamp(table * laTable)
+void dialogRelation::tableAjouterChamp(Table * laTable)
 {
     //but:Ajouter un champ libre à la table
     //   exemple select 'bonjour' from client
@@ -178,7 +179,7 @@ void dialogRelation::tableAjouterChamp(table * laTable)
 
     qDebug()<<"void dialogRelation::tableAjouterChamp()";
     QString nomDuChamp=delimiteur+"Some Text"+delimiteur;
-    field* nouveauChamp=new field(this,true,&scene,nomDuChamp,laTable);
+    Field* nouveauChamp=new Field(this,true,&scene,nomDuChamp,laTable);
     //c'est sa table
     nouveauChamp->laTable=laTable;
     //ajout du nouveau champ au vecteur des champs
@@ -200,19 +201,151 @@ void dialogRelation::tableAjouterChamp(table * laTable)
     laTable->setRect(ancien);
 
 }
+QList<QList <Lien*> *> obtenirListeDesGroupesAuquelEstRelieLeLienARanger(Lien* lienARanger,QList<QList <Lien*> *>listeDesGroupesDeLiens)
+{
+   QList<QList <Lien*> *> resultat;
+   foreach(QList<Lien*>* groupeDeLiens,listeDesGroupesDeLiens)//pour chaque groupe de lien déjà trouvé
+   {
+               foreach(Lien* unLien,*groupeDeLiens) //pour chaque lien de ce groupe
+               {
+                   if (unLien->estRelieA(lienARanger)) //ajout du lienARanger au groupe
+                   {
+                       if(!resultat.contains(groupeDeLiens))
+                       resultat.append(groupeDeLiens);
+                   }
+
+               }
+   }
+   qDebug()<<"le lien fait partie de "<<resultat.count()<<" groupes";
+   return resultat;
+}
+ QList<Lien*> dialogRelation::ordonnancer(QList <Lien*> * leGroupe)
+{
+    QList<Lien*> leGroupeOrdonnance;
+    //il va falloir ici mettre les tables dans l'ordre
+    //trouver les extrémités puis partir d'une extrémité pour arriver à l'autre.
+    QMap <QString,int> mapTables;
+    foreach(Lien * leLien, *leGroupe)
+    {
+        if (mapTables.contains(leLien->t1->nomTable))
+        {
+            //incrementation
+            mapTables[leLien->t1->nomTable]++;
+        }
+        else
+        {
+           mapTables[leLien->t1->nomTable]=1;
+        }
+        if (mapTables.contains(leLien->t2->nomTable))
+        {
+            //incrementation
+            mapTables[leLien->t2->nomTable]++;
+        }
+        else
+        {
+           mapTables[leLien->t2->nomTable]=1;
+        }
+    }//fin du foreach
+    //la map est Remplie on choisit une des tables qui n'est citée qu'une seule fois
+    //c'est une extrémitée
+    int noCellule=0;
+    while(!(noCellule==mapTables.count() || mapTables.values()[noCellule]==1))
+    {
+        noCellule++;
+    }//fin du while
+    if(noCellule==mapTables.count())//aucune table n'apparait qu'une seule fois donc il y a un lien en trop
+    {
+        qDebug()<<"IMPOSSIBLE DE COMMENCER BOUCLE DANS LES LIAISONS entre les tables";
+
+    }
+    else//On peut commencer
+    {
+        //trouver le lien qui a pour t1 ou t2 la table citée dans mapTables[noCellule]
+        QString nomTable=mapTables.keys()[noCellule];
+        int indiceDuLien=0;
+        while(!(leGroupe->at(indiceDuLien)->t1->nomTable==nomTable || leGroupe->at(indiceDuLien)->t2->nomTable==nomTable))
+        {
+            indiceDuLien++;
+        }
+        QString tableSuivante;
+        (leGroupe->at(indiceDuLien)->t1->nomTable==nomTable)?
+                tableSuivante=leGroupe->at(indiceDuLien)->t2->nomTable:
+                tableSuivante=leGroupe->at(indiceDuLien)->t1->nomTable;
+        leGroupeOrdonnance.append(leGroupe->at(indiceDuLien));
+        QList<Lien*>groupeReduit=*leGroupe;
+        groupeReduit.removeOne(leGroupe->at(indiceDuLien));
+        leGroupeOrdonnance<<liensSuivants(groupeReduit,tableSuivante);
+    }
+return leGroupeOrdonnance;
+#warning à faire et vite
+}
+QList<Lien *> dialogRelation::liensSuivants(QList<Lien *> lesLiensRestants, QString nomTable)
+{
+    QList<Lien*> resultat;
+    if(lesLiensRestants.count()==1)
+        resultat<<lesLiensRestants.at(0);
+    else
+    {
+        foreach(Lien * unLien, lesLiensRestants)
+        {
+            if(unLien->t1->nomTable==nomTable || unLien->t2->nomTable==nomTable)
+            {
+                //on l'enlève des liens restants
+                lesLiensRestants.removeOne(unLien);
+                if(unLien->t1->nomTable==nomTable)
+                resultat<<unLien<<liensSuivants(lesLiensRestants,unLien->t2->nomTable);
+                else
+                 resultat<<unLien<<liensSuivants(lesLiensRestants,unLien->t1->nomTable);
+            }
+        }
+    }
+    return resultat;
+}
+
 void dialogRelation::miseAJourResultat()
 {
     //actualisation du résultat de la requête
     qDebug()<<"void dialogRelation::miseAJourResultat()";
     QStringList fromList;
-    QList<QList <lien*> *> listeDesGroupesDeLiens;
+    QList<QList <Lien*> *> listeDesGroupesDeLiens;
     //grouper les liens ensemble
-    foreach(lien * lienARanger ,vectLiens) //pour chaque lien de la planche
+    foreach(Lien * lienARanger ,vectLiens) //pour chaque lien de la planche
     {
         //je regarde si un groupe contient une des tables du lien si oui je le rajoute au groupe sinon je crée un groupe et je le mets dedans
-        bool leLienEstRange=false;//pour l'instant le lien n'est pas rangé
-        QList<lien*>* premierGroupe=NULL;
-        foreach(QList<lien*>* groupeDeLiens,listeDesGroupesDeLiens)//pour chaque groupe de lien
+        //bool leLienEstRange=false;//pour l'instant le lien n'est pas rangé
+        //QList<lien*>* premierGroupe=NULL;
+        //ici la boucle n'est pas fantastique car on peut supprimer un groupe de lien
+        QList<QList <Lien*> *> listeDesGroupesAuquelEstRelieLeLienARanger= obtenirListeDesGroupesAuquelEstRelieLeLienARanger(lienARanger,listeDesGroupesDeLiens);
+        //si le lien n'appartient encore à aucun groupe
+        if(listeDesGroupesAuquelEstRelieLeLienARanger.empty())
+        {
+            //ajout d'un nouveau groupe de lien
+            QList <Lien*>* nouveauGroupe= new QList <Lien*>;
+            *nouveauGroupe<<lienARanger;
+            listeDesGroupesDeLiens.append(nouveauGroupe);
+            //deboggage
+            qDebug()<<"nouveau groupe avec "<<lienARanger->t1->nomTable<<" "<<lienARanger->t2->nomTable;
+        }
+        else
+        {
+            //il peut être relié à deux groupes auquel cas il faut les fusionner
+            if(listeDesGroupesAuquelEstRelieLeLienARanger.count()==2)
+            {
+                qDebug()<<"fusion de deux groupes necessaires"<<listeDesGroupesAuquelEstRelieLeLienARanger;
+                listeDesGroupesAuquelEstRelieLeLienARanger.at(0)->append(*listeDesGroupesAuquelEstRelieLeLienARanger[1]); //<<*listeDesGroupesAuquelEstRelieLeLienARanger[1];
+                *listeDesGroupesAuquelEstRelieLeLienARanger[0]<<lienARanger;
+                listeDesGroupesDeLiens.removeOne(listeDesGroupesAuquelEstRelieLeLienARanger[1]);
+                qDebug()<<"Nombre de groupe:"<<listeDesGroupesDeLiens.count();
+            }
+            //ou être dans un seul et il suffit alors d'y rajouter notre lien
+            else
+            {
+                *listeDesGroupesAuquelEstRelieLeLienARanger[0]<<lienARanger;
+                qDebug()<<"ajout de lien dans le groupe existant";
+            }
+        }
+
+        /*foreach(QList<lien*>* groupeDeLiens,listeDesGroupesDeLiens)//pour chaque groupe de lien déjà trouvé
         {
             foreach(lien* unLien,*groupeDeLiens) //pour chaque lien de ce groupe
             {
@@ -221,64 +354,83 @@ void dialogRelation::miseAJourResultat()
 
                     if(premierGroupe!=NULL) //il appartient à deux groupes il faut donc fusionner les deux groupes
                     {
-                        //fusionner premierGroupe et groupeDeLiens
-                        *premierGroupe<<*groupeDeLiens;
+                        //fusionner premierGroupe et groupeDeLiens et ne pas le rajouter
+                        *premierGroupe<<*groupeDeLiens;                 
                         groupeDeLiens->empty();
+                        //et on supprime le groupeDeLiens puisqu'il a été fusionné avec le premier
                         listeDesGroupesDeLiens.removeOne(groupeDeLiens);
 
                     }
                     else
                     {
                         *groupeDeLiens<<lienARanger;
-                        leLienEstRange=true;
+                        //memorisation du fait qu'il est dans un groupe essais infructueux du 27/01/2017
+                        premierGroupe=groupeDeLiens;
+#warning erreur ici
                     }
+                    //dans les deux cas le lien et rangé
+                    leLienEstRange=true;
                 }
-            }
-        }
+            }//fin du pour chaque lien de ce groupe
+        }//fin du pour chaque groupe de lien*/
         //si le lien n'est toujours pas rangé alors il faut créer un groupe et le mettre dedans
-        if(!leLienEstRange)
+       /* if(!leLienEstRange)
         {
             QList<lien*> *nouveauGroupe=new QList<lien*>;
             *nouveauGroupe<<lienARanger;
             listeDesGroupesDeLiens<<nouveauGroupe;
-        }
-    }
+        }*/
+    }//fin de pour chaque lien de la planche
     //
     //Dans chaque groupe les tables st reliées par les conditions
     //et entre chaque groupe le séparateur est la virgule
     QString from="";
     //formation de la liste des tables ajoutées
 
-    QList <table*> listeDesTablesRestantAMettreDansLeFrom;
+    QList <Table*> listeDesTablesRestantAMettreDansLeFrom;
     //au départ on y met ttes les tables
-    foreach(table* laTable, vectTables)
+    foreach(Table* laTable, vectTables)
     {
         listeDesTablesRestantAMettreDansLeFrom.append(laTable);
     }
     bool desGroupesOnEteTrouves=false;
-    foreach(QList<lien*> *groupeDeLiens,listeDesGroupesDeLiens)//pour chaque groupe de lien
+    qDebug()<<"Il y a "<<listeDesGroupesDeLiens.count()<<" groupes de lien";
+    foreach(QList<Lien*> *groupeDeLiens,listeDesGroupesDeLiens)//pour chaque groupe de lien
     {
-        QString chaineDuGroupe;
-        QList<table*>tablesDuGroupe;
-        foreach(lien* leLien,*groupeDeLiens)
+        qDebug()<<"voici un groupe************************";
+        foreach(Lien * unLien,* groupeDeLiens)
         {
+          qDebug()<<unLien->t1->nomTable<<" vers "<<unLien->t2->nomTable;
+        }
+
+
+        QString chaineDuGroupe;
+        QList<Table*>tablesDuGroupe;
+        //ordonnancer chaque groupe de lien
+        groupeDeLiens=new QList<Lien*>(ordonnancer(groupeDeLiens));
+        //pour chaque lien du groupe
+        foreach(Lien* leLien,*groupeDeLiens)
+        {
+
             QString typeDeJointure=leLien->typeDeJointure;
             QString condition;
             if(leLien->condition!=NULL) //si la jointure est autre que naturelle
                 condition=leLien->condition->document()->toPlainText();
             //recup des deux tables du lien
-            table * t1=leLien->t1;
-            table * t2=leLien->t2;
+            Table * t1=leLien->t1;
+            Table * t2=leLien->t2;
             //on les enlève de la liste des Tables Restant A Mettre Dans Le From
-            listeDesTablesRestantAMettreDansLeFrom.removeAt(listeDesTablesRestantAMettreDansLeFrom.indexOf(t1));
-            listeDesTablesRestantAMettreDansLeFrom.removeAt(listeDesTablesRestantAMettreDansLeFrom.indexOf(t2));
+            //listeDesTablesRestantAMettreDansLeFrom.removeAt(listeDesTablesRestantAMettreDansLeFrom.indexOf(t1));
+            listeDesTablesRestantAMettreDansLeFrom.removeOne(t1);
+            //listeDesTablesRestantAMettreDansLeFrom.removeAt(listeDesTablesRestantAMettreDansLeFrom.indexOf(t2));
+            listeDesTablesRestantAMettreDansLeFrom.removeOne(t2);
             QString nomTableT1AvecAlias=t1->nomTable;
             if(t1->alias!="")nomTableT1AvecAlias+=" "+t1->alias;
             QString nomTableT2AvecAlias=t2->nomTable;
             if(t2->alias!="")nomTableT2AvecAlias+=" "+t2->alias;
-            if(tablesDuGroupe.indexOf(t1)==-1)//si t1 n'a pas encore été ajoutée
+            if(!tablesDuGroupe.contains(t1))//si t1 n'a pas encore été ajoutée
             {
-                if(tablesDuGroupe.indexOf(t2)==-1) //ne contient ni t1 ni t2
+                if(!tablesDuGroupe.contains(t2)) //ne contient ni t1 ni t2
                 {
                     //ajout de t1 et t2 aux tables concernées par le groupe
                     tablesDuGroupe.append(t1);
@@ -292,37 +444,51 @@ void dialogRelation::miseAJourResultat()
                 }
                 else //ne contient pas t1 mais contient t2
                 {
+                    //ajouter t1 aux tables du groupe
+                     tablesDuGroupe.append(t1);
                     chaineDuGroupe+=" "+typeDeJointure+" JOIN "+nomTableT1AvecAlias;
                     if(typeDeJointure!="Natural"&& typeDeJointure!="Cross")
                     {
                         chaineDuGroupe+=" ON "+condition;
                     }
-                    tablesDuGroupe.append(t1);
+
                 }
-            }
+            }//t1 a été déjà rajoutée
             else //contient t1
             {
-                chaineDuGroupe+=" "+typeDeJointure+" JOIN "+nomTableT2AvecAlias;
-                if(typeDeJointure!="Natural"&& typeDeJointure!="Cross")
+
+                if(!tablesDuGroupe.contains(t2))
                 {
-                    chaineDuGroupe+=" ON "+condition;
+                    tablesDuGroupe.append(t2);
+                    chaineDuGroupe+=" "+typeDeJointure+" JOIN "+nomTableT2AvecAlias;
+                    if(typeDeJointure!="Natural"&& typeDeJointure!="Cross")
+                    {
+                        chaineDuGroupe+=" ON "+condition;
+                    }
                 }
-                tablesDuGroupe.append(t2);
+                else
+                {
+                    qDebug()<<"************************T2 existe DEJA********************";
+                    //il y a un bug
+                    close();
+                }
             }
         }//fin du pour chaque groupe de lien
         if(!chaineDuGroupe.isEmpty())
         {
+            if(!from.isEmpty()) from+=','; //en effet il faut relier les groupes par une virgule
             from+=chaineDuGroupe; //ajout de la chaineDuGroupe au from
             desGroupesOnEteTrouves=true;
         }
-    }
+    }//fin du pour chaque groupe de liens
+    //s'il y a des tables isolées
     if(!listeDesTablesRestantAMettreDansLeFrom.empty())
     {
         QStringList listeDesNomdesTablesRestantAMettreDansLeFrom;
         if(desGroupesOnEteTrouves) //il faut rajouter une , au from
             from+= ",";
         //formation de la liste des noms de table à rajouter au from
-        foreach (table* t, listeDesTablesRestantAMettreDansLeFrom)
+        foreach (Table* t, listeDesTablesRestantAMettreDansLeFrom)
         {
             QString nomComplet=t->nomTable;
             if(t->alias!="") nomComplet+=" "+t->alias;
@@ -342,9 +508,9 @@ void dialogRelation::miseAJourResultat()
     QStringList listeDesChampsParticipantsAuTri;
     QStringList listeDuWhere;
     QMap<int,QString> maMap;
-    foreach (table * uneTable, vectTables)
+    foreach (Table * uneTable, vectTables)
     {
-        foreach (field * unChamp, uneTable->vecteurChamps)
+        foreach (Field * unChamp, uneTable->vecteurChamps)
         {
 
             QString nomCompletDuChamp;
@@ -372,7 +538,7 @@ void dialogRelation::miseAJourResultat()
     }
     QStringList listeDesChosesDuGroupBy=listeDesChosesAAfficher;
     //ajout des champs libres:
-    foreach (field* leChamp,vectChampsLibres)
+    foreach (Field* leChamp,vectChampsLibres)
     {
         if(leChamp->affiche)
         {
@@ -473,7 +639,7 @@ void dialogRelation::miseAJourResultat()
 
 }
 
-void dialogRelation::changeJoinType(lien * leLien)
+void dialogRelation::changeJoinType(Lien * leLien)
 {   //appelé par le menu contextuel changer le type du lien
     qDebug()<<"void dialogRelation::changeJoinType(lien * leLien)";
     DialogTypeJointure dd;
@@ -487,7 +653,7 @@ void dialogRelation::changeJoinType(lien * leLien)
         }
     }
 }
-void dialogRelation::supprimerLien(lien * leLien)
+void dialogRelation::supprimerLien(Lien * leLien)
 {
     qDebug()<<"void dialogRelation::supprimerLien(lien * leLien)";
     //effacement du lien dans le vecteur central:
@@ -658,7 +824,7 @@ void dialogRelation::allezAllezOnAjouteLesTables(QPoint lePoint=QPoint(0,0))
             {
                 listeDesChamps<<enr.fieldName(noChamp);
             }
-            table* tableAjoutee=new table(this,nomTable,0,0,0,&scene,listeDesChamps);
+            Table* tableAjoutee=new Table(this,nomTable,0,0,0,&scene,listeDesChamps);
             if (lePoint.x()==0 &&lePoint.y()==0)
             {
                 //calcul de la position la plus sympa
@@ -749,9 +915,9 @@ void dialogRelation::on_toolButtonSO_clicked()
     ds->setWindowTitle(this->windowTitle()+tr("Define sort order"));
     //remplissage de la liste
     //pour chaque champ participant au tri affichage dans la liste et dans l'ordre s''il vous plait
-    foreach (table * uneTable, vectTables)
+    foreach (Table * uneTable, vectTables)
     {
-        foreach (field * unChamp, uneTable->vecteurChamps)
+        foreach (Field * unChamp, uneTable->vecteurChamps)
         {
 
             QString nomCompletDuChamp;
@@ -805,7 +971,7 @@ void dialogRelation::on_toolButtonSO_clicked()
             QListWidgetItem * item=ds->m_ui->listWidgetChamps->item(noChamp);
             if(item->data(33).toString()=="champ")
             {
-                field* leChamp=(field*)(item->data(32).toLongLong());
+                Field* leChamp=(Field*)(item->data(32).toLongLong());
                 leChamp->numeroDansLeTri=noChamp;
             }
             else
@@ -842,9 +1008,9 @@ QMap <int,QString> dialogRelation::mapSelect()
 {
     QMap<int,QString> maMap;
     //on commence par ajouter les champs des tables
-    foreach (table * uneTable, vectTables)
+    foreach (Table * uneTable, vectTables)
     {
-        foreach (field * unChamp, uneTable->vecteurChamps)
+        foreach (Field * unChamp, uneTable->vecteurChamps)
         {
             if(unChamp->affiche) maMap[unChamp->numeroOrdreDansLeSelect]=unChamp->getNomComplet();
 
@@ -852,7 +1018,7 @@ QMap <int,QString> dialogRelation::mapSelect()
     }
     //puis on passe aux champs en dehors des tables(les champs libres
     //ajout des champs libres devant être affichés:
-    foreach (field* leChamp,vectChampsLibres)
+    foreach (Field* leChamp,vectChampsLibres)
     {
         if(leChamp->affiche) maMap[leChamp->numeroOrdreDansLeSelect]=leChamp->document()->toPlainText();
     }
@@ -934,7 +1100,7 @@ void dialogRelation::on_toolButtonAddTables_clicked()
 {
     emit(ilYADesTablesAAjouter(QPoint(0,0)));
 }
-void dialogRelation::ajouteTable(table* t)
+void dialogRelation::ajouteTable(Table* t)
 {
 
         vectTables.append(t);

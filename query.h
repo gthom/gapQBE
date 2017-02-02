@@ -2,7 +2,7 @@
 #define QUERY_H
 #include "table.h"
 
-class query : public table
+class query : public Table
 {
 public:
     query(dialogRelation* mum,QString nom,qreal x,qreal y, QGraphicsItem* parent, QGraphicsScene * laScene, QStringList listeDesChamps,QString requete,QString alias);

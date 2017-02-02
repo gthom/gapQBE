@@ -6,7 +6,7 @@
 #include <QDebug>
 #include <QTextDocument>
 
-field::field(dialogRelation* mum ,bool isFree,QGraphicsScene* pScene,QString pName,QGraphicsItem* pParent)
+Field::Field(dialogRelation* mum ,bool isFree,QGraphicsScene* pScene,QString pName,QGraphicsItem* pParent)
     :QGraphicsTextItem(pName,pParent)
 {
     qDebug()<<"constructeur de field";
@@ -30,7 +30,7 @@ field::field(dialogRelation* mum ,bool isFree,QGraphicsScene* pScene,QString pNa
     connect(this, SIGNAL(jAiChange()),maman , SLOT(miseAJourResultat()));
 
 }
-field::~field()
+Field::~Field()
 {
     qDebug()<<"field::~field()";
     if(cond!=NULL)
@@ -50,7 +50,7 @@ field::~field()
         maman->vectChampsLibres.remove(maman->vectChampsLibres.indexOf(this),1);
     }
 }
-void field::contextMenuEvent(QGraphicsSceneMouseEvent *event)
+void Field::contextMenuEvent(QGraphicsSceneMouseEvent *event)
 {
     //ce qui se passe lorsque le menu contextuel du champ est appelé
     qDebug()<<"void field::contextMenuEvent(QGraphicsSceneMouseEvent *event)";
@@ -174,21 +174,21 @@ void field::contextMenuEvent(QGraphicsSceneMouseEvent *event)
         emit jAiChange();
     }//fi du si qlq chose a ete fait
 }
-void field::dropEvent( QGraphicsSceneDragDropEvent* event)
+void Field::dropEvent( QGraphicsSceneDragDropEvent* event)
 {
     qDebug()<<"void field::dropEvent(QDropEvent *event)";
 }
-void field::dragEnterEvent( QGraphicsSceneDragDropEvent* event)
+void Field::dragEnterEvent( QGraphicsSceneDragDropEvent* event)
 {
     qDebug()<<"void field::dragEnterEvent(QDragEnterEvent *event)";
     event->accept();
 }
-void field::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
+void Field::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 {
     qDebug()<<"void field::dragMoveEvent(QGraphicsSceneDragDropEvent *event)";
     event->accept();
 }
-QString field::getTri()
+QString Field::getTri()
 {
     qDebug()<<"QString field::getTri()";
     QString resultat;
@@ -200,7 +200,7 @@ QString field::getTri()
             }
             return resultat;
 }
-void field::ajouteCondition(QString texteCondition)
+void Field::ajouteCondition(QString texteCondition)
 {
     qDebug()<<"void field::ajouteCondition(QString texteCondition)";
     cond=new QGraphicsTextItem(texteCondition,this);
@@ -212,14 +212,14 @@ void field::ajouteCondition(QString texteCondition)
     //prise en compte de la modif pour raffraîchir le résultat de la requête
     emit jAiChange();
 }
-void field::modifieCondition(QString texteDeLaCondition)
+void Field::modifieCondition(QString texteDeLaCondition)
 {
     qDebug()<<"void field::modifieCondition(QString texteDeLaCondition)";
     cond->document()->setPlainText(texteDeLaCondition);
     //prise en compte de la modif pour raffraîchir le résultat de la requête
     emit jAiChange();
 }
-QString field::getNomComplet()
+QString Field::getNomComplet()
 {
     qDebug()<<"QString field::getNomComplet()";
         if(laTable==NULL || freeField) return(document()->toPlainText());

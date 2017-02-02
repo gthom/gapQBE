@@ -105,12 +105,12 @@ void customGraphicsView::dropEvent(QDropEvent *event)
             //si la destination est une table
             if (this->scene()->itemAt(lePointMappe,QTransform())->data(32).toString()=="Table")
             {
-                table* table1=(table*)this->scene()->itemAt(lePointMappe,QTransform())->data(34).toLongLong();
+                Table* table1=(Table*)this->scene()->itemAt(lePointMappe,QTransform())->data(34).toLongLong();
                 qDebug()<<"table1:"<<table1;
                 QByteArray qba=event->mimeData()->data("text/Table");
                 QString data(qba);
                 QStringList typeEtNomEtAdresse=data.split(';');
-                table * table2=(table*) typeEtNomEtAdresse[2].toLongLong();//recup de l'adresse de la table2
+                Table * table2=(Table*) typeEtNomEtAdresse[2].toLongLong();//recup de l'adresse de la table2
                 qDebug()<<"table2:"<<table2;
                 //création du lien entre les deux tables
                 //trouver les deux tables:
@@ -126,7 +126,7 @@ void customGraphicsView::dropEvent(QDropEvent *event)
 
                 if(this->scene()->itemAt(lePointMappe,QTransform())->data(32).toString()=="Field")
                 {
-                    field* leChamp=(field*)this->scene()->itemAt(lePointMappe,QTransform());
+                    Field* leChamp=(Field*)this->scene()->itemAt(lePointMappe,QTransform());
                     //si c'est une query à l'origine du drag
                     if(event->mimeData()->data("text/Table").split(';')[1].at(0)=='(')
                     {
@@ -157,7 +157,7 @@ void customGraphicsView::dropEvent(QDropEvent *event)
                 //on va modifier la condition sur champ
                 qDebug()<<"drag and drop sur champ";
                 qDebug()<<"mimedata de la cellule"<<event->mimeData()->formats();
-                field * leChamp=(field*)this->scene()->itemAt(lePointMappe,QTransform());
+                Field * leChamp=(Field*)this->scene()->itemAt(lePointMappe,QTransform());
                 QString condition;
                 if(event->mimeData()->hasFormat("text/Value")) //drag an drop de value sur champ
                 {

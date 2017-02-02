@@ -52,11 +52,7 @@ void DialogLogin::changeEvent(QEvent *e)
 
 void DialogLogin::on_pushButtonOk_clicked()
 {
-
     QSqlDatabase::database()=QSqlDatabase::addDatabase(m_ui->comboBox->currentText());
-
-
-    //db->cloneDatabase(dbEssai,"pof");
     QSqlDatabase::database().setHostName(m_ui->lineEditLoginHost->text());
     QSqlDatabase::database().setUserName(m_ui->lineEditLogin->text());
     QSqlDatabase::database().setDatabaseName(m_ui->lineEditLoginDatabaseName->text());
@@ -69,8 +65,6 @@ void DialogLogin::on_pushButtonOk_clicked()
         std::ofstream fparam;
         fparam.open(".gapQbe");
 
-
-        qDebug()<<"je suis là";
         fparam<<m_ui->lineEditLogin->text().toStdString().c_str()<<std::endl;
         fparam<<m_ui->lineEditLoginPassword->text().toStdString().c_str()<<std::endl;
         fparam<<m_ui->lineEditLoginDatabaseName->text().toStdString().c_str()<<std::endl;

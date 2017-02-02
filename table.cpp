@@ -9,18 +9,18 @@
 #include "field.h"
 #include <QInputDialog>
 
-table::~table()
+Table::~Table()
 {
     qDebug()<<"table::~table()";
     delete this->laLigne;
     delete this->title;
     //effacement des champs
-    foreach(field* leChamp,vecteurChamps)
+    foreach(Field* leChamp,vecteurChamps)
     {
         delete leChamp;
     }
 }
-table::table(dialogRelation* mum,QString nom,qreal x,qreal y, QGraphicsItem* parent, QGraphicsScene * laScene,QStringList listeDesChamps)
+Table::Table(dialogRelation* mum,QString nom,qreal x,qreal y, QGraphicsItem* parent, QGraphicsScene * laScene,QStringList listeDesChamps)
         :maman(mum),QGraphicsRectItem(x,y,200,200,parent)
 
 {
@@ -63,7 +63,7 @@ qDebug()<<"constructeur de table";
     //création des champs dans la table
     for(int noChamp=0;noChamp<listeDesChamps.count();noChamp++)
     {
-        vecteurChamps.push_back(new field(maman,false,laScene,listeDesChamps[noChamp],this));
+        vecteurChamps.push_back(new Field(maman,false,laScene,listeDesChamps[noChamp],this));
         vecteurChamps[noChamp]->setPos(10,ordonne);
         //sa table c'est moi
         vecteurChamps[noChamp]->laTable=this;
@@ -79,7 +79,7 @@ qDebug()<<"constructeur de table";
 
 
 
- void table::contextMenuEvent(QGraphicsSceneMouseEvent *event)
+ void Table::contextMenuEvent(QGraphicsSceneMouseEvent *event)
  {
      //ce qui se passe lorsque le menu contextuel de la table est appelé
      qDebug()<<"void table::contextMenuEvent(QGraphicsSceneMouseEvent *event)";
@@ -144,7 +144,7 @@ qDebug()<<"constructeur de table";
              {
 
                  this->title->setHtml(nomTableTronque());
-                 foreach (lien *leLien, vectLiens)
+                 foreach (Lien *leLien, vectLiens)
                  {
                      if(leLien->typeDeJointure!="Natural" && leLien->typeDeJointure!="Cross")
                      {//à améliorer remplacement de l'alias par le nom de la table dans la condition
@@ -198,7 +198,7 @@ qDebug()<<"constructeur de table";
                          this->laLigne->setLine(this->laLigne->x(),this->laLigne->y(),this->laLigne->x()+largeurNouveauTitre+50,this->laLigne->y());
                      }
                      this->title->setHtml("<center>"+nomAvecAlias+"</center>");
-                     foreach (lien *leLien, vectLiens)
+                     foreach (Lien *leLien, vectLiens)
                      {
                          if(leLien->typeDeJointure!="Natural"&& leLien->typeDeJointure!="Cross")
                          {
@@ -234,13 +234,13 @@ qDebug()<<"constructeur de table";
 
  }
 
-QVariant table::itemChange(GraphicsItemChange change,const QVariant &value)
+QVariant Table::itemChange(GraphicsItemChange change,const QVariant &value)
 
 {
     qDebug()<<"QVariant table::itemChange(GraphicsItemChange change,const QVariant &value)";
     qDebug()<<change;
     if (change == ItemPositionHasChanged) {
-         foreach (lien *leLien, vectLiens) {
+         foreach (Lien *leLien, vectLiens) {
              leLien->updatePosition();
          }
      }
