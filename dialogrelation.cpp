@@ -46,6 +46,8 @@ dialogRelation::dialogRelation(QWidget *parent) :
     QStringList listeDesTables=db.tables();
     m_ui->listWidgetTables->insertItems(0,listeDesTables);
     m_ui->graphicsView->setScene(&scene);
+    m_ui->graphicsView->setRenderHint(QPainter::Antialiasing);
+    m_ui->graphicsView->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
 
 //connexion des signaux aux slots
     connect (m_ui->graphicsView,SIGNAL(jointureRequise(Table *,Table *)),this,SLOT(jointure(Table*,Table*)));
@@ -466,11 +468,11 @@ void dialogRelation::miseAJourResultat()
                         chaineDuGroupe+=" ON "+condition;
                     }
                 }
-                else
+                else//contient déjà t1 et t2
                 {
                     qDebug()<<"************************T2 existe DEJA********************";
                     //il y a un bug
-                    close();
+                    //close();
                 }
             }
         }//fin du pour chaque groupe de lien
